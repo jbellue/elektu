@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Premier !!</title>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/google-palette@1.1.0/palette.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<div class="radio-group" id="radio-selectGroup">
+    <input type="radio" id="option-select" name="selector" checked="checked" value="select"><label for="option-select"><i id="option-select-icon" class="material-icons md-dark md-inactive">how_to_reg</i></label><input type="radio" id="option-group" name="selector" value="teams"><label for="option-group"><i id="option-group-icon" class="material-icons md-dark md-inactive">group</i></label><input type="radio" id="option-ordinate" name="selector" value="ordinate"><label for="option-ordinate"><i id="option-ordinate-icon"class="material-icons md-dark md-inactive">signal_cellular_alt</i></label>
+</div>
+<div class="radio-group" id="radio-selectNumber">
+    <input type="radio" id="number-1" name="number" checked="checked" value="1"><label for="number-1" id="label-number1">1</label><input type="radio" id="number-2" name="number" value="2"><label for="number-2">2</label><input type="radio" id="number-3" name="number" value="3"><label for="number-3">3</label><input type="radio" id="number-4" name="number" value="4"><label for="number-4">4</label><input type="radio" id="number-5" name="number" value="5"><label for="number-5">5</label>
+</div>
+<i id="toggle-vibration" class="material-icons md-inactive">vibration</i>
+<div id="mainContainer"></div>
+
+<script type="text/javascript">
+let timerTrigger = -1;
+let resetAllTimeout = -1;
+let vibrate = false;
+const triggerTimeout = 2500;
+const colour = palette("mpn65", 65);
+const container = document.getElementById("mainContainer");
+
+// Properly initialise the radio buttons
+if (document.getElementById("option-select").checked) {
+    document.getElementById("label-number1").style.display = "";
+    document.getElementById("label-number1").style.visibility = "";
+    document.getElementById("radio-selectNumber").style.display = "";
+    document.getElementById("radio-selectNumber").style.visibility = "";
+    document.getElementById("option-select-icon").classList.remove("md-inactive");
+}
+else if (document.getElementById("option-group").checked) {
+    document.getElementById("label-number1").style.display = "none";
+    document.getElementById("label-number1").style.visibility = "hidden";
+    document.getElementById("radio-selectNumber").style.display = "";
+    document.getElementById("radio-selectNumber").style.visibility = "";
+    if (document.getElementById("number-1").checked) {
+        document.getElementById("number-2").checked = true;
+    }
+    document.getElementById("option-group-icon").classList.remove("md-inactive");
+}
+else { //option-ordinate
+    document.getElementById("radio-selectNumber").style.display = "none";
+    document.getElementById("radio-selectNumber").style.visibility = "hidden";
+    document.getElementById("option-ordinate-icon").classList.remove("md-inactive");
+}
+
+// set the events on the radio buttons
+document.getElementById("option-select").addEventListener("change", () => {
+    document.getElementById("label-number1").style.display = "";
+    document.getElementById("label-number1").style.visibility = "";
+    document.getElementById("radio-selectNumber").style.display = "";
+    document.getElementById("radio-selectNumber").style.visibility = "";
+
+    document.getElementById("option-select-icon").classList.remove("md-inactive");
+    document.getElementById("option-group-icon").classList.add("md-inactive");
+    document.getElementById("option-ordinate-icon").classList.add("md-inactive");
+});
+document.getElementById("option-group").addEventListener("change", () => {
+    document.getElementById("label-number1").style.display = "none";
+    document.getElementById("label-number1").style.visibility = "hidden";
+    document.getElementById("radio-selectNumber").style.display = "";
+    document.getElementById("radio-selectNumber").style.visibility = "";
+    if (document.getElementById("number-1").checked) {
+        document.getElementById("number-2").checked = true;
+    }
+
+    document.getElementById("option-select-icon").classList.add("md-inactive");
+    document.getElementById("option-group-icon").classList.remove("md-inactive");
+    document.getElementById("option-ordinate-icon").classList.add("md-inactive");
+});
+document.getElementById("option-ordinate").addEventListener("change", () => {
+    document.getElementById("radio-selectNumber").style.display = "none";
+    document.getElementById("radio-selectNumber").style.visibility = "hidden";
+
+    document.getElementById("option-select-icon").classList.add("md-inactive");
+    document.getElementById("option-group-icon").classList.add("md-inactive");
+    document.getElementById("option-ordinate-icon").classList.remove("md-inactive");
+});
+
+// toggling the vibration
+document.getElementById("toggle-vibration").addEventListener("click", (e) => {
+    e.target.classList.toggle("md-inactive");
+    vibrate = !vibrate;
+    if(vibrate) {
+        window.navigator.vibrate(50);
+    }
+});
+
+const getRadioValue = (id) => Number(document.querySelector(`input[name="${id}"]:checked`).value);
+
+const getRandom = (touchList, n) => {
+    let result = new Array(n);
+    let touchListLen = touchList.length;
+    let taken = new Array(touchListLen);
+    if (n > touchListLen) {
+        throw new RangeError("getRandom: more elements taken than available");
+    }
+    while (n--) {
+        const x = Math.floor(Math.random() * touchListLen);
+        result[n] = touchList[x in taken ? taken[x] : x];
+        taken[x] = --touchListLen in taken ? taken[touchListLen] : touchListLen;
+    }
+    return result;
+};
+
+const selectPlayers = (numberToSelect) => {
+    const playerList = [];
+    Array.prototype.forEach.call(document.getElementsByClassName("touch"), (t) => {
+        playerList.push(t.id);
+    });
+    const selectedTouches = getRandom(playerList, numberToSelect);
+
+    selectedTouches.forEach((e) => {
+        const element = document.getElementById(e);
+        if (element) {
+            element.classList.add("selectedTouch");
+        }
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll(".touch:not(.selectedTouch)"), (t) => {
+        t.parentNode.removeChild(t);
+    });
+};
+
+const selectTeams = (numberOfTeams) => {
+    const splitIntoTeams = (touches, numberOfTeams) => {
+        const touchCount = touches.length;
+        const teamArray = [];
+        let i = 0;
+        if (touchCount % numberOfTeams === 0) {
+            const size = Math.floor(touchCount / numberOfTeams);
+            while (i < touchCount) {
+                teamArray.push(touches.slice(i, i += size));
+            }
+        }
+        else {
+            while (i < touchCount) {
+                const size = Math.ceil((touchCount - i) / numberOfTeams--);
+                teamArray.push(touches.slice(i, i += size));
+            }
+        }
+        return teamArray;
+    };
+    const playerList = [];
+    Array.prototype.forEach.call(document.getElementsByClassName("touch"), (t) => {
+        playerList.push(t.id);
+    });
+    if (numberOfTeams >= playerList.length) {
+        return; //TODO handle return codes
+    }
+    const randomisedTouches = getRandom(playerList, playerList.length);
+    const splitTeams = splitIntoTeams(randomisedTouches, numberOfTeams);
+    splitTeams.forEach((team, teamNumber) => {
+        team.forEach((member) => {
+            const e = document.getElementById(member);
+            if (e) {
+                e.style.background = `#${colour[teamNumber]}`;
+                e.classList.add("selectedTouch");
+            }
+        });
+    });
+};
+
+const selectNumbers = () => {
+    const playerList = [];
+    Array.prototype.forEach.call(document.getElementsByClassName("touch"), (t) => {
+        playerList.push(t.id);
+    });
+    const randomisedTouches = getRandom(playerList, playerList.length);
+    randomisedTouches.forEach((touch, index) => {
+        const e = document.getElementById(touch);
+        if (e) {
+            e.classList.add("selectedTouch");
+            const s = e.getElementsByTagName("span")[0];
+            if (s) {
+                s.innerHTML = index + 1;
+            }
+        }
+    });
+};
+
+const resetAll = () => {
+    clearTimeout(timerTrigger);
+    clearTimeout(resetAllTimeout);
+    Array.prototype.forEach.call(document.getElementsByClassName("touch"), (t) => {
+        t.parentNode.removeChild(t);
+    });
+
+    container.removeEventListener("touchstart", ignoreEvent);
+    container.removeEventListener("touchmove", ignoreEvent);
+    container.removeEventListener("touchend", ignoreEvent);
+    container.removeEventListener("touchend", handleFinishTouchEnd);
+
+    container.addEventListener("touchstart", handleNewTouch);
+    container.addEventListener("touchmove", handleTouchMove);
+    container.addEventListener("touchend", handleTouchEnd);
+};
+
+const triggerSelection = () => {
+    clearTimeout(timerTrigger);
+
+    const numbersSelected = getRadioValue("number");
+    if (document.getElementById("option-select").checked) {
+        selectPlayers(numbersSelected);
+    }
+    else if (document.getElementById("option-group").checked) {
+        selectTeams(numbersSelected);
+    }
+    else {
+        selectNumbers();
+    }
+
+    if (vibrate) {
+        window.navigator.vibrate([50, 10, 50]);
+    }
+
+    container.removeEventListener("touchstart", handleNewTouch);
+    container.addEventListener("touchstart", ignoreEvent);
+    container.removeEventListener("touchend", handleTouchEnd);
+    container.addEventListener("touchend", handleFinishTouchEnd);
+};
+
+const handleNewTouch = (ev) => {
+    clearTimeout(timerTrigger);
+    Array.prototype.forEach.call(ev.changedTouches, (t) => {
+        const touch = document.createElement("div");
+        const span = document.createElement("span");
+        touch.setAttribute("class", "touch");
+        touch.setAttribute("id", `touch-${t.identifier}`);
+        touch.style.background = `#${colour[t.identifier]}`;
+        touch.style.color = `#${colour[t.identifier]}`;
+        touch.style.top = `${t.pageY}px`;
+        touch.style.left = `${t.pageX}px`;
+        touch.appendChild(span);
+        document.getElementById("mainContainer").appendChild(touch);
+    });
+
+    if (document.getElementsByClassName("touch").length >= getRadioValue("number")) {
+        timerTrigger = setTimeout(triggerSelection, triggerTimeout);
+    }
+};
+
+const handleTouchMove = (ev) => {
+    ev.preventDefault();
+    Array.prototype.forEach.call(ev.changedTouches, (t) => {
+        const touch = document.getElementById(`touch-${t.identifier}`);
+        if (touch) {
+            touch.style.top = `${t.pageY}px`;
+            touch.style.left = `${t.pageX}px`;
+        }
+    });
+};
+
+const ignoreEvent = (ev) => {
+    ev.preventDefault();
+};
+
+const handleTouchEnd = (ev) => {
+    Array.prototype.forEach.call(ev.changedTouches, (t) => {
+        const element = document.getElementById(`touch-${t.identifier}`);
+        if (element) {
+            element.parentNode.removeChild(element);
+        }
+    });
+};
+
+const handleFinishTouchEnd = (ev) => {
+    Array.prototype.forEach.call(ev.changedTouches, (t) => {
+        const element = document.getElementById(`touch-${t.identifier}`);
+        if (element) {
+            if (element.classList.contains("selectedTouch") && document.getElementsByClassName("touch").length == 1) {
+                container.removeEventListener("touchmove", handleTouchMove);
+                container.addEventListener("touchmove", ignoreEvent);
+                clearTimeout(resetAllTimeout);
+                resetAllTimeout = setTimeout(resetAll, triggerTimeout);
+            }
+        }
+    });
+};
+
+resetAll();
+
+</script>
+</body>
+</html>

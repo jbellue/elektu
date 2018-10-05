@@ -1,0 +1,74 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background: #332f35;
+}
+
+#mainContainer {
+    min-height: 100%; 
+}
+
+input[type=radio] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+}
+
+.material-icons {
+    color: #7FDBFF;
+}
+.material-icons.md-inactive,
+.material-icons.md-dark.md-inactive {
+    color: #9a929e;
+}
+.material-icons.md-dark {
+    color: #004966;
+}
+label {
+    color: #9a929e;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+input[type=radio]:checked + label {
+    color: #004966;
+    background: #7FDBFF;
+}
+input[type=radio]:checked .material-icons {
+    color: #004966;
+}
+#radio-selectNumber {
+    float: right;
+}
+
+.radio-group {
+    border: solid 3px #675f6b;
+    display: inline-block;
+    margin: 10px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.touch {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    text-align: center;
+}
+.touch span {
+    display: inline-block;
+    position: relative;
+    top: -55px;
+}
+.selectedTouch {
+    height: 90px;
+    width: 90px;
+}
