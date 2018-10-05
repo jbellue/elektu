@@ -8,7 +8,10 @@ body {
 }
 
 #mainContainer {
-    min-height: 100%; 
+    top: 0;
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
 }
 
 input[type=radio] {
@@ -18,9 +21,7 @@ input[type=radio] {
 }
 
 #toggle-vibration-container {
-    position: absolute;
     top: 15px;
-    margin: 0 50%;
 }
 
 .material-icons {
@@ -41,15 +42,19 @@ label {
     padding: 0 10px;
 }
 
+#menu-container {
+    position:relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 999;
+}
 input[type=radio]:checked + label {
     color: #004966;
     background: #7FDBFF;
 }
 input[type=radio]:checked .material-icons {
     color: #004966;
-}
-#radio-selectNumber {
-    float: right;
 }
 
 #radio-selectNumber label {

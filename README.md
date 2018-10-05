@@ -16,5 +16,5 @@ Have everyone touch the monitor. The touches will be randomly given a number.
 * [ ] Make things prettier
 * [ ] Fix the end selection
 * [ ] Neaten the code a ~~bit~~ whole lot
-* [ ] Prevent scrolling on the menu...
+* [X] ~~*Prevent scrolling on the menu...*~~
 * [ ] Hide the menu on first touch, reappear on last exit
