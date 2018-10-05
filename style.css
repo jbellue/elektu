@@ -17,6 +17,12 @@ input[type=radio] {
     display: none;
 }
 
+#toggle-vibration-container {
+    position: absolute;
+    top: 15px;
+    margin: 0 50%;
+}
+
 .material-icons {
     color: #7FDBFF;
 }
@@ -44,6 +50,10 @@ input[type=radio]:checked .material-icons {
 }
 #radio-selectNumber {
     float: right;
+}
+
+#radio-selectNumber label {
+    padding: 4.75px 10px;
 }
 
 .radio-group {
