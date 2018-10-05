@@ -206,14 +206,19 @@ const triggerSelection = () => {
     clearTimeout(timerTrigger);
 
     const numbersSelected = getRadioValue("number");
-    if (document.getElementById("option-select").checked) {
-        selectPlayers(numbersSelected);
-    }
-    else if (document.getElementById("option-group").checked) {
+    const selectedFeature = document.querySelector('input[name="selector"]:checked').value;
+    switch (selectedFeature) {
+        case "select" :
+            selectPlayers(numbersSelected);
+            break;
+        case "teams" :
         selectTeams(numbersSelected);
-    }
-    else {
-        selectNumbers();
+            break;
+        case "ordinate" :
+            selectNumbers();
+            break;
+        default:
+            console.log("Unable to find out what to do.")
     }
 
     if (vibrate) {
