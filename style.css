@@ -20,10 +20,6 @@ input[type=radio] {
     display: none;
 }
 
-#toggle-vibration-container {
-    top: 15px;
-}
-
 .material-icons {
     color: #7FDBFF;
 }
@@ -42,11 +38,23 @@ label {
     padding: 0 10px;
 }
 
+#radio-selectGroup {
+    grid-column: 1;
+}
+#toggle-vibration-container {
+    grid-column: 2;
+}
+#radio-selectNumber {
+    grid-column: 3;
+}
 #menu-container {
-    position:relative;
-    display: flex;
+    display: grid;
+    grid-template-columns: 45% auto 45%;
+    justify-items: center;
     justify-content: space-around;
     align-items: center;
+    top: 10px;
+    position:relative;
     z-index: 999;
 }
 input[type=radio]:checked + label {
@@ -58,13 +66,11 @@ input[type=radio]:checked .material-icons {
 }
 
 #radio-selectNumber label {
-    padding: 4.75px 10px;
+    padding: 4px 10px;
 }
 
 .radio-group {
     border: solid 3px #675f6b;
-    display: inline-block;
-    margin: 10px;
     border-radius: 30px;
     overflow: hidden;
 }
