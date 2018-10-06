@@ -191,11 +191,13 @@ const selectNumbers = () => {
 };
 
 const resetAll = () => {
+    // darn it, getElementsByClassName returns a live list,so we need the while loop
+    const touches = document.getElementsByClassName("touch");
+    while (touches[0]) {
+        touches[0].parentNode.removeChild(touches[0]);
+    }
     clearTimeout(timerTrigger);
     clearTimeout(resetAllTimeout);
-    Array.prototype.forEach.call(document.getElementsByClassName("touch"), (t) => {
-        t.parentNode.removeChild(t);
-    });
 
     container.removeEventListener("touchstart", ignoreEvent);
     container.removeEventListener("touchmove", ignoreEvent);
@@ -260,7 +262,7 @@ const handleTouchMove = (ev) => {
     ev.preventDefault();
     Array.prototype.forEach.call(ev.changedTouches, (t) => {
         const touch = document.getElementById(`touch-${t.identifier}`);
-        if (touch) {
+        if (touch && !touch.classList.contains("locked")) {
             touch.style.top = `${t.pageY}px`;
             touch.style.left = `${t.pageX}px`;
         }
@@ -284,14 +286,13 @@ const handleFinishTouchEnd = (ev) => {
     Array.prototype.forEach.call(ev.changedTouches, (t) => {
         const element = document.getElementById(`touch-${t.identifier}`);
         if (element) {
-            if (element.classList.contains("selectedTouch") && document.getElementsByClassName("touch").length == 1) {
-                container.removeEventListener("touchmove", handleTouchMove);
-                container.addEventListener("touchmove", ignoreEvent);
-                clearTimeout(resetAllTimeout);
+            element.classList.add("locked");
+            if (document.querySelectorAll(".touch:not(.locked)").length == 0) {
                 resetAllTimeout = setTimeout(resetAll, triggerTimeout);
             }
         }
     });
+    
 };
 
 resetAll();
