@@ -270,15 +270,14 @@ const handleNewTouch = (ev) => {
     }
 };
 
+const eventTypes = {
+    MOVE: 'move',
+    END: 'end',
+    FINISH: 'finish'
+}
 const handleTouchMove = (ev) => {
-    ev.preventDefault();
-    Array.prototype.forEach.call(ev.changedTouches, (t) => {
-        const touch = document.getElementById(`touch-${t.identifier}`);
-        if (touch && !touch.classList.contains("locked")) {
-            touch.style.top = `${t.pageY}px`;
-            touch.style.left = `${t.pageX}px`;
-        }
-    });
+    eventHandler(ev, eventTypes.MOVE);
+    
 };
 
 const ignoreEvent = (ev) => {
@@ -286,28 +285,42 @@ const ignoreEvent = (ev) => {
 };
 
 const handleTouchEnd = (ev) => {
-    Array.prototype.forEach.call(ev.changedTouches, (t) => {
-        const element = document.getElementById(`touch-${t.identifier}`);
-        if (element) {
-            element.parentNode.removeChild(element);
-        }
-    });
-    if (document.getElementsByClassName("touch").length == 0) {
-        showMenu();
-    }
+    eventHandler(ev, eventTypes.END);
 };
 
 const handleFinishTouchEnd = (ev) => {
+    eventHandler(ev, eventTypes.FINISH);
+};
+
+const eventHandler = (ev, event) => {
+    ev.preventDefault();
     Array.prototype.forEach.call(ev.changedTouches, (t) => {
         const element = document.getElementById(`touch-${t.identifier}`);
         if (element) {
-            element.classList.add("locked");
-            if (document.querySelectorAll(".touch:not(.locked)").length == 0) {
-                resetAllTimeout = setTimeout(resetAll, triggerTimeout);
+            switch (event) {
+                case eventTypes.MOVE:
+                    if (!element.classList.contains("locked")) {
+                        element.style.top = `${t.pageY}px`;
+                        element.style.left = `${t.pageX}px`;
+                    }
+                    break;
+                case eventTypes.END:
+                    element.parentNode.removeChild(element);
+                    break;
+                case eventTypes.FINISH:
+                    element.classList.add("locked");
+                    if (document.querySelectorAll(".touch:not(.locked)").length == 0) {
+                        resetAllTimeout = setTimeout(resetAll, triggerTimeout);
+                    }
+                    break;
             }
         }
     });
-};
+
+    if (event == eventTypes.END && document.getElementsByClassName("touch").length == 0) {
+        showMenu();
+    }
+}
 
 resetAll();
 
