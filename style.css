@@ -14,6 +14,17 @@ body {
     min-width: 100%;
 }
 
+.transformAway {
+    transition-timing-function: ease-in;
+    transition: 0.2s;
+    transform: translateY(-200%);
+}
+.transformBackIn {
+    transition-timing-function: ease-in;
+    transition: 0.2s;
+    transform: translateY(0);
+}
+
 input[type=radio] {
     position: absolute;
     visibility: hidden;
