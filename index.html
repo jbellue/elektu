@@ -5,7 +5,6 @@
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/google-palette@1.1.0/palette.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -28,7 +27,8 @@ let timerTrigger = -1;
 let resetAllTimeout = -1;
 let vibrate = false;
 const triggerTimeout = 2500;
-const colour = palette("mpn65", 65);
+const defaultColours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928']; //palette("mpn65", 20);
+let colour = [];
 const container = document.getElementById("mainContainer");
 
 // Properly initialise the radio buttons
@@ -97,6 +97,11 @@ document.getElementById("toggle-vibration").addEventListener("click", (e) => {
     }
 });
 
+const getRandomColour = () => {
+    const randColour = colour.splice(Math.floor(Math.random() * colour.length), 1);
+    return randColour[0];
+};
+
 const getRadioValue = (id) => Number(document.querySelector(`input[name="${id}"]:checked`).value);
 
 const getRandom = (touchList, n) => {
@@ -162,10 +167,11 @@ const selectTeams = (numberOfTeams) => {
     const randomisedTouches = getRandom(playerList, playerList.length);
     const splitTeams = splitIntoTeams(randomisedTouches, numberOfTeams);
     splitTeams.forEach((team, teamNumber) => {
+        const teamColour = getRandomColour();
         team.forEach((member) => {
             const e = document.getElementById(member);
             if (e) {
-                e.style.background = `#${colour[teamNumber]}`;
+                e.style.background = teamColour;
                 e.classList.add("selectedTouch");
             }
         });
@@ -191,8 +197,9 @@ const selectNumbers = () => {
 };
 
 const resetAll = () => {
-    // darn it, getElementsByClassName returns a live list,so we need the while loop
+    colour = defaultColours.slice();
     showMenu();
+    // darn it, getElementsByClassName returns a live list,so we need the while loop
     const touches = document.getElementsByClassName("touch");
     while (touches[0]) {
         touches[0].parentNode.removeChild(touches[0]);
@@ -244,7 +251,6 @@ const hideMenu = () => {
     document.getElementById("menu-container").classList.remove("transformBackIn");
 };
 const showMenu = () => {
-    console.log("show menu")
     document.getElementById("menu-container").classList.remove("transformAway");
     document.getElementById("menu-container").classList.add("transformBackIn");
 };
@@ -257,8 +263,9 @@ const handleNewTouch = (ev) => {
         const span = document.createElement("span");
         touch.setAttribute("class", "touch");
         touch.setAttribute("id", `touch-${t.identifier}`);
-        touch.style.background = `#${colour[t.identifier]}`;
-        touch.style.color = `#${colour[t.identifier]}`;
+        const touchColour = getRandomColour();
+        touch.style.background = touchColour;
+        touch.style.color = touchColour;
         touch.style.top = `${t.pageY}px`;
         touch.style.left = `${t.pageX}px`;
         touch.appendChild(span);
@@ -305,6 +312,7 @@ const eventHandler = (ev, event) => {
                     }
                     break;
                 case eventTypes.END:
+                    colour.push(element.style.backgroundColor);
                     element.parentNode.removeChild(element);
                     break;
                 case eventTypes.FINISH:
