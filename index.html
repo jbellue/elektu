@@ -27,9 +27,10 @@ let timerTrigger = -1;
 let resetAllTimeout = -1;
 let vibrate = false;
 const triggerTimeout = 2500;
-const defaultColours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928']; //palette("mpn65", 20);
+const defaultColours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'];
 let colour = [];
 const container = document.getElementById("mainContainer");
+const touches = document.getElementsByClassName("touch");
 
 // Properly initialise the radio buttons
 if (document.getElementById("option-select").checked) {
@@ -101,6 +102,9 @@ const getRandomColour = () => {
     const randColour = colour.splice(Math.floor(Math.random() * colour.length), 1);
     return randColour[0];
 };
+const getNoTeamColour = () => {
+    return '#C0C0C0';
+};
 
 const getRadioValue = (id) => Number(document.querySelector(`input[name="${id}"]:checked`).value);
 
@@ -121,7 +125,7 @@ const getRandom = (touchList, n) => {
 
 const selectPlayers = (numberToSelect) => {
     const playerList = [];
-    Array.prototype.forEach.call(document.getElementsByClassName("touch"), (t) => {
+    [...touches].forEach((t) => {
         playerList.push(t.id);
     });
     const selectedTouches = getRandom(playerList, numberToSelect);
@@ -157,12 +161,9 @@ const selectTeams = (numberOfTeams) => {
         }
         return teamArray;
     };
-    const playerList = [];
-    Array.prototype.forEach.call(document.getElementsByClassName("touch"), (t) => {
-        playerList.push(t.id);
-    });
-    if (numberOfTeams >= playerList.length) {
-        return; //TODO handle return codes
+    const playerList = [...touches].map(t => t.id);
+    if (numberOfTeams > playerList.length) {
+        throw new RangeError("selectTeams: more elements taken than available");
     }
     const randomisedTouches = getRandom(playerList, playerList.length);
     const splitTeams = splitIntoTeams(randomisedTouches, numberOfTeams);
@@ -179,10 +180,7 @@ const selectTeams = (numberOfTeams) => {
 };
 
 const selectNumbers = () => {
-    const playerList = [];
-    Array.prototype.forEach.call(document.getElementsByClassName("touch"), (t) => {
-        playerList.push(t.id);
-    });
+    const playerList = [...touches].map(t => t.id);
     const randomisedTouches = getRandom(playerList, playerList.length);
     randomisedTouches.forEach((touch, index) => {
         const e = document.getElementById(touch);
@@ -199,11 +197,9 @@ const selectNumbers = () => {
 const resetAll = () => {
     colour = defaultColours.slice();
     showMenu();
-    // darn it, getElementsByClassName returns a live list,so we need the while loop
-    const touches = document.getElementsByClassName("touch");
-    while (touches[0]) {
-        touches[0].parentNode.removeChild(touches[0]);
-    }
+    [...touches].forEach((t) => {
+        t.parentNode.removeChild(t);
+    });
     clearTimeout(timerTrigger);
     clearTimeout(resetAllTimeout);
 
@@ -221,19 +217,18 @@ const triggerSelection = () => {
     clearTimeout(timerTrigger);
 
     const numbersSelected = getRadioValue("number");
-    const selectedFeature = document.querySelector('input[name="selector"]:checked').value;
-    switch (selectedFeature) {
-        case "select" :
+    switch (getFeatureType()) {
+        case featureTypes.select :
             selectPlayers(numbersSelected);
             break;
-        case "teams" :
-        selectTeams(numbersSelected);
+        case featureTypes.teams :
+            selectTeams(numbersSelected);
             break;
-        case "ordinate" :
+        case featureTypes.ordinate :
             selectNumbers();
             break;
         default:
-            console.log("Unable to find out what to do.")
+            throw new Error("Unrecognised feature type.");
     }
 
     if (vibrate) {
@@ -263,7 +258,7 @@ const handleNewTouch = (ev) => {
         const span = document.createElement("span");
         touch.setAttribute("class", "touch");
         touch.setAttribute("id", `touch-${t.identifier}`);
-        const touchColour = getRandomColour();
+        const touchColour = getFeatureType() == featureTypes.teams ? getNoTeamColour() : getRandomColour();
         touch.style.background = touchColour;
         touch.style.color = touchColour;
         touch.style.top = `${t.pageY}px`;
@@ -271,20 +266,42 @@ const handleNewTouch = (ev) => {
         touch.appendChild(span);
         document.getElementById("mainContainer").appendChild(touch);
     });
-
-    if (document.getElementsByClassName("touch").length >= getRadioValue("number")) {
+    const feature = getFeatureType();
+    if (
+        (feature == featureTypes.select && touches.length > getRadioValue("number")) ||
+        (feature == featureTypes.teams && touches.length >= getRadioValue("number")) ||
+         feature == featureTypes.ordinate
+    ) {
         timerTrigger = setTimeout(triggerSelection, triggerTimeout);
     }
 };
 
-const eventTypes = {
-    MOVE: 'move',
-    END: 'end',
-    FINISH: 'finish'
-}
+const eventTypes = Object.freeze({
+    move:1,
+    end: 2,
+    finish: 3
+});
+const featureTypes = Object.freeze({
+    select: 1,
+    teams: 2,
+    ordinate: 3
+});
+
+const getFeatureType = () => {
+    switch (document.querySelector('input[name="selector"]:checked').value) {
+        case 'select':
+            return featureTypes.select;
+        case 'teams':
+            return featureTypes.teams;
+        case 'ordinate':
+            return featureTypes.ordinate;
+        default:
+            throw new Error("Unrecognised feature type.");
+    }
+};
+
 const handleTouchMove = (ev) => {
-    eventHandler(ev, eventTypes.MOVE);
-    
+    eventHandler(ev, eventTypes.move);
 };
 
 const ignoreEvent = (ev) => {
@@ -292,11 +309,11 @@ const ignoreEvent = (ev) => {
 };
 
 const handleTouchEnd = (ev) => {
-    eventHandler(ev, eventTypes.END);
+    eventHandler(ev, eventTypes.end);
 };
 
 const handleFinishTouchEnd = (ev) => {
-    eventHandler(ev, eventTypes.FINISH);
+    eventHandler(ev, eventTypes.finish);
 };
 
 const eventHandler = (ev, event) => {
@@ -305,30 +322,34 @@ const eventHandler = (ev, event) => {
         const element = document.getElementById(`touch-${t.identifier}`);
         if (element) {
             switch (event) {
-                case eventTypes.MOVE:
+                case eventTypes.move:
                     if (!element.classList.contains("locked")) {
                         element.style.top = `${t.pageY}px`;
                         element.style.left = `${t.pageX}px`;
                     }
                     break;
-                case eventTypes.END:
-                    colour.push(element.style.backgroundColor);
+                case eventTypes.end:
+                    if (getFeatureType() != featureTypes.teams) {
+                        colour.push(element.style.backgroundColor);
+                    }
                     element.parentNode.removeChild(element);
                     break;
-                case eventTypes.FINISH:
+                case eventTypes.finish:
                     element.classList.add("locked");
                     if (document.querySelectorAll(".touch:not(.locked)").length == 0) {
                         resetAllTimeout = setTimeout(resetAll, triggerTimeout);
                     }
                     break;
+                default:
+                    throw new Error("Unrecognised event type.");
             }
         }
     });
 
-    if (event == eventTypes.END && document.getElementsByClassName("touch").length == 0) {
+    if (event == eventTypes.end && touches.length == 0) {
         showMenu();
     }
-}
+};
 
 resetAll();
 
