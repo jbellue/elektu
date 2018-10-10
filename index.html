@@ -32,15 +32,17 @@ let colour = [];
 const container = document.getElementById("mainContainer");
 const touches = document.getElementsByClassName("touch");
 
-// Properly initialise the radio buttons
-if (document.getElementById("option-select").checked) {
+const showSelect = () => {
     document.getElementById("label-number1").style.display = "";
     document.getElementById("label-number1").style.visibility = "";
     document.getElementById("radio-selectNumber").style.display = "";
     document.getElementById("radio-selectNumber").style.visibility = "";
     document.getElementById("option-select-icon").classList.remove("md-inactive");
-}
-else if (document.getElementById("option-group").checked) {
+    document.getElementById("option-group-icon").classList.add("md-inactive");
+    document.getElementById("option-ordinate-icon").classList.add("md-inactive");
+};
+
+const showGroup = () => {
     document.getElementById("label-number1").style.display = "none";
     document.getElementById("label-number1").style.visibility = "hidden";
     document.getElementById("radio-selectNumber").style.display = "";
@@ -48,45 +50,39 @@ else if (document.getElementById("option-group").checked) {
     if (document.getElementById("number-1").checked) {
         document.getElementById("number-2").checked = true;
     }
+    document.getElementById("option-select-icon").classList.add("md-inactive");
     document.getElementById("option-group-icon").classList.remove("md-inactive");
-}
-else { //option-ordinate
+    document.getElementById("option-ordinate-icon").classList.add("md-inactive");
+};
+
+const showOrdinate = () => {
     document.getElementById("radio-selectNumber").style.display = "none";
     document.getElementById("radio-selectNumber").style.visibility = "hidden";
+
+    document.getElementById("option-select-icon").classList.add("md-inactive");
+    document.getElementById("option-group-icon").classList.add("md-inactive");
     document.getElementById("option-ordinate-icon").classList.remove("md-inactive");
+};
+// Properly initialise the radio buttons
+if (document.getElementById("option-select").checked) {
+    showSelect();
+}
+else if (document.getElementById("option-group").checked) {
+    showGroup();
+}
+else { //option-ordinate
+    showOrdinate();
 }
 
 // set the events on the radio buttons
 document.getElementById("option-select").addEventListener("change", () => {
-    document.getElementById("label-number1").style.display = "";
-    document.getElementById("label-number1").style.visibility = "";
-    document.getElementById("radio-selectNumber").style.display = "";
-    document.getElementById("radio-selectNumber").style.visibility = "";
-
-    document.getElementById("option-select-icon").classList.remove("md-inactive");
-    document.getElementById("option-group-icon").classList.add("md-inactive");
-    document.getElementById("option-ordinate-icon").classList.add("md-inactive");
+    showSelect();
 });
 document.getElementById("option-group").addEventListener("change", () => {
-    document.getElementById("label-number1").style.display = "none";
-    document.getElementById("label-number1").style.visibility = "hidden";
-    document.getElementById("radio-selectNumber").style.display = "";
-    document.getElementById("radio-selectNumber").style.visibility = "";
-    if (document.getElementById("number-1").checked) {
-        document.getElementById("number-2").checked = true;
-    }
-
-    document.getElementById("option-select-icon").classList.add("md-inactive");
-    document.getElementById("option-group-icon").classList.remove("md-inactive");
-    document.getElementById("option-ordinate-icon").classList.add("md-inactive");
+    showGroup();
 });
 document.getElementById("option-ordinate").addEventListener("change", () => {
-    document.getElementById("radio-selectNumber").style.display = "none";
-    document.getElementById("radio-selectNumber").style.visibility = "hidden";
-
-    document.getElementById("option-select-icon").classList.add("md-inactive");
-    document.getElementById("option-group-icon").classList.add("md-inactive");
-    document.getElementById("option-ordinate-icon").classList.remove("md-inactive");
+    showOrdinate();
 });
 
 // toggling the vibration
