@@ -274,11 +274,6 @@ const resetTimerTrigger = () => {
     }
 };
 
-const eventTypes = Object.freeze({
-    move:1,
-    end: 2,
-    finish: 3
-});
 const featureTypes = Object.freeze({
     select: 1,
     teams: 2,
@@ -299,7 +294,7 @@ const getFeatureType = () => {
 };
 
 const handleTouchMove = ev => {
-    eventHandler(ev, eventTypes.move);
+    eventHandler(ev);
 };
 
 const ignoreEvent = ev => {
@@ -307,37 +302,39 @@ const ignoreEvent = ev => {
 };
 
 const handleTouchEnd = ev => {
-    eventHandler(ev, eventTypes.end);
+    eventHandler(ev);
 };
 
 const handleFinishTouchEnd = ev => {
-    eventHandler(ev, eventTypes.finish);
+    eventHandler(ev, true);
 };
 
-const eventHandler = (ev, event) => {
+const eventHandler = (ev, finish = false) => {
     ev.preventDefault();
     const changedTouches = ev.changedTouches;
     for (let i=0; i < changedTouches.length; ++i) {
         const element = document.getElementById(`touch-${changedTouches[i].identifier}`);
         if (element) {
-            switch (event) {
-                case eventTypes.move:
+            switch (ev.type) {
+                case "touchmove":
                     if (!element.classList.contains("locked")) {
                         element.style.top = `${changedTouches[i].pageY}px`;
                         element.style.left = `${changedTouches[i].pageX}px`;
                     }
                     break;
-                case eventTypes.end:
-                    if (getFeatureType() != featureTypes.teams) {
-                        colour.push(element.style.backgroundColor);
+                case "touchend":
+                    if (!finish) {
+                        if (getFeatureType() != featureTypes.teams) {
+                            colour.push(element.style.backgroundColor);
+                        }
+                        element.parentNode.removeChild(element);
+                        resetTimerTrigger();
                     }
-                    element.parentNode.removeChild(element);
-                    resetTimerTrigger();
-                    break;
-                case eventTypes.finish:
-                    element.classList.add("locked");
-                    if (document.querySelectorAll(".touch:not(.locked)").length == 0) {
-                        resetAllTimeout = setTimeout(resetAll, triggerTimeout);
+                    else {
+                        element.classList.add("locked");
+                        if (document.querySelectorAll(".touch:not(.locked)").length == 0) {
+                            resetAllTimeout = setTimeout(resetAll, triggerTimeout);
+                        }
                     }
                     break;
                 default:
@@ -346,7 +343,7 @@ const eventHandler = (ev, event) => {
         }
     }
 
-    if (event == eventTypes.end && touches.length == 0) {
+    if (ev.type == "touchend" && touches.length == 0) {
         showMenu();
     }
 };
