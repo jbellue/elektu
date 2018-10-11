@@ -245,18 +245,19 @@ const showMenu = () => {
 
 const handleNewTouch = ev => {
     hideMenu();
-    for (let i=0; i < ev.changedTouches.length; ++i) {
-        const touch = document.createElement("div");
+    const changedTouches = ev.changedTouches;
+    for (let i=0; i < changedTouches.length; ++i) {
+        const newTouch = document.createElement("div");
         const span = document.createElement("span");
-        touch.setAttribute("class", "touch");
-        touch.setAttribute("id", `touch-${ev.changedTouches[i].identifier}`);
+        newTouch.setAttribute("class", "touch");
+        newTouch.setAttribute("id", `touch-${changedTouches[i].identifier}`);
         const touchColour = getFeatureType() == featureTypes.teams ? getNoTeamColour() : getRandomColour();
-        touch.style.background = touchColour;
-        touch.style.color = touchColour;
-        touch.style.top = `${ev.changedTouches[i].pageY}px`;
-        touch.style.left = `${ev.changedTouches[i].pageX}px`;
-        touch.appendChild(span);
-        document.getElementById("mainContainer").appendChild(touch);
+        newTouch.style.background = touchColour;
+        newTouch.style.color = touchColour;
+        newTouch.style.top = `${changedTouches[i].pageY}px`;
+        newTouch.style.left = `${changedTouches[i].pageX}px`;
+        newTouch.appendChild(span);
+        document.getElementById("mainContainer").appendChild(newTouch);
     }
     resetTimerTrigger();
 };
@@ -315,14 +316,15 @@ const handleFinishTouchEnd = ev => {
 
 const eventHandler = (ev, event) => {
     ev.preventDefault();
-    for (let i=0; i < ev.changedTouches.length; ++i) {
-        const element = document.getElementById(`touch-${ev.changedTouches[i].identifier}`);
+    const changedTouches = ev.changedTouches;
+    for (let i=0; i < changedTouches.length; ++i) {
+        const element = document.getElementById(`touch-${changedTouches[i].identifier}`);
         if (element) {
             switch (event) {
                 case eventTypes.move:
                     if (!element.classList.contains("locked")) {
-                        element.style.top = `${ev.changedTouches[i].pageY}px`;
-                        element.style.left = `${ev.changedTouches[i].pageX}px`;
+                        element.style.top = `${changedTouches[i].pageY}px`;
+                        element.style.left = `${changedTouches[i].pageX}px`;
                     }
                     break;
                 case eventTypes.end:
