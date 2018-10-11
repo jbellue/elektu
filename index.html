@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-<div id="menu-container" class="transformBackIn">
+<div id="menuContainer" class="transformBackIn">
     <div class="radio-group" id="radio-selectGroup">
         <input type="radio" id="option-select" name="selector" checked="checked" value="select"><label for="option-select"><i id="option-select-icon" class="material-icons md-dark md-inactive">how_to_reg</i></label><input type="radio" id="option-group" name="selector" value="teams"><label for="option-group"><i id="option-group-icon" class="material-icons md-dark md-inactive">group</i></label><input type="radio" id="option-ordinate" name="selector" value="ordinate"><label for="option-ordinate"><i id="option-ordinate-icon"class="material-icons md-dark md-inactive">signal_cellular_alt</i></label>
     </div>
@@ -30,6 +30,7 @@ const triggerTimeout = 2500;
 const defaultColours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'];
 let colour = [];
 const mainContainer = document.getElementById("mainContainer");
+const menuContainer = document.getElementById("menuContainer");
 const touches = document.getElementsByClassName("touch");
 
 const showSelect = () => {
@@ -225,12 +226,12 @@ const triggerSelection = () => {
 };
 
 const hideMenu = () => {
-    document.getElementById("menu-container").classList.add("transformAway");
-    document.getElementById("menu-container").classList.remove("transformBackIn");
+    menuContainer.classList.add("transformAway");
+    menuContainer.classList.remove("transformBackIn");
 };
 const showMenu = () => {
-    document.getElementById("menu-container").classList.remove("transformAway");
-    document.getElementById("menu-container").classList.add("transformBackIn");
+    menuContainer.classList.remove("transformAway");
+    menuContainer.classList.add("transformBackIn");
 };
 
 const handleNewTouch = ev => {
