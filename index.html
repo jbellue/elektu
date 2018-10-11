@@ -29,7 +29,7 @@ let vibrate = false;
 const triggerTimeout = 2500;
 const defaultColours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'];
 let colour = [];
-const container = document.getElementById("mainContainer");
+const mainContainer = document.getElementById("mainContainer");
 const touches = document.getElementsByClassName("touch");
 
 const showSelect = () => {
@@ -186,14 +186,14 @@ const resetAll = () => {
     clearTimeout(timerTrigger);
     clearTimeout(resetAllTimeout);
 
-    container.removeEventListener("touchstart", ignoreEvent);
-    container.removeEventListener("touchmove", ignoreEvent);
-    container.removeEventListener("touchend", ignoreEvent);
-    container.removeEventListener("touchend", handleFinishTouchEnd);
+    mainContainer.removeEventListener("touchstart", ignoreEvent);
+    mainContainer.removeEventListener("touchmove", ignoreEvent);
+    mainContainer.removeEventListener("touchend", ignoreEvent);
+    mainContainer.removeEventListener("touchend", handleFinishTouchEnd);
 
-    container.addEventListener("touchstart", handleNewTouch);
-    container.addEventListener("touchmove", handleTouchMove);
-    container.addEventListener("touchend", handleTouchEnd);
+    mainContainer.addEventListener("touchstart", handleNewTouch);
+    mainContainer.addEventListener("touchmove", handleTouchMove);
+    mainContainer.addEventListener("touchend", handleTouchEnd);
 };
 
 const triggerSelection = () => {
@@ -218,10 +218,10 @@ const triggerSelection = () => {
         window.navigator.vibrate([50, 10, 50]);
     }
 
-    container.removeEventListener("touchstart", handleNewTouch);
-    container.addEventListener("touchstart", ignoreEvent);
-    container.removeEventListener("touchend", handleTouchEnd);
-    container.addEventListener("touchend", handleFinishTouchEnd);
+    mainContainer.removeEventListener("touchstart", handleNewTouch);
+    mainContainer.addEventListener("touchstart", ignoreEvent);
+    mainContainer.removeEventListener("touchend", handleTouchEnd);
+    mainContainer.addEventListener("touchend", handleFinishTouchEnd);
 };
 
 const hideMenu = () => {
@@ -247,7 +247,7 @@ const handleNewTouch = ev => {
         newTouch.style.top = `${changedTouches[i].pageY}px`;
         newTouch.style.left = `${changedTouches[i].pageX}px`;
         newTouch.appendChild(span);
-        document.getElementById("mainContainer").appendChild(newTouch);
+        mainContainer.appendChild(newTouch);
     }
     resetTimerTrigger();
 };
