@@ -249,8 +249,8 @@ const handleNewTouch = ev => {
     for (let i=0; i < changedTouches.length; ++i) {
         const newTouch = document.createElement("div");
         const span = document.createElement("span");
-        newTouch.setAttribute("class", "touch");
-        newTouch.setAttribute("id", `touch-${changedTouches[i].identifier}`);
+        newTouch.classList.add("touch");
+        newTouch.id = `touch-${changedTouches[i].identifier}`;
         const touchColour = getFeatureType() == featureTypes.teams ? getNoTeamColour() : getRandomColour();
         newTouch.style.background = touchColour;
         newTouch.style.color = touchColour;
