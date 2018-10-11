@@ -31,38 +31,43 @@ const defaultColours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a
 let colour = [];
 const mainContainer = document.getElementById("mainContainer");
 const menuContainer = document.getElementById("menuContainer");
+const labelNumber1 = document.getElementById("label-number1");
+const radioSelectNumber = document.getElementById("radio-selectNumber");
+const optionSelectIcon = document.getElementById("option-select-icon");
+const optionGroupIcon = document.getElementById("option-group-icon");
+const optionOrdinateIcon = document.getElementById("option-ordinate-icon");
 const touches = document.getElementsByClassName("touch");
 
 const showSelect = () => {
-    document.getElementById("label-number1").style.display = "";
-    document.getElementById("label-number1").style.visibility = "";
-    document.getElementById("radio-selectNumber").style.display = "";
-    document.getElementById("radio-selectNumber").style.visibility = "";
-    document.getElementById("option-select-icon").classList.remove("md-inactive");
-    document.getElementById("option-group-icon").classList.add("md-inactive");
-    document.getElementById("option-ordinate-icon").classList.add("md-inactive");
+    labelNumber1.style.display = "";
+    labelNumber1.style.visibility = "";
+    radioSelectNumber.style.display = "";
+    radioSelectNumber.style.visibility = "";
+    optionSelectIcon.classList.remove("md-inactive");
+    optionGroupIcon.classList.add("md-inactive");
+    optionOrdinateIcon.classList.add("md-inactive");
 };
 
 const showGroup = () => {
-    document.getElementById("label-number1").style.display = "none";
-    document.getElementById("label-number1").style.visibility = "hidden";
-    document.getElementById("radio-selectNumber").style.display = "";
-    document.getElementById("radio-selectNumber").style.visibility = "";
+    labelNumber1.style.display = "none";
+    labelNumber1.style.visibility = "hidden";
+    radioSelectNumber.style.display = "";
+    radioSelectNumber.style.visibility = "";
     if (document.getElementById("number-1").checked) {
         document.getElementById("number-2").checked = true;
     }
-    document.getElementById("option-select-icon").classList.add("md-inactive");
-    document.getElementById("option-group-icon").classList.remove("md-inactive");
-    document.getElementById("option-ordinate-icon").classList.add("md-inactive");
+    optionSelectIcon.classList.add("md-inactive");
+    optionGroupIcon.classList.remove("md-inactive");
+    optionOrdinateIcon.classList.add("md-inactive");
 };
 
 const showOrdinate = () => {
-    document.getElementById("radio-selectNumber").style.display = "none";
-    document.getElementById("radio-selectNumber").style.visibility = "hidden";
+    radioSelectNumber.style.display = "none";
+    radioSelectNumber.style.visibility = "hidden";
 
-    document.getElementById("option-select-icon").classList.add("md-inactive");
-    document.getElementById("option-group-icon").classList.add("md-inactive");
-    document.getElementById("option-ordinate-icon").classList.remove("md-inactive");
+    optionSelectIcon.classList.add("md-inactive");
+    optionGroupIcon.classList.add("md-inactive");
+    optionOrdinateIcon.classList.remove("md-inactive");
 };
 // Properly initialise the radio buttons
 if (document.getElementById("option-select").checked) {
