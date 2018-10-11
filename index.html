@@ -75,15 +75,9 @@ else { //option-ordinate
 }
 
 // set the events on the radio buttons
-document.getElementById("option-select").addEventListener("change", () => {
-    showSelect();
-});
-document.getElementById("option-group").addEventListener("change", () => {
-    showGroup();
-});
-document.getElementById("option-ordinate").addEventListener("change", () => {
-    showOrdinate();
-});
+document.getElementById("option-select").addEventListener("change", () => showSelect());
+document.getElementById("option-group").addEventListener("change", () => showGroup());
+document.getElementById("option-ordinate").addEventListener("change", () => showOrdinate());
 
 // toggling the vibration
 document.getElementById("toggle-vibration").addEventListener("click", (e) => {
@@ -94,13 +88,9 @@ document.getElementById("toggle-vibration").addEventListener("click", (e) => {
     }
 });
 
-const getRandomColour = () => {
-    const randColour = colour.splice(Math.floor(Math.random() * colour.length), 1);
-    return randColour[0];
-};
-const getNoTeamColour = () => {
-    return '#C0C0C0'; // you go Glen
-};
+const getRandomColour = () => colour.splice(Math.floor(Math.random() * colour.length), 1)[0];
+
+const getNoTeamColour = () => '#C0C0C0'; // you go Glen
 
 const getRadioValue = id => Number(document.querySelector(`input[name="${id}"]:checked`).value);
 
