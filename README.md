@@ -9,12 +9,15 @@ You need more people touching the monitor than the number in the menu!
 ### Split people between teams
 Have everyone touch the monitor. The number of teams selected in the menu will be selected.
 
+Note, you need at least the amount of people touching the monitor that you want teams...
+
 ### Randomise the order of people
 Have everyone touch the monitor. The touches will be randomly given a number.
 
 ## TODO
 * [ ] Make things prettier
-* [X] ~~*Fix the end selection*~~ (I hope...)
-* [ ] Neaten the code a ~~bit~~ whole lot
+* [ ] Fix a weird bug where touches don't get deleted and everything gets confused
+* [X] ~~*Fix the end selection*~~
+* [X] ~~*Neaten the code a whole lot*~~
 * [X] ~~*Prevent scrolling on the menu...*~~
-* [ ] Hide the menu on first touch, reappear on last exit
+* [X] ~~*Hide the menu on first touch, reappear on last exit*~~
