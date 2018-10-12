@@ -100,35 +100,38 @@ const getNoTeamColour = () => '#C0C0C0'; // you go Glen
 
 const getRadioValue = id => Number(document.querySelector(`input[name="${id}"]:checked`).value);
 
-const getRandom = (touchList, n) => {
-    let result = new Array(n);
-    let touchListLen = touchList.length;
-    let taken = new Array(touchListLen);
-    if (n > touchListLen) {
-        throw new RangeError("getRandom: more elements taken than available");
+const shuffleArray = array => {
+    let currentIndex = array.length;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+        // Pick a remaining element...
+        let randomIndex = Math.floor(Math.random() * currentIndex--);
+
+        // And swap it with the current element.
+        let temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
     }
-    while (n--) {
-        const x = Math.floor(Math.random() * touchListLen);
-        result[n] = touchList[x in taken ? taken[x] : x];
-        taken[x] = --touchListLen in taken ? taken[touchListLen] : touchListLen;
-    }
-    return result;
+    return array;
 };
 
 const selectPlayers = (numberToSelect) => {
     const playerList = [...touches].map(t => t.id);
-    const selectedTouches = getRandom(playerList, numberToSelect);
+    const suffledList = shuffleArray(playerList);
 
-    for (let i=0; i < selectedTouches.length; ++i) {
-        const element = document.getElementById(selectedTouches[i]);
+    let i;
+    for (i=0; i < suffledList.length; ++i) {
+        const element = document.getElementById(suffledList[i]);
         if (element) {
-            element.classList.add("selectedTouch");
+            if (i < numberToSelect) {
+                element.classList.add("selectedTouch");
+            }
+            else {
+                element.parentNode.removeChild(element);
+            }
         }
     }
-
-    document.querySelectorAll(".touch:not(.selectedTouch)").forEach(t => {
-        t.parentNode.removeChild(t);
-    });
 };
 
 const selectTeams = (numberOfTeams) => {
@@ -154,7 +157,7 @@ const selectTeams = (numberOfTeams) => {
     if (numberOfTeams > playerList.length) {
         throw new RangeError("selectTeams: more elements taken than available");
     }
-    const randomisedTouches = getRandom(playerList, playerList.length);
+    const randomisedTouches = shuffleArray(playerList);
     const splitTeams = splitIntoTeams(randomisedTouches, numberOfTeams);
     for (let i=0; i < splitTeams.length; ++i) {
         const teamColour = getRandomColour();
@@ -170,7 +173,7 @@ const selectTeams = (numberOfTeams) => {
 
 const selectNumbers = () => {
     const playerList = [...touches].map(t => t.id);
-    const randomisedTouches = getRandom(playerList, playerList.length);
+    const randomisedTouches = shuffleArray(playerList);
     for (let i = 0; i < randomisedTouches.length; ++i) {
         const e = document.getElementById(randomisedTouches[i]);
         if (e) {
