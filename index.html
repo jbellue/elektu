@@ -135,20 +135,20 @@ const selectPlayers = (numberToSelect) => {
 };
 
 const selectTeams = (numberOfTeams) => {
-    const splitIntoTeams = (touches, numberOfTeams) => {
-        const touchCount = touches.length;
+    const splitIntoTeams = (randomisedTouches, numberOfTeams) => {
+        const touchCount = randomisedTouches.length;
         const teamArray = [];
         let i = 0;
         if (touchCount % numberOfTeams === 0) {
             const size = Math.floor(touchCount / numberOfTeams);
             while (i < touchCount) {
-                teamArray.push(touches.slice(i, i += size));
+                teamArray.push(randomisedTouches.slice(i, i += size));
             }
         }
         else {
             while (i < touchCount) {
                 const size = Math.ceil((touchCount - i) / numberOfTeams--);
-                teamArray.push(touches.slice(i, i += size));
+                teamArray.push(randomisedTouches.slice(i, i += size));
             }
         }
         return teamArray;
@@ -157,8 +157,7 @@ const selectTeams = (numberOfTeams) => {
     if (numberOfTeams > playerList.length) {
         throw new RangeError("selectTeams: more elements taken than available");
     }
-    const randomisedTouches = shuffleArray(playerList);
-    const splitTeams = splitIntoTeams(randomisedTouches, numberOfTeams);
+    const splitTeams = splitIntoTeams(shuffleArray(playerList), numberOfTeams);
     for (let i=0; i < splitTeams.length; ++i) {
         const teamColour = getRandomColour();
         for (let j=0; j < splitTeams[i].length; ++j) {
