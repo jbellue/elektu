@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
 </head>
 <body>
 <div id="menuContainer" class="transformBackIn">
@@ -23,6 +24,7 @@
 <div id="mainContainer"></div>
 
 <script type="text/javascript">
+FastClick.attach(document.body);
 let timerTrigger = -1;
 let resetAllTimeout = -1;
 let vibrate = false;
