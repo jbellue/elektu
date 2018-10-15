@@ -78,7 +78,7 @@ label {
 }
 #footerGrid {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: repeat(3, 1fr);
     justify-items: center;
     justify-content: space-around;
     align-items: center;
@@ -86,8 +86,23 @@ label {
     z-index: 999;
 }
 
-#toggle-fullscreen-container {
+#helpContainer {
+    display: none;
+    position: relative;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background: #39363a;
+    color: #9a929e;
+    padding: 10px;
+}
+#helpButton {
     grid-column: 2;
+}
+#toggle-fullscreen-container {
+    grid-column: 3;
 }
 #toggle-vibration-container {
     grid-column: 1;

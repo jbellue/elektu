@@ -17,13 +17,57 @@
     <div class="radio-group" id="radio-selectNumber">
         <input type="radio" id="number-1" name="number" checked="checked" value="1"><label for="number-1" id="label-number1">1</label><input type="radio" id="number-2" name="number" value="2"><label for="number-2">2</label><input type="radio" id="number-3" name="number" value="3"><label for="number-3">3</label><input type="radio" id="number-4" name="number" value="4"><label for="number-4">4</label><input type="radio" id="number-5" name="number" value="5"><label for="number-5">5</label>
     </div>
-
 </div>
 <div id="mainContainer"></div>
+<div id="helpContainer">
+    <ul>
+        <li>
+            <i id="option-select-icon" class="material-icons">how_to_reg</i>
+            <ol>
+                <li>Chose the number of people to be selected</li>
+                <li>Have everyone touch the screen</li>
+                <li>The selected people will be highlighted</li>
+            </ol>
+        </li>
+        <li>
+            <i id="option-select-icon" class="material-icons">group</i>
+            <ol>
+                <li>Chose a number of teams</li>
+                <li>Have everyone touch the screen</li>
+                <li>People will be split into teams</li>
+            </ol>
+        </li>
+        <li>
+            <i id="option-select-icon" class="material-icons">signal_cellular_alt</i>
+            <ol>
+                <li>Have everyone touch the screen</li>
+                <li>People will be given a starting number</li>
+            </ol>
+        </li>
+    </ul>
+    <br>
+    <ul>
+        <li>
+            <i id="option-select-icon" class="material-icons">vibration</i>
+            Toggle the vibration
+        </li>
+        <li>
+            <i id="option-select-icon" class="material-icons">help</i>
+            Opens this message
+        </li>
+        <li>
+            <i id="option-select-icon" class="material-icons">fullscreen</i>
+            Toggles fullscreen
+        </li>
+    </ul>
+</div>
 <div id="footerContainer">
     <div id="footerGrid" class="transformBackIn">
         <div id="toggle-vibration-container">
                 <i id="toggle-vibration" class="material-icons md-inactive">vibration</i>
+        </div>
+        <div id="helpButton">
+            <i class="material-icons">help</i>
         </div>
         <div id="toggle-fullscreen-container">
             <i id="toggle-fullscreen" class="material-icons md-inactive">fullscreen</i>
@@ -113,6 +157,14 @@ document.getElementById("toggle-vibration").addEventListener("click", (e) => {
 document.getElementById("toggle-fullscreen").addEventListener("click", (e) => {
     e.target.classList.toggle("md-inactive");
     screenfull.toggle();
+});
+
+// showing the help
+document.getElementById("helpButton").addEventListener("click", e => {
+    document.getElementById("helpContainer").style.display = "block";    
+    document.addEventListener("click", e => {
+        document.getElementById("helpContainer").style.display = "none"; 
+    }, true); // fire and forget
 });
 
 screenfull.on('change', () => {

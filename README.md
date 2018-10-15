@@ -15,8 +15,9 @@ Note, you need at least the amount of people touching the monitor that you want 
 Have everyone touch the monitor. The touches will be randomly given a number.
 
 ## TODO
-* [ ] Make things prettier
+* [X] ~~*Make things prettier*~~
 * [ ] Fix a weird bug where touches don't get deleted and everything gets confused
+* [ ] Make the help message pretty
 * [X] ~~*Fix the end selection*~~
 * [X] ~~*Neaten the code a whole lot*~~
 * [X] ~~*Prevent scrolling on the menu...*~~
