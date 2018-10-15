@@ -7,14 +7,12 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.3.3/screenfull.min.js"></script>
 </head>
 <body>
 <div id="menuContainer" class="transformBackIn">
     <div class="radio-group" id="radio-selectGroup">
         <input type="radio" id="option-select" name="selector" checked="checked" value="select"><label for="option-select"><i id="option-select-icon" class="material-icons md-dark md-inactive">how_to_reg</i></label><input type="radio" id="option-group" name="selector" value="teams"><label for="option-group"><i id="option-group-icon" class="material-icons md-dark md-inactive">group</i></label><input type="radio" id="option-ordinate" name="selector" value="ordinate"><label for="option-ordinate"><i id="option-ordinate-icon"class="material-icons md-dark md-inactive">signal_cellular_alt</i></label>
-    </div>
-    <div id="toggle-vibration-container">
-            <i id="toggle-vibration" class="material-icons md-inactive">vibration</i>
     </div>
     <div class="radio-group" id="radio-selectNumber">
         <input type="radio" id="number-1" name="number" checked="checked" value="1"><label for="number-1" id="label-number1">1</label><input type="radio" id="number-2" name="number" value="2"><label for="number-2">2</label><input type="radio" id="number-3" name="number" value="3"><label for="number-3">3</label><input type="radio" id="number-4" name="number" value="4"><label for="number-4">4</label><input type="radio" id="number-5" name="number" value="5"><label for="number-5">5</label>
@@ -22,6 +20,16 @@
 
 </div>
 <div id="mainContainer"></div>
+<div id="footerContainer">
+    <div id="footerGrid" class="transformBackIn">
+        <div id="toggle-vibration-container">
+                <i id="toggle-vibration" class="material-icons md-inactive">vibration</i>
+        </div>
+        <div id="toggle-fullscreen-container">
+            <i id="toggle-fullscreen" class="material-icons md-inactive">fullscreen</i>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 FastClick.attach(document.body);
@@ -33,6 +41,7 @@ const defaultColours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a
 let colour = [];
 const mainContainer = document.getElementById("mainContainer");
 const menuContainer = document.getElementById("menuContainer");
+const footerContainer = document.getElementById("footerContainer");
 const labelNumber1 = document.getElementById("label-number1");
 const radioSelectNumber = document.getElementById("radio-selectNumber");
 const optionSelectIcon = document.getElementById("option-select-icon");
@@ -82,6 +91,10 @@ else { //option-ordinate
     showOrdinate();
 }
 
+if (screenfull.isFullScreen) {
+    document.getElementById("toggle-vibration").classList.remove("md-inactive");
+}
+
 // set the events on the radio buttons
 document.getElementById("option-select").addEventListener("change", () => showSelect());
 document.getElementById("option-group").addEventListener("change", () => showGroup());
@@ -94,6 +107,16 @@ document.getElementById("toggle-vibration").addEventListener("click", (e) => {
     if(vibrate) {
         window.navigator.vibrate(50);
     }
+});
+
+// toggling fullscreen
+document.getElementById("toggle-fullscreen").addEventListener("click", (e) => {
+    e.target.classList.toggle("md-inactive");
+    screenfull.toggle();
+});
+
+screenfull.on('change', () => {
+    document.getElementById("toggle-fullscreen").target.classList.toggle("md-inactive");
 });
 
 const getRandomColour = () => colour.splice(Math.floor(Math.random() * colour.length), 1)[0];
@@ -235,12 +258,16 @@ const triggerSelection = () => {
 };
 
 const hideMenu = () => {
-    menuContainer.classList.add("transformAway");
+    menuContainer.classList.add("transformUp");
     menuContainer.classList.remove("transformBackIn");
+    footerContainer.classList.add("transformDown");
+    footerContainer.classList.remove("transformBackIn");
 };
 const showMenu = () => {
-    menuContainer.classList.remove("transformAway");
+    menuContainer.classList.remove("transformUp");
     menuContainer.classList.add("transformBackIn");
+    footerContainer.classList.remove("transformDown");
+    footerContainer.classList.add("transformBackIn");
 };
 
 const handleNewTouch = ev => {

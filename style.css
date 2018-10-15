@@ -14,10 +14,15 @@ body {
     min-width: 100%;
 }
 
-.transformAway {
+.transformUp {
     transition-timing-function: ease-in;
     transition: 0.2s;
     transform: translateY(-200%);
+}
+.transformDown {
+    transition-timing-function: ease-in;
+    transition: 0.2s;
+    transform: translateY(200%);
 }
 .transformBackIn {
     transition-timing-function: ease-in;
@@ -52,21 +57,40 @@ label {
 #radio-selectGroup {
     grid-column: 1;
 }
-#toggle-vibration-container {
-    grid-column: 2;
-}
+
 #radio-selectNumber {
-    grid-column: 3;
+    grid-column: 2;
 }
 #menuContainer {
     display: grid;
-    grid-template-columns: 45% auto 45%;
+    grid-template-columns: 50% 50%;
     justify-items: center;
     justify-content: space-around;
     align-items: center;
     top: 10px;
     position:relative;
     z-index: 999;
+}
+#footerContainer {
+    bottom: 10px;
+    width: 100%;
+    position:fixed;
+}
+#footerGrid {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    justify-content: space-around;
+    align-items: center;
+    position:relative;
+    z-index: 999;
+}
+
+#toggle-fullscreen-container {
+    grid-column: 2;
+}
+#toggle-vibration-container {
+    grid-column: 1;
 }
 input[type=radio]:checked + label {
     color: #004966;
