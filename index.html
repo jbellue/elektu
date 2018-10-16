@@ -175,7 +175,7 @@ const hideHelp = () => {
     helpIcon.classList.add("md-inactive");
 };
 screenfull.on('change', () => {
-    document.getElementById("toggle-fullscreen").target.classList.toggle("md-inactive");
+    document.getElementById("toggle-fullscreen").classList.toggle("md-inactive");
 });
 
 const getRandomColour = () => colour.splice(Math.floor(Math.random() * colour.length), 1)[0];
