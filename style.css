@@ -99,14 +99,18 @@ dd {
     margin-top: -1.6rem;
     margin-bottom: 1rem;
 }
+#helpContainerWrapper {
+    top: 0;
+    min-height: 100%; 
+    min-width: 100%;
+    background: transparent;
+    display: none;
+    position: fixed;
+    z-index: 9999;
+}
 
 #helpContainer {
-    display: none;
-    position: relative;
-
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(0, 50%);
 
     background: #39363a;
     color: #9a929e;

@@ -19,55 +19,57 @@
     </div>
 </div>
 <div id="mainContainer"></div>
-<div id="helpContainer">
-    <dl>
-        <dt>
-            <i class="material-icons">how_to_reg</i>
-        </dt>
-        <dd>
-            <ol>
-                <li>Chose the number of people to be selected</li>
-                <li>Have everyone touch the screen</li>
-                <li>The selected people will be highlighted</li>
-            </ol>
-        </dd>
-        <dt>
-            <i class="material-icons">group</i></dt>
-        <dd>
-            <ol>
-                <li>Chose a number of teams</li>
-                <li>Have everyone touch the screen</li>
-                <li>People will be split into teams</li>
-            </ol>
-        </dd>
-        <dt>
-            <i class="material-icons">signal_cellular_alt</i></dt>
-        <dd>
-            <ol>
-                <li>Have everyone touch the screen</li>
-                <li>People will be given a starting number</li>
-            </ol>
-        </dd>
-        <br>
-        <dt>
-            <i class="material-icons">vibration</i>
-        </dt>
-        <dd>
-            Toggle the vibration
-        </dd>
-        <dt>
-            <i class="material-icons">help</i>
-        </dt>
-        <dd>
-            Open this message
-        </dd>
-        <dt>
-            <i class="material-icons">fullscreen</i>
-        </dt>
-        <dd>
-            Toggle fullscreen
-        </dd>
-    </dl>
+<div id="helpContainerWrapper">
+    <div id="helpContainer">
+        <dl>
+            <dt>
+                <i class="material-icons">how_to_reg</i>
+            </dt>
+            <dd>
+                <ol>
+                    <li>Chose the number of people to be selected</li>
+                    <li>Have everyone touch the screen</li>
+                    <li>The selected people will be highlighted</li>
+                </ol>
+            </dd>
+            <dt>
+                <i class="material-icons">group</i></dt>
+            <dd>
+                <ol>
+                    <li>Chose a number of teams</li>
+                    <li>Have everyone touch the screen</li>
+                    <li>People will be split into teams</li>
+                </ol>
+            </dd>
+            <dt>
+                <i class="material-icons">signal_cellular_alt</i></dt>
+            <dd>
+                <ol>
+                    <li>Have everyone touch the screen</li>
+                    <li>People will be given a starting number</li>
+                </ol>
+            </dd>
+            <br>
+            <dt>
+                <i class="material-icons">vibration</i>
+            </dt>
+            <dd>
+                Toggle the vibration
+            </dd>
+            <dt>
+                <i class="material-icons">help</i>
+            </dt>
+            <dd>
+                Open this message
+            </dd>
+            <dt>
+                <i class="material-icons">fullscreen</i>
+            </dt>
+            <dd>
+                Toggle fullscreen
+            </dd>
+        </dl>
+    </div>
 </div>
 <div id="footerContainer">
     <div id="footerGrid" class="transformBackIn">
@@ -86,7 +88,7 @@ const triggerTimeout = 2500;
 const defaultColours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'];
 let colour = [];
 const mainContainer = document.getElementById("mainContainer");
-const helpContainer = document.getElementById("helpContainer");
+const helpContainer = document.getElementById("helpContainerWrapper");
 const menuContainer = document.getElementById("menuContainer");
 const footerContainer = document.getElementById("footerContainer");
 const labelNumber1 = document.getElementById("label-number1");
@@ -166,10 +168,14 @@ document.getElementById("toggle-fullscreen").addEventListener("click", (e) => {
 
 // showing the help
 helpIcon.addEventListener("click", e => {
-    helpContainer.style.display = "inline-block"; 
-    helpIcon.classList.remove("md-inactive");   
-    document.addEventListener("click", hideHelp, true); // fire and forget
+        helpContainer.style.display = "block"; 
+        helpIcon.classList.remove("md-inactive");
 });
+
+helpContainer.addEventListener("click", e => {
+    hideHelp();
+});
+
 const hideHelp = () => {
     helpContainer.style.display = "none";
     helpIcon.classList.add("md-inactive");
@@ -317,7 +323,6 @@ const triggerSelection = () => {
 };
 
 const hideMenu = () => {
-    hideHelp();
     menuContainer.classList.add("transformUp");
     menuContainer.classList.remove("transformBackIn");
     footerContainer.classList.add("transformDown");
