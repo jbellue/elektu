@@ -17,7 +17,7 @@ Have everyone touch the monitor. The touches will be randomly given a number.
 ## TODO
 * [X] ~~*Make things prettier*~~
 * [ ] Fix a weird bug where touches don't get deleted and everything gets confused
-* [ ] Make the help message pretty
+* [X] ~~*Make the help message pretty*~~
 * [X] ~~*Fix the end selection*~~
 * [X] ~~*Neaten the code a whole lot*~~
 * [X] ~~*Prevent scrolling on the menu...*~~

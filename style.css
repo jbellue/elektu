@@ -72,9 +72,12 @@ label {
     z-index: 999;
 }
 #footerContainer {
-    bottom: 10px;
+    bottom: 0;
     width: 100%;
     position:fixed;
+}
+#footerContainer i {
+    margin: 10px 30px;
 }
 #footerGrid {
     display: grid;
@@ -84,6 +87,13 @@ label {
     align-items: center;
     position:relative;
     z-index: 999;
+}
+ol {
+    margin-left: -20px;
+}
+dd {
+    margin-top: -1.6rem;
+    margin-bottom: 1rem;
 }
 
 #helpContainer {
@@ -98,13 +108,13 @@ label {
     color: #9a929e;
     padding: 10px;
 }
-#helpButton {
+#toggle-help {
     grid-column: 2;
 }
-#toggle-fullscreen-container {
+#toggle-fullscreen {
     grid-column: 3;
 }
-#toggle-vibration-container {
+#toggle-vibration {
     grid-column: 1;
 }
 input[type=radio]:checked + label {

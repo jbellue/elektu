@@ -20,58 +20,60 @@
 </div>
 <div id="mainContainer"></div>
 <div id="helpContainer">
-    <ul>
-        <li>
-            <i id="option-select-icon" class="material-icons">how_to_reg</i>
+    <dl>
+        <dt>
+            <i class="material-icons">how_to_reg</i>
+        </dt>
+        <dd>
             <ol>
                 <li>Chose the number of people to be selected</li>
                 <li>Have everyone touch the screen</li>
                 <li>The selected people will be highlighted</li>
             </ol>
-        </li>
-        <li>
-            <i id="option-select-icon" class="material-icons">group</i>
+        </dd>
+        <dt>
+            <i class="material-icons">group</i></dt>
+        <dd>
             <ol>
                 <li>Chose a number of teams</li>
                 <li>Have everyone touch the screen</li>
                 <li>People will be split into teams</li>
             </ol>
-        </li>
-        <li>
-            <i id="option-select-icon" class="material-icons">signal_cellular_alt</i>
+        </dd>
+        <dt>
+            <i class="material-icons">signal_cellular_alt</i></dt>
+        <dd>
             <ol>
                 <li>Have everyone touch the screen</li>
                 <li>People will be given a starting number</li>
             </ol>
-        </li>
-    </ul>
-    <br>
-    <ul>
-        <li>
-            <i id="option-select-icon" class="material-icons">vibration</i>
+        </dd>
+        <br>
+        <dt>
+            <i class="material-icons">vibration</i>
+        </dt>
+        <dd>
             Toggle the vibration
-        </li>
-        <li>
-            <i id="option-select-icon" class="material-icons">help</i>
-            Opens this message
-        </li>
-        <li>
-            <i id="option-select-icon" class="material-icons">fullscreen</i>
+        </dd>
+        <dt>
+            <i class="material-icons">help</i>
+        </dt>
+        <dd>
+            Open this message
+        </dd>
+        <dt>
+            <i class="material-icons">fullscreen</i>
+        </dt>
+        <dd>
             Toggles fullscreen
-        </li>
-    </ul>
+        </dd>
+    </dl>
 </div>
 <div id="footerContainer">
     <div id="footerGrid" class="transformBackIn">
-        <div id="toggle-vibration-container">
-                <i id="toggle-vibration" class="material-icons md-inactive">vibration</i>
-        </div>
-        <div id="helpButton">
-            <i class="material-icons">help</i>
-        </div>
-        <div id="toggle-fullscreen-container">
-            <i id="toggle-fullscreen" class="material-icons md-inactive">fullscreen</i>
-        </div>
+        <i id="toggle-vibration" class="material-icons md-inactive">vibration</i>
+        <i id="toggle-help" class="material-icons md-inactive">help</i>
+        <i id="toggle-fullscreen" class="material-icons md-inactive">fullscreen</i>
     </div>
 </div>
 
@@ -84,12 +86,15 @@ const triggerTimeout = 2500;
 const defaultColours = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'];
 let colour = [];
 const mainContainer = document.getElementById("mainContainer");
+const helpContainer = document.getElementById("helpContainer");
 const menuContainer = document.getElementById("menuContainer");
 const footerContainer = document.getElementById("footerContainer");
 const labelNumber1 = document.getElementById("label-number1");
 const radioSelectNumber = document.getElementById("radio-selectNumber");
+const optionSelect = document.getElementById("option-select");
 const optionSelectIcon = document.getElementById("option-select-icon");
 const optionGroupIcon = document.getElementById("option-group-icon");
+const helpIcon = document.getElementById("toggle-help")
 const optionOrdinateIcon = document.getElementById("option-ordinate-icon");
 const touches = document.getElementsByClassName("touch");
 
@@ -125,7 +130,7 @@ const showOrdinate = () => {
     optionOrdinateIcon.classList.remove("md-inactive");
 };
 // Properly initialise the radio buttons
-if (document.getElementById("option-select").checked) {
+if (optionSelect.checked) {
     showSelect();
 }
 else if (document.getElementById("option-group").checked) {
@@ -140,7 +145,7 @@ if (screenfull.isFullScreen) {
 }
 
 // set the events on the radio buttons
-document.getElementById("option-select").addEventListener("change", () => showSelect());
+optionSelect.addEventListener("change", () => showSelect());
 document.getElementById("option-group").addEventListener("change", () => showGroup());
 document.getElementById("option-ordinate").addEventListener("change", () => showOrdinate());
 
@@ -160,13 +165,15 @@ document.getElementById("toggle-fullscreen").addEventListener("click", (e) => {
 });
 
 // showing the help
-document.getElementById("helpButton").addEventListener("click", e => {
-    document.getElementById("helpContainer").style.display = "block";    
-    document.addEventListener("click", e => {
-        document.getElementById("helpContainer").style.display = "none"; 
-    }, true); // fire and forget
+helpIcon.addEventListener("click", e => {
+    helpContainer.style.display = "inline-block"; 
+    helpIcon.classList.remove("md-inactive");   
+    document.addEventListener("click", hideHelp, true); // fire and forget
 });
-
+const hideHelp = () => {
+    helpContainer.style.display = "none";
+    helpIcon.classList.add("md-inactive");
+};
 screenfull.on('change', () => {
     document.getElementById("toggle-fullscreen").target.classList.toggle("md-inactive");
 });
@@ -310,6 +317,7 @@ const triggerSelection = () => {
 };
 
 const hideMenu = () => {
+    hideHelp();
     menuContainer.classList.add("transformUp");
     menuContainer.classList.remove("transformBackIn");
     footerContainer.classList.add("transformDown");
