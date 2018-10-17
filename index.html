@@ -217,6 +217,7 @@ const selectPlayers = (numberToSelect) => {
         if (element) {
             if (i < numberToSelect) {
                 element.classList.add("selectedTouch");
+                element.classList.remove("spinner");
             }
             else {
                 element.parentNode.removeChild(element);
@@ -256,6 +257,7 @@ const selectTeams = (numberOfTeams) => {
             if (e) {
                 e.style.background = teamColour;
                 e.classList.add("selectedTouch");
+                e.classList.remove("spinner");
             }
         }
     }
@@ -268,6 +270,7 @@ const selectNumbers = () => {
         const e = document.getElementById(randomisedTouches[i]);
         if (e) {
             e.classList.add("selectedTouch");
+            e.classList.remove("spinner");
             const s = e.getElementsByTagName("span")[0];
             if (s) {
                 s.textContent = i + 1;
@@ -342,7 +345,7 @@ const handleNewTouch = ev => {
     for (let i=0; i < changedTouches.length; ++i) {
         const newTouch = document.createElement("div");
         const span = document.createElement("span");
-        newTouch.classList.add("touch");
+        newTouch.classList.add("touch", "spinner");
         newTouch.id = `touch-${changedTouches[i].identifier}`;
         const touchColour = getFeatureType() == featureTypes.teams ? getNoTeamColour() : getRandomColour();
         newTouch.style.background = touchColour;
