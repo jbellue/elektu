@@ -168,20 +168,23 @@ input[type=radio]:checked .material-icons {
 }
 
 .spinner {
+    position: absolute;
     box-sizing: border-box;
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
     border-radius: 100%;
     border: 10px solid rgba(255, 255, 255, 0.2);
     border-top-color: #FFF;
     animation: spin 1s infinite linear;
+    top: -15px;
+    left: -15px;
 }
 
 @keyframes spin {
     0% { 
-        transform: translate(-50%, -50%) rotate(0deg); 
+        transform: rotate(0deg); 
     }
     100% { 
-        transform: translate(-50%, -50%) rotate(360deg); 
+        transform: rotate(360deg); 
     } 
 } 

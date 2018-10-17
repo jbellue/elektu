@@ -217,7 +217,7 @@ const selectPlayers = (numberToSelect) => {
         if (element) {
             if (i < numberToSelect) {
                 element.classList.add("selectedTouch");
-                element.classList.remove("spinner");
+                element.removeChild(element.firstChild)
             }
             else {
                 element.parentNode.removeChild(element);
@@ -257,7 +257,7 @@ const selectTeams = (numberOfTeams) => {
             if (e) {
                 e.style.background = teamColour;
                 e.classList.add("selectedTouch");
-                e.classList.remove("spinner");
+                e.removeChild(e.firstChild)
             }
         }
     }
@@ -270,7 +270,7 @@ const selectNumbers = () => {
         const e = document.getElementById(randomisedTouches[i]);
         if (e) {
             e.classList.add("selectedTouch");
-            e.classList.remove("spinner");
+            e.removeChild(e.firstChild)
             const s = e.getElementsByTagName("span")[0];
             if (s) {
                 s.textContent = i + 1;
@@ -345,13 +345,17 @@ const handleNewTouch = ev => {
     for (let i=0; i < changedTouches.length; ++i) {
         const newTouch = document.createElement("div");
         const span = document.createElement("span");
-        newTouch.classList.add("touch", "spinner");
+        const spinner = document.createElement("div");
+        spinner.classList.add("spinner");
+        newTouch.classList.add("touch");
         newTouch.id = `touch-${changedTouches[i].identifier}`;
         const touchColour = getFeatureType() == featureTypes.teams ? getNoTeamColour() : getRandomColour();
+        spinner.style.borderTopColor = touchColour;
         newTouch.style.background = touchColour;
         newTouch.style.color = touchColour;
         newTouch.style.top = `${changedTouches[i].pageY}px`;
         newTouch.style.left = `${changedTouches[i].pageX}px`;
+        newTouch.appendChild(spinner);
         newTouch.appendChild(span);
         mainContainer.appendChild(newTouch);
     }
