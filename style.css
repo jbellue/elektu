@@ -103,6 +103,7 @@ dd {
 }
 #helpContainerWrapper {
     top: 0;
+    height: 100%;
     min-height: 100%; 
     min-width: 100%;
     background: transparent;
@@ -112,7 +113,9 @@ dd {
 }
 
 #helpContainer {
-    transform: translate(0, 50%);
+    top: 50%;
+    position: relative;
+    transform: translateY(-50%);
 
     background: #39363a;
     color: #9a929e;
