@@ -209,11 +209,11 @@ const shuffleArray = array => {
 
 const selectPlayers = (numberToSelect) => {
     const playerList = [...touches].map(t => t.id);
-    const suffledList = shuffleArray(playerList);
+    const shuffledList = shuffleArray(playerList);
 
     let i;
-    for (i=0; i < suffledList.length; ++i) {
-        const element = document.getElementById(suffledList[i]);
+    for (i=0; i < shuffledList.length; ++i) {
+        const element = document.getElementById(shuffledList[i]);
         if (element) {
             if (i < numberToSelect) {
                 element.classList.add("selectedTouch");
