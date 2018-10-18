@@ -18,7 +18,7 @@ const start = () => {
     const optionGroupIcon = document.getElementById("option-group-icon");
     const helpIcon = document.getElementById("toggle-help");
     const optionOrdinateIcon = document.getElementById("option-ordinate-icon");
-    const touches = document.getElementsByClassName("touch");
+    const touches = document.getElementsByClassName("touchWrapper");
     
     const showSelect = () => {
         labelNumber1.style.display = "";
@@ -135,8 +135,14 @@ const start = () => {
             const element = document.getElementById(shuffledList[i]);
             if (element) {
                 if (i < numberToSelect) {
-                    const spinner = element.getElementsByTagName("div")[0];
+                    const spinner = element.getElementsByTagName("div")[1];
                     spinner.style.borderColor = spinner.style.borderTopColor;
+                    if (numberToSelect == 1) {
+                        document.body.style.background = spinner.style.borderTopColor;
+                        const eyeCandy = document.createElement("div");
+                        element.insertBefore(eyeCandy, element.firstChild);
+                        eyeCandy.classList.add("shrinkToSize");
+                    }
                 }
                 else {
                     element.parentNode.removeChild(element);
@@ -174,8 +180,8 @@ const start = () => {
             for (let j=0; j < splitTeams[i].length; ++j) {
                 const e = document.getElementById(splitTeams[i][j]);
                 if (e) {
-                    e.style.background = teamColour;
-                    const spinner = e.getElementsByTagName("div")[0];
+                    e.firstChild.style.background = teamColour;
+                    const spinner = e.getElementsByTagName("div")[1];
                     spinner.style.borderColor = teamColour;
                 }
             }
@@ -188,7 +194,7 @@ const start = () => {
         for (let i = 0; i < randomisedTouches.length; ++i) {
             const e = document.getElementById(randomisedTouches[i]);
             if (e) {
-                const spinner = e.getElementsByTagName("div")[0];
+                const spinner = e.getElementsByTagName("div")[1];
                 spinner.style.borderColor = spinner.style.borderTopColor;
                 const s = e.getElementsByTagName("span")[0];
                 if (s) {
@@ -200,6 +206,7 @@ const start = () => {
     
     const resetAll = () => {
         colour = defaultColours.slice();
+        document.body.style.background = "#332f35";
         showMenu();
         [...touches].forEach(t => {
             t.parentNode.removeChild(t);
@@ -263,17 +270,20 @@ const start = () => {
         const changedTouches = ev.changedTouches;
         for (let i=0; i < changedTouches.length; ++i) {
             const newTouch = document.createElement("div");
+            const circle = document.createElement("div");
             const span = document.createElement("span");
             const spinner = document.createElement("div");
             spinner.classList.add("spinner");
-            newTouch.classList.add("touch");
+            circle.classList.add("touch");
             newTouch.id = `touch-${changedTouches[i].identifier}`;
+            newTouch.classList.add("touchWrapper");
             const touchColour = getFeatureType() == featureTypes.teams ? getNoTeamColour() : getRandomColour();
             spinner.style.borderTopColor = touchColour;
-            newTouch.style.background = touchColour;
+            circle.style.background = touchColour;
             newTouch.style.color = touchColour;
             newTouch.style.top = `${changedTouches[i].pageY}px`;
             newTouch.style.left = `${changedTouches[i].pageX}px`;
+            newTouch.appendChild(circle);
             newTouch.appendChild(spinner);
             newTouch.appendChild(span);
             mainContainer.appendChild(newTouch);
@@ -344,14 +354,14 @@ const start = () => {
                     case "touchend":
                         if (!finish) {
                             if (getFeatureType() != featureTypes.teams) {
-                                colour.push(element.style.backgroundColor);
+                                colour.push(element.firstChild.style.backgroundColor);
                             }
                             element.parentNode.removeChild(element);
                             resetTimerTrigger();
                         }
                         else {
                             element.classList.add("locked");
-                            if (document.querySelectorAll(".touch:not(.locked)").length == 0) {
+                            if (document.querySelectorAll(".touchWrapper:not(.locked)").length == 0) {
                                 resetAllTimeout = setTimeout(resetAll, displayTimeout);
                             }
                         }

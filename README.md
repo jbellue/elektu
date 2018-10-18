@@ -43,6 +43,7 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 ## TODO
 
 * [ ] Figure out a better name...
+* [X] ~~*Add a better animation when selecting only one touch*~~
 * [X] ~~*Make the help message not so ugly on landscape*~~
 * [X] ~~*Allow removing the help menu by clicking on the help icon*~~
 * [X] ~~*Make things prettier*~~

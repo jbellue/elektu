@@ -152,14 +152,11 @@ input[type=radio]:checked .material-icons {
     height: 80px;
     width: 80px;
     border-radius: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    text-align: center;
+    z-index: 1;
 }
-.touch span {
-    display: inline-block;
-    position: relative;
+.touchWrapper span {
+    font-size: 3rem;
+    position: absolute;
     top: -65px;
 }
 
@@ -184,4 +181,28 @@ input[type=radio]:checked .material-icons {
     100% {
         transform: scale(0.95) rotate(360deg);
     }
+}
+
+.touchWrapper {
+    position: absolute;
+
+    display: flex;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+}
+.shrinkToSize {
+    position: absolute;
+    border-radius: 50%;
+    background: #332f35;
+    animation: shrinkToSize 0.5s;
+    width: 130px;
+    height: 130px;
+    top: -25px;
+    left: -25px;
+}
+
+@keyframes shrinkToSize {
+    from {
+        transform: scale(20)
+    };
 }
