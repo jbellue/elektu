@@ -1,7 +1,7 @@
-# SELECTER [name to be updated sonner or later]
+# SELECTER [name to be updated sooner or later]
 A small page to help select people from a group.
 
-Open source, no-app-needed clone of [the excellent app chwazi](https://play.google.com/store/apps/details?id=com.tendadigital.chwaziApp&hl=en)
+Open source, no-app-needed clone of [the excellent app Chwazi](https://play.google.com/store/apps/details?id=com.tendadigital.chwaziApp&hl=en)
 ## If the app's so good, why a clone?
 * I was bored
 * No need to install anything, that's better, probably?
@@ -9,7 +9,7 @@ Open source, no-app-needed clone of [the excellent app chwazi](https://play.goog
 * why not?
 ---
 ## Features:
-* ![select](_assets/select.png)***Select between 1 and 5 people***
+* ![select](_assets/select.png) ***Select between 1 and 5 people***
 
    You obviously need more people touching the screen than the number in the menu!
     1. Chose the number of people to be selected in the top right menu
@@ -17,7 +17,7 @@ Open source, no-app-needed clone of [the excellent app chwazi](https://play.goog
     3. The number of people selected in the menu will be selected from the group.
 
 
-* ![group](_assets/group.png)***Split people between teams***
+* ![group](_assets/group.png) ***Split people between teams***
    
    You need at least the amount of people touching the screen that you want teams...
     1. Chose the number of teams you want
@@ -25,7 +25,7 @@ Open source, no-app-needed clone of [the excellent app chwazi](https://play.goog
     3. People touching the monitor will be split between teams
 
 
-* ![ordinate](_assets/ordinate.png)***Randomise the order of people***
+* ![ordinate](_assets/ordinate.png) ***Randomise the order of people***
     1. Have everyone touch the monitor
     2. Everyone will be randomly given a number.
 
