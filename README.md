@@ -1,7 +1,7 @@
 
-# SELECTER [name to be updated sooner or later]
+# ***Chose!***
 
-A small page to help select people from a group.
+[A small page to help select people from a group](https://jbellue.github.io/chose/)
 
 Open source, no-app-needed clone of [the excellent app Chwazi](https://play.google.com/store/apps/details?id=com.tendadigital.chwaziApp&hl=en)
 
@@ -9,7 +9,8 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 
 * I was bored
 * No need to install anything, that's better, probably?
-* 0% tracking (I'm not implying chwazi does anything naughty. But here I can guarantee nothing evil goes on)
+* 0% tracking (I'm not implying chwazi does anything naughty. But here I know nothing evil goes on)
+* I wanted the possibility to give a random number to each person
 * why not?
 
 ---
@@ -42,12 +43,12 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 
 ## TODO
 
-* [ ] Figure out a better name...
+* [ ] Fix a weird bug where touches don't get deleted and everything gets confused
+* [X] ~~*Figure out a better name...*~~
 * [X] ~~*Add a better animation when selecting only one touch*~~
 * [X] ~~*Make the help message not so ugly on landscape*~~
 * [X] ~~*Allow removing the help menu by clicking on the help icon*~~
 * [X] ~~*Make things prettier*~~
-* [ ] Fix a weird bug where touches don't get deleted and everything gets confused
 * [X] ~~*Make the help message pretty*~~
 * [X] ~~*Fix the end selection*~~
 * [X] ~~*Neaten the code a whole lot*~~
