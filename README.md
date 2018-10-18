@@ -1,19 +1,38 @@
-# SELECTER
-a small page to help select people from a group
-## Features
-### Select between 1 and 5 people
-Have everyone touch the monitor. The number of people selected in the menu will be selected from the group.
+# SELECTER [name to be updated sonner or later]
+A small page to help select people from a group.
 
-You need more people touching the monitor than the number in the menu!
+Open source, no-app-needed clone of [the excellent app chwazi](https://play.google.com/store/apps/details?id=com.tendadigital.chwaziApp&hl=en)
+## If the app's so good, why a clone?
+* I was bored
+* No need to install anything, that's better, probably?
+* 0% tracking (I'm not implying chwazi does anything naughty. But here I can guarantee nothing evil goes on)
+* why not?
+---
+## Features:
+* ![select](_assets/select.png)***Select between 1 and 5 people***
 
-### Split people between teams
-Have everyone touch the monitor. The number of teams selected in the menu will be selected.
+   You obviously need more people touching the screen than the number in the menu!
+    1. Chose the number of people to be selected in the top right menu
+    2. Have everyone touch the screen.
+    3. The number of people selected in the menu will be selected from the group.
 
-Note, you need at least the amount of people touching the monitor that you want teams...
 
-### Randomise the order of people
-Have everyone touch the monitor. The touches will be randomly given a number.
+* ![group](_assets/group.png)***Split people between teams***
+   
+   You need at least the amount of people touching the screen that you want teams...
+    1. Chose the number of teams you want
+    2. Have everyone touch the screen
+    3. People touching the monitor will be split between teams
 
+
+* ![ordinate](_assets/ordinate.png)***Randomise the order of people***
+    1. Have everyone touch the monitor
+    2. Everyone will be randomly given a number.
+
+## What are these icons at the bottom?
+* ![vibration](_assets/vibration.png) Toggle vibration on and off
+* ![help](_assets/help.png) Show a help message (click anywhere to remove)
+* ![fullscreen](_assets/fullscreen.png) Toggle fullscreen
 ## TODO
 * [ ] Figure out a better name...
 * [X] ~~*Make the help message not so ugly on landscape*~~
