@@ -43,9 +43,9 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 
 ## TODO
 
-* [ ] Add a favicon
 * [ ] Get better colours
 * [ ] Fix a weird bug where touches don't get deleted and everything gets confused
+* [X] ~~*Add a favicon (the pain...)*~~
 * [X] ~~*Figure out a better name...*~~
 * [X] ~~*Add a better animation when selecting only one touch*~~
 * [X] ~~*Make the help message not so ugly on landscape*~~
