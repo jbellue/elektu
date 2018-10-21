@@ -189,7 +189,17 @@ input[type=radio]:checked .material-icons {
     display: flex;
     justify-content: center;
     transform: translate(-50%, -50%);
+    animation: shrinkToAppear 0.1s;
 }
+@keyframes shrinkToAppear {
+    from {
+        transform: translate(-50%, -50%) scale(0)
+    };
+    to {
+        transform: translate(-50%, -50%) scale(1)
+    };
+}
+
 .shrinkToSize {
     position: absolute;
     border-radius: 50%;

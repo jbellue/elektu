@@ -276,7 +276,6 @@ const start = () => {
             spinner.classList.add("spinner");
             circle.classList.add("touch");
             newTouch.id = `touch-${changedTouches[i].identifier}`;
-            newTouch.classList.add("touchWrapper");
             const touchColour = getFeatureType() == featureTypes.teams ? getNoTeamColour() : getRandomColour();
             spinner.style.borderTopColor = touchColour;
             circle.style.background = touchColour;
@@ -287,6 +286,7 @@ const start = () => {
             newTouch.appendChild(spinner);
             newTouch.appendChild(span);
             mainContainer.appendChild(newTouch);
+            newTouch.classList.add("touchWrapper");
         }
         resetTimerTrigger();
     };
