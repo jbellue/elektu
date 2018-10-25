@@ -268,6 +268,7 @@ const start = () => {
     const handleNewTouch = ev => {
         hideMenu();
         const changedTouches = ev.changedTouches;
+        let fragment = document.createDocumentFragment();
         for (let i=0; i < changedTouches.length; ++i) {
             const newTouch = document.createElement("div");
             const circle = document.createElement("div");
@@ -285,9 +286,10 @@ const start = () => {
             newTouch.appendChild(circle);
             newTouch.appendChild(spinner);
             newTouch.appendChild(span);
-            mainContainer.appendChild(newTouch);
+            fragment.appendChild(newTouch);
             newTouch.classList.add("touchWrapper");
         }
+        mainContainer.appendChild(fragment);
         resetTimerTrigger();
     };
     
