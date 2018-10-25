@@ -325,7 +325,15 @@ const start = () => {
     };
     
     const handleTouchMove = ev => {
-        eventHandler(ev);
+        ev.preventDefault();
+        const changedTouches = ev.changedTouches;
+        for (let i=0; i < changedTouches.length; ++i) {
+            const element = document.getElementById(`touch-${changedTouches[i].identifier}`);
+            if (element && !element.classList.contains("locked")) {
+                element.style.top = `${changedTouches[i].pageY}px`;
+                element.style.left = `${changedTouches[i].pageX}px`;
+            }
+        }
     };
     
     const ignoreEvent = ev => {
@@ -333,52 +341,42 @@ const start = () => {
     };
     
     const handleTouchEnd = ev => {
-        eventHandler(ev);
-    };
-    
-    const handleFinishTouchEnd = ev => {
-        eventHandler(ev, true);
-    };
-    
-    const eventHandler = (ev, finish = false) => {
         ev.preventDefault();
         const changedTouches = ev.changedTouches;
         for (let i=0; i < changedTouches.length; ++i) {
             const element = document.getElementById(`touch-${changedTouches[i].identifier}`);
             if (element) {
-                switch (ev.type) {
-                    case "touchmove":
-                        if (!element.classList.contains("locked")) {
-                            element.style.top = `${changedTouches[i].pageY}px`;
-                            element.style.left = `${changedTouches[i].pageX}px`;
-                        }
-                        break;
-                    case "touchend":
-                        if (!finish) {
-                            if (getFeatureType() != featureTypes.teams) {
-                                colour.push(element.firstChild.style.backgroundColor);
-                            }
-                            element.parentNode.removeChild(element);
-                            resetTimerTrigger();
-                        }
-                        else {
-                            element.classList.add("locked");
-                            if (document.querySelectorAll(".touchWrapper:not(.locked)").length == 0) {
-                                resetAllTimeout = setTimeout(resetAll, displayTimeout);
-                            }
-                        }
-                        break;
-                    default:
-                        throw new Error("Unrecognised event type.");
+                if (getFeatureType() != featureTypes.teams) {
+                    colour.push(element.firstChild.style.backgroundColor);
                 }
+                element.parentNode.removeChild(element);
+                resetTimerTrigger();
             }
         }
     
-        if (ev.type == "touchend" && touches.length == 0) {
+        if (touches.length == 0) {
             showMenu();
         }
     };
-    
+
+    const handleFinishTouchEnd = ev => {
+        ev.preventDefault();
+        const changedTouches = ev.changedTouches;
+        for (let i=0; i < changedTouches.length; ++i) {
+            const element = document.getElementById(`touch-${changedTouches[i].identifier}`);
+            if (element) {
+                element.classList.add("locked");
+                if (document.querySelectorAll(".touchWrapper:not(.locked)").length == 0) {
+                    resetAllTimeout = setTimeout(resetAll, displayTimeout);
+                }
+            }
+        }
+
+        if (touches.length == 0) {
+            showMenu();
+        }
+    };
+
     resetAll();
 };
 
