@@ -43,16 +43,11 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 
 ## TODO
 
-* [ ] Get better colours
-* [ ] Fix a weird bug where touches don't get deleted and everything gets confused
-* [X] ~~*Add a favicon (the pain...)*~~
-* [X] ~~*Figure out a better name...*~~
-* [X] ~~*Add a better animation when selecting only one touch*~~
-* [X] ~~*Make the help message not so ugly on landscape*~~
-* [X] ~~*Allow removing the help menu by clicking on the help icon*~~
-* [X] ~~*Make things prettier*~~
-* [X] ~~*Make the help message pretty*~~
-* [X] ~~*Fix the end selection*~~
-* [X] ~~*Neaten the code a whole lot*~~
-* [X] ~~*Prevent scrolling on the menu...*~~
-* [X] ~~*Hide the menu on first touch, reappear on last exit*~~
+* [ ] Have a fixed colour for team selection
+* [ ] Get menu icons
+* [ ] Get menu properly working
+* [ ] Hide vibration thingie on iOS, stupid thing
+* [ ] Have cool animations:
+  * [ ] rotating, when wainting
+  * [ ] cool selection when there's only one to select
+* [ ] probably a lot more to get to feature parity...

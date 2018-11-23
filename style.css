@@ -1,5 +1,6 @@
 html, body {
     height: 100%;
+    width: 100%;
     margin: 0;
 }
 
@@ -12,12 +13,10 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
-
-#mainContainer {
+canvas {
     top: 0;
-    position: absolute;
-    min-height: 100%;
-    min-width: 100%;
+    left: 0;
+    display: block;
 }
 
 .transformUp {
@@ -74,7 +73,7 @@ label {
     justify-content: space-around;
     align-items: center;
     top: 10px;
-    position:relative;
+    position:fixed;
     z-index: 999;
 }
 #footerContainer {
@@ -147,7 +146,7 @@ input[type=radio]:checked .material-icons {
     border-radius: 30px;
     overflow: hidden;
 }
-
+/* 
 .touch {
     height: 80px;
     width: 80px;
@@ -215,4 +214,4 @@ input[type=radio]:checked .material-icons {
     from {
         transform: scale(20)
     };
-}
+} */
