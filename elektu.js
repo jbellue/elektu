@@ -47,20 +47,14 @@ class Elektu {
     }
     update() {
         for (let i=0; i < this.touches.length; ++i) {
-            let touch = this.touches[i];
-            if (touch.isBeingDeleted) {
-                touch.radius -= 5;
-                if (touch.radius <= 0) {
-                    if (this.feature != 'teams') {
-                        this.colours.add(touch.colour);
-                    }
-                    this.touches.splice(i, 1);
+            this.touches[i].update();
+        }
+        for (let i=0; i < this.touches.length; ++i) {
+            if (this.touches[i].isObsolete) {
+                if (this.feature != 'teams') {
+                    this.colours.add(this.touches[i].colour);
                 }
-            }
-            else {
-                if (touch.radius < 40) {
-                    touch.radius += 5;
-                }
+                this.touches.splice(i, 1);
             }
         }
     }
@@ -231,7 +225,7 @@ class Elektu {
         // }
 
         this.setSelectionDoneHandlers();
-}
+    }
 
     ignoreEvent(ev) {
         ev.preventDefault();
@@ -274,20 +268,56 @@ class PlayerTouch {
         this.id = id;
         this.colour = colour;
         this.isBeingDeleted = false;
+        this.isBeingCreated = true;
+        this.isObsolete = false;
         this.isLocked = false;
         this.number = -1;
+        this.startAngle = 0;
+        this.endAngle = 0;
     }
     moveTo(x, y) {
         if (this.isLocked) return;
         this.x = x;
         this.y = y;        
     }
+    update() {
+        if (this.isBeingCreated) {
+            this.radius += 5;
+            if (this.radius >= 40) {
+                this.isBeingCreated = false;
+            }
+        }
+        else if (this.isBeingDeleted) {
+            this.radius -= 5;
+            if (this.radius <= 0) {
+                this.radius = 0;
+                this.isObsolete = true;
+            }
+        }
+        else {
+            if (this.endAngle - this.startAngle <= 2*Math.PI) {
+                this.startAngle += 0.08;
+                this.endAngle += 0.24;
+            }
+        }
+    }
     draw() {
         this.ctx.fillStyle = this.colour;
+        this.ctx.strokeStyle = this.colour;
         this.ctx.beginPath();
 
-        this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        try{
+            this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        }
+        catch(e) {
+            console.log(e, this.x, this.y, this.radius, 0, 2 * Math.PI)
+        }
         this.ctx.fill();
+
+        this.ctx.beginPath();
+        this.ctx.arc(this.x, this.y, this.radius + 12, this.startAngle, this.endAngle);
+        this.ctx.lineWidth = 10;
+        this.ctx.stroke();
 
         if (this.number != -1) {
 
