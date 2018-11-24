@@ -308,11 +308,13 @@ class PlayerTouch {
 
         this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         this.ctx.fill();
+        this.ctx.closePath();
 
         this.ctx.beginPath();
         this.ctx.arc(this.x, this.y, this.radius + 12, this.startAngle, this.endAngle);
         this.ctx.lineWidth = 10;
         this.ctx.stroke();
+        this.ctx.closePath();
 
         if (this.number != -1) {
 
