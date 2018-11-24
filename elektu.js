@@ -306,12 +306,7 @@ class PlayerTouch {
         this.ctx.strokeStyle = this.colour;
         this.ctx.beginPath();
 
-        try{
-            this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        }
-        catch(e) {
-            console.log(e, this.x, this.y, this.radius, 0, 2 * Math.PI)
-        }
+        this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         this.ctx.fill();
 
         this.ctx.beginPath();
