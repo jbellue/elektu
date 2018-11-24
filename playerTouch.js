@@ -9,9 +9,11 @@ class Elektu {
         this.finishTouchEnd = this.handleFinishTouchEnd.bind(this);
         this.touchEnd = this.handleTouchEnd.bind(this);
         this.newTouch = this.handleNewTouch.bind(this);
+        this.feature = 'select';
     }
     add(x, y, id) {
-        this.touches.push(new PlayerTouch(this.ctx, x, y, id, this.colours.getRandomColour()));
+        let colour = this.feature == 'teams' ? this.colours.getNoTeamColour():this.colours.getRandomColour();
+        this.touches.push(new PlayerTouch(this.ctx, x, y, id, colour));
     }
     remove(id) {
         let touch = this.getTouch(id);
@@ -21,6 +23,12 @@ class Elektu {
     }
     touchesLength() {
         return this.touches.length;
+    }
+    setFeature(feature) {
+        this.feature = feature;
+    }
+    getFeature() {
+        return this.feature;
     }
     areAllTouchesLocked() {
         for (let i=0; i < this.touches.length; ++i) {
@@ -36,7 +44,9 @@ class Elektu {
             if (touch.isBeingDeleted) {
                 touch.radius -= 5;
                 if (touch.radius <= 0) {
-                    this.colours.add(touch.colour);
+                    if (this.feature != 'teams') {
+                        this.colours.add(touch.colour);
+                    }
                     this.touches.splice(i, 1);
                 }
             }
@@ -257,6 +267,9 @@ class Colours {
     }
     reset() {
         this.colour = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'];
+    }
+    getNoTeamColour() {
+        return '#C0C0C0'; // you go Glenn
     }
     getRandomColour() {
         return this.colour.splice(Math.floor(Math.random() * this.colour.length), 1)[0];

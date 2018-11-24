@@ -139,33 +139,14 @@ const canvas = document.getElementById("canvas");
 const elektu = new Elektu(canvas);
 
 const triggerTimeout = 2500;
-       
-const featureTypes = Object.freeze({
-    select: 1,
-    teams: 2,
-    ordinate: 3
-});
-
-const getFeatureType = () => {
-    switch (document.querySelector('input[name="selector"]:checked').value) {
-        case 'select':
-            return featureTypes.select;
-        case 'teams':
-            return featureTypes.teams;
-        case 'ordinate':
-            return featureTypes.ordinate;
-        default:
-            throw new Error("Unrecognised feature type.");
-    }
-};
 
 const resetTimerTrigger = () => {
-    const feature = getFeatureType();
+    const feature = elektu.getFeature();
     clearTimeout(elektu.timerTrigger);
     if (
-        (feature == featureTypes.select && elektu.touchesLength() > getRadioValue("number")) ||
-        (feature == featureTypes.teams && elektu.touchesLength() >= getRadioValue("number")) ||
-        feature == featureTypes.ordinate
+        (feature == 'select' && elektu.touchesLength() > getRadioValue("number")) ||
+        (feature == 'teams' && elektu.touchesLength() >= getRadioValue("number")) ||
+        feature == 'ordinate'
     ) {
         elektu.timerTrigger = setTimeout(triggerSelection, triggerTimeout);
     }
@@ -174,14 +155,14 @@ const resetTimerTrigger = () => {
 const triggerSelection = () => {
     clearTimeout(elektu.timerTrigger);
     const numbersSelected = getRadioValue("number");
-    switch (getFeatureType()) {
-        case featureTypes.select :
+    switch (elektu.getFeature()) {
+        case 'select' :
             elektu.selectPlayers(numbersSelected);
             break;
-        case featureTypes.teams :
+        case 'teams' :
             elektu.selectTeams(numbersSelected);
             break;
-        case featureTypes.ordinate :
+        case 'ordinate' :
             elektu.selectNumbers();
             break;
         default:
@@ -224,7 +205,9 @@ const showMenu = () => {
     footerContainer.classList.remove("transformDown");
     footerContainer.classList.add("transformBackIn");
 };
-
+const updateFeature = () => {
+    elektu.setFeature(document.querySelector('input[name="selector"]:checked').value);
+}
 const start = () => {
     // Properly initialise the radio buttons
     if (optionSelect.checked) {
@@ -240,6 +223,8 @@ const start = () => {
     optionSelect.addEventListener("change", () => showSelect());
     document.getElementById("option-group").addEventListener("change", () => showGroup());
     document.getElementById("option-ordinate").addEventListener("change", () => showOrdinate());
+    document.getElementById("radio-selectGroup").addEventListener("change", () => updateFeature());
+    updateFeature();
 
     window.addEventListener('resize', resizeCanvas, false);
 

@@ -43,9 +43,10 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 
 ## TODO
 
-* [ ] Have a fixed colour for team selection
-* [ ] Get menu icons
-* [ ] Get menu properly working
+* [X] ~~*Have a fixed colour for team selection*~~ [2018-11-24]
+* [X] ~~*Get menu icons*~~ [2018-11-24]
+* [X] ~~*Get menu properly working*~~ [2018-11-24]
+* [ ] Fix fullscreening
 * [ ] Hide vibration thingie on iOS, stupid thing
 * [ ] Have cool animations:
   * [ ] rotating, when wainting
