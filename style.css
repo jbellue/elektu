@@ -41,22 +41,33 @@ input[type=radio] {
     display: none;
 }
 
-.material-icons {
-    color: #7FDBFF;
-}
-.material-icons.md-inactive,
-.material-icons.md-dark.md-inactive {
-    color: #9a929e;
-}
-.material-icons.md-dark {
-    color: #004966;
-}
 label {
     color: #9a929e;
     display: inline-block;
     cursor: pointer;
     font-weight: bold;
     padding: 0 10px;
+}
+
+input[type=radio]:checked + label {
+    color: #004966;
+    background: #7FDBFF;
+}
+
+#radio-selectNumber label {
+    padding: 4px 10px;
+}
+
+#radio-selectGroup label {
+    margin-bottom: -5px;
+    width: 24px;
+    height: 28px;
+}
+
+.radio-group {
+    border: solid 3px #675f6b;
+    border-radius: 30px;
+    overflow: hidden;
 }
 
 #radio-selectGroup {
@@ -74,8 +85,27 @@ label {
     align-items: center;
     top: 10px;
     position:fixed;
-    z-index: 999;
+    width: inherit;
 }
+#option-select + label{
+    background: url(./img/select-unchecked.svg) no-repeat center;
+}
+#option-select:checked + label{
+    background: #7FDBFF url(./img/select-checked.svg) no-repeat center;
+}
+#option-group + label{
+    background: url(./img/group-unchecked.svg) no-repeat center;
+}
+#option-group:checked + label{
+    background: #7FDBFF url(./img/group-checked.svg) no-repeat center;
+}
+#option-ordinate + label{
+    background: url(./img/ordinate-unchecked.svg) no-repeat center;
+}
+#option-ordinate:checked + label{
+    background: #7FDBFF url(./img/ordinate-checked.svg) no-repeat center;
+}
+
 #footerContainer {
     bottom: 0;
     width: 100%;
@@ -129,89 +159,3 @@ dd {
 #toggle-vibration {
     grid-column: 1;
 }
-input[type=radio]:checked + label {
-    color: #004966;
-    background: #7FDBFF;
-}
-input[type=radio]:checked .material-icons {
-    color: #004966;
-}
-
-#radio-selectNumber label {
-    padding: 4px 10px;
-}
-
-.radio-group {
-    border: solid 3px #675f6b;
-    border-radius: 30px;
-    overflow: hidden;
-}
-/* 
-.touch {
-    height: 80px;
-    width: 80px;
-    border-radius: 50%;
-    z-index: 1;
-}
-.touchWrapper span {
-    font-size: 3rem;
-    position: absolute;
-    top: -65px;
-}
-
-.spinner {
-    position: absolute;
-    box-sizing: border-box;
-    width: 110px;
-    height: 110px;
-    border-radius: 100%;
-    border: 10px solid rgba(255, 255, 255, 0.2);
-    animation: spin 1s infinite linear;
-    top: -15px;
-    left: -15px;
-}
-@keyframes spin {
-    0% {
-        transform: scale(0.95) rotate(0deg);
-    }
-    50% {
-        transform: scale(1.05) rotate(180deg);
-    }
-    100% {
-        transform: scale(0.95) rotate(360deg);
-    }
-}
-
-.touchWrapper {
-    position: absolute;
-
-    display: flex;
-    justify-content: center;
-    transform: translate(-50%, -50%);
-    animation: shrinkToAppear 0.05s;
-}
-@keyframes shrinkToAppear {
-    from {
-        transform: translate(-50%, -50%) scale(0.5)
-    };
-    to {
-        transform: translate(-50%, -50%) scale(1)
-    };
-}
-
-.shrinkToSize {
-    position: absolute;
-    border-radius: 50%;
-    background: #332f35;
-    animation: shrinkToSize 0.5s;
-    width: 130px;
-    height: 130px;
-    top: -25px;
-    left: -25px;
-}
-
-@keyframes shrinkToSize {
-    from {
-        transform: scale(20)
-    };
-} */

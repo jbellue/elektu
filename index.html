@@ -4,7 +4,18 @@
         <title>Choose!</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="prefetch" href="./img/fullscreen-checked.svg" />
+        <link rel="prefetch" href="./img/fullscreen-unchecked.svg" />
+        <link rel="prefetch" href="./img/group-checked.svg" />
+        <link rel="prefetch" href="./img/group-unchecked.svg" />
+        <link rel="prefetch" href="./img/help-checked.svg" />
+        <link rel="prefetch" href="./img/help-unchecked.svg" />
+        <link rel="prefetch" href="./img/ordinate-checked.svg" />
+        <link rel="prefetch" href="./img/ordinate-unchecked.svg" />
+        <link rel="prefetch" href="./img/select-checked.svg" />
+        <link rel="prefetch" href="./img/select-unchecked.svg" />
+        <link rel="prefetch" href="./img/vibration-checked.svg" />
+        <link rel="prefetch" href="./img/vibration-unchecked.svg" />
         <script src="playerTouch.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
@@ -12,10 +23,16 @@
         <canvas id="canvas">shit.</canvas>
         <div id="menuContainer" class="transformBackIn">
             <div class="radio-group" id="radio-selectGroup">
-                <input type="radio" id="option-select" name="selector" checked="checked" value="select"><label for="option-select"><i id="option-select-icon" class="material-icons md-dark md-inactive">how_to_reg</i></label><input type="radio" id="option-group" name="selector" value="teams"><label for="option-group"><i id="option-group-icon" class="material-icons md-dark md-inactive">group</i></label><input type="radio" id="option-ordinate" name="selector" value="ordinate"><label for="option-ordinate"><i id="option-ordinate-icon" class="material-icons md-dark md-inactive">signal_cellular_alt</i></label>
+                <input type="radio" id="option-select" name="selector" checked="checked" value="select"><label for="option-select"></label>
+                <input type="radio" id="option-group" name="selector" value="teams"><label for="option-group"></label>
+                <input type="radio" id="option-ordinate" name="selector" value="ordinate"><label for="option-ordinate"></label>
             </div>
             <div class="radio-group" id="radio-selectNumber">
-                <input type="radio" id="number-1" name="number" checked="checked" value="1"><label for="number-1" id="label-number1">1</label><input type="radio" id="number-2" name="number" value="2"><label for="number-2">2</label><input type="radio" id="number-3" name="number" value="3"><label for="number-3">3</label><input type="radio" id="number-4" name="number" value="4"><label for="number-4">4</label><input type="radio" id="number-5" name="number" value="5"><label for="number-5">5</label>
+                <input type="radio" id="number-1" name="number" checked="checked" value="1"><label for="number-1" id="label-number1">1</label>
+                <input type="radio" id="number-2" name="number" value="2"><label for="number-2">2</label>
+                <input type="radio" id="number-3" name="number" value="3"><label for="number-3">3</label>
+                <input type="radio" id="number-4" name="number" value="4"><label for="number-4">4</label>
+                <input type="radio" id="number-5" name="number" value="5"><label for="number-5">5</label>
             </div>
         </div>
         <div id="helpContainerWrapper">
@@ -71,12 +88,39 @@
         </div>
         <div id="footerContainer">
             <div id="footerGrid" class="transformBackIn">
-                <i id="toggle-vibration" class="material-icons md-inactive">vibration</i>
-                <i id="toggle-help" class="material-icons md-inactive">help</i>
-                <i id="toggle-fullscreen" class="material-icons md-inactive">fullscreen</i>
+                <img src="./img/vibration-unchecked.svg">
+                <img src="./img/help.svg">
+                <img src="./img/fullscreen-unchecked.svg">
             </div>
         </div>
         <script>
+const helpContainer = document.getElementById("helpContainerWrapper");
+const labelNumber1 = document.getElementById("label-number1");
+const radioSelectNumber = document.getElementById("radio-selectNumber");
+const optionSelect = document.getElementById("option-select");
+
+const showSelect = () => {
+    labelNumber1.style.display = "";
+    labelNumber1.style.visibility = "";
+    radioSelectNumber.style.display = "";
+    radioSelectNumber.style.visibility = "";
+};
+
+const showGroup = () => {
+    labelNumber1.style.display = "none";
+    labelNumber1.style.visibility = "hidden";
+    radioSelectNumber.style.display = "";
+    radioSelectNumber.style.visibility = "";
+    if (document.getElementById("number-1").checked) {
+        document.getElementById("number-2").checked = true;
+    }
+};
+
+const showOrdinate = () => {
+    radioSelectNumber.style.display = "none";
+    radioSelectNumber.style.visibility = "hidden";
+};
+
 const getRadioValue = id => Number(document.querySelector(`input[name="${id}"]:checked`).value);
 const menuContainer = document.getElementById("menuContainer");
 const footerContainer = document.getElementById("footerContainer");
@@ -234,6 +278,21 @@ const showMenu = () => {
 };
 
 const start = () => {
+    // Properly initialise the radio buttons
+    if (optionSelect.checked) {
+        showSelect();
+    }
+    else if (document.getElementById("option-group").checked) {
+        showGroup();
+    }
+    else { //option-ordinate
+        showOrdinate();
+    }
+    // set the events on the radio buttons
+    optionSelect.addEventListener("change", () => showSelect());
+    document.getElementById("option-group").addEventListener("change", () => showGroup());
+    document.getElementById("option-ordinate").addEventListener("change", () => showOrdinate());
+
     window.addEventListener('resize', resizeCanvas, false);
 
     canvas.addEventListener("touchstart", handleNewTouch);
