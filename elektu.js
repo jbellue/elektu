@@ -249,7 +249,7 @@ class Elektu {
         ev.preventDefault();
         const changedTouches = ev.changedTouches;
         for (let i=0; i < changedTouches.length; ++i) {
-            this.move(changedTouches[i].identifier, changedTouches[i].clientX, changedTouches[i].clientY)
+            this.move(changedTouches[i].identifier, changedTouches[i].clientX, changedTouches[i].clientY);
         }
     }
     setSelectionDoneHandlers() {
