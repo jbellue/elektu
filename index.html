@@ -136,11 +136,9 @@ const getRadioValue = id => Number(document.querySelector(`input[name="${id}"]:c
 const menuContainer = document.getElementById("menuContainer");
 const footerContainer = document.getElementById("footerContainer");
 const canvas = document.getElementById("canvas");
-const touchList = new TouchList(canvas);
+const elektu = new Elektu(canvas);
 
-let timerTrigger = -1;
 const triggerTimeout = 2500;
-const displayTimeout = 1500;
        
 const featureTypes = Object.freeze({
     select: 1,
@@ -163,28 +161,28 @@ const getFeatureType = () => {
 
 const resetTimerTrigger = () => {
     const feature = getFeatureType();
-    clearTimeout(timerTrigger);
+    clearTimeout(elektu.timerTrigger);
     if (
-        (feature == featureTypes.select && touchList.touchesLength() > getRadioValue("number")) ||
-        (feature == featureTypes.teams && touchList.touchesLength() >= getRadioValue("number")) ||
+        (feature == featureTypes.select && elektu.touchesLength() > getRadioValue("number")) ||
+        (feature == featureTypes.teams && elektu.touchesLength() >= getRadioValue("number")) ||
         feature == featureTypes.ordinate
     ) {
-        timerTrigger = setTimeout(triggerSelection, triggerTimeout);
+        elektu.timerTrigger = setTimeout(triggerSelection, triggerTimeout);
     }
 };
 
 const triggerSelection = () => {
-    clearTimeout(timerTrigger);
+    clearTimeout(elektu.timerTrigger);
     const numbersSelected = getRadioValue("number");
     switch (getFeatureType()) {
         case featureTypes.select :
-            touchList.selectPlayers(numbersSelected);
+            elektu.selectPlayers(numbersSelected);
             break;
         case featureTypes.teams :
-            touchList.selectTeams(numbersSelected);
+            elektu.selectTeams(numbersSelected);
             break;
         case featureTypes.ordinate :
-            touchList.selectNumbers();
+            elektu.selectNumbers();
             break;
         default:
             throw new Error("Unrecognised feature type.");
@@ -194,74 +192,13 @@ const triggerSelection = () => {
     //     window.navigator.vibrate([50, 10, 50]);
     // }
 
-    canvas.removeEventListener("touchstart", handleNewTouch);
-    canvas.addEventListener("touchstart", ignoreEvent);
-    canvas.removeEventListener("touchend", handleTouchEnd);
-    canvas.addEventListener("touchend", handleFinishTouchEnd);
-};
-
-
-const ignoreEvent = e => {
-        e.preventDefault();
-};
-
-const handleFinishTouchEnd = ev => {
-    ev.preventDefault();
-    const changedTouches = ev.changedTouches;
-    for (let i=0; i < changedTouches.length; ++i) {
-        let touch = touchList.getTouch(changedTouches[i].identifier);
-        if (touch) {
-            touch.isLocked = true;
-        }
-    }
-
-    if (touchList.areAllTouchesLocked()) {
-        resetAllTimeout = setTimeout(resetAll, displayTimeout);
-    }
-};
-
-const resetAll = () => {
-    touchList.empty();
-
-    clearTimeout(timerTrigger);
-    clearTimeout(resetAllTimeout);
-
-    canvas.removeEventListener("touchstart", ignoreEvent);
-    canvas.removeEventListener("touchmove", ignoreEvent);
-    canvas.removeEventListener("touchend", ignoreEvent);
-    canvas.removeEventListener("touchend", handleFinishTouchEnd);
-
-    canvas.addEventListener("touchstart", handleNewTouch);
-    canvas.addEventListener("touchend", handleTouchEnd);
-};
-
-const handleNewTouch = e => {
-    e.preventDefault();
-    const changedTouches = e.changedTouches;
-    for (let i=0; i < changedTouches.length; ++i) {
-        touchList.add(changedTouches[i].clientX, changedTouches[i].clientY, changedTouches[i].identifier);
-    }
-    resetTimerTrigger();
-};
-const handleTouchEnd = e => {
-    e.preventDefault();
-    const changedTouches = e.changedTouches;
-    for (let i=0; i < changedTouches.length; ++i) {
-        touchList.remove(changedTouches[i].identifier);
-    }
-};
-const handleTouchMove = e => {
-    e.preventDefault();
-    const changedTouches = e.changedTouches;
-    for (let i=0; i < changedTouches.length; ++i) {
-        touchList.move(changedTouches[i].identifier, changedTouches[i].clientX, changedTouches[i].clientY)
-    }
+    elektu.setSelectionDoneHandlers();
 };
 
 const step = () => {
-    touchList.update();
-    touchList.draw();
-    if (touchList.touchesLength() == 0) {
+    elektu.update();
+    elektu.draw();
+    if (elektu.touchesLength() == 0) {
         showMenu();
     }
     else {
@@ -306,9 +243,7 @@ const start = () => {
 
     window.addEventListener('resize', resizeCanvas, false);
 
-    canvas.addEventListener("touchstart", handleNewTouch);
-    canvas.addEventListener("touchend", handleTouchEnd);
-    canvas.addEventListener("touchmove", handleTouchMove);
+    elektu.setStartingHandlers();
 
     resizeCanvas();
     window.requestAnimationFrame(step);

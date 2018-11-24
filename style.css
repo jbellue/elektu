@@ -121,6 +121,7 @@ input[type=radio]:checked + label {
     justify-content: space-around;
     align-items: center;
     position:relative;
+    padding-bottom: 10px;
     z-index: 999;
 }
 ol {

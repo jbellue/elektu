@@ -1,9 +1,14 @@
-class TouchList {
+class Elektu {
     constructor(canvas) {
         this.colours = new Colours();
         this.touches = [];
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
+        this.timerTrigger = -1;
+        this.displayTimeout = 1500;
+        this.finishTouchEnd = this.handleFinishTouchEnd.bind(this);
+        this.touchEnd = this.handleTouchEnd.bind(this);
+        this.newTouch = this.handleNewTouch.bind(this);
     }
     add(x, y, id) {
         this.touches.push(new PlayerTouch(this.ctx, x, y, id, this.colours.getRandomColour()));
@@ -48,9 +53,20 @@ class TouchList {
             thisTouch.moveTo(x, y);
         }
     }
-    empty() {
+    reset() {
         this.touches = [];
         this.colours.reset();
+
+        clearTimeout(this.timerTrigger);
+        clearTimeout(this.resetAllTimeout);
+
+        this.canvas.removeEventListener("touchstart", this.ignoreEvent);
+        this.canvas.removeEventListener("touchmove", this.ignoreEvent);
+        this.canvas.removeEventListener("touchend", this.ignoreEvent);
+        this.canvas.removeEventListener("touchend", this.finishTouchEnd);
+
+        this.canvas.addEventListener("touchstart", this.newTouch);
+        this.canvas.addEventListener("touchend", this.touchEnd);
     }
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -141,6 +157,60 @@ class TouchList {
                 touch.number = i + 1;
             }
         }
+    }
+
+    handleTouchEnd(ev) {
+        ev.preventDefault();
+        const changedTouches = ev.changedTouches;
+        for (let i=0; i < changedTouches.length; ++i) {
+            this.remove(changedTouches[i].identifier);
+        }
+    }
+    handleFinishTouchEnd(ev) {
+        ev.preventDefault();
+        const changedTouches = ev.changedTouches;
+        for (let i=0; i < changedTouches.length; ++i) {
+            let touch = this.getTouch(changedTouches[i].identifier);
+            if (touch) {
+                touch.isLocked = true;
+            }
+        }
+        
+        if (this.areAllTouchesLocked()) {
+            setTimeout(this.reset.bind(this), this.displayTimeout);
+        }
+    }
+
+
+    ignoreEvent(ev) {
+        ev.preventDefault();
+    }
+
+    handleNewTouch(ev) {
+        ev.preventDefault();
+        const changedTouches = ev.changedTouches;
+        for (let i=0; i < changedTouches.length; ++i) {
+            this.add(changedTouches[i].clientX, changedTouches[i].clientY, changedTouches[i].identifier);
+        }
+        resetTimerTrigger();
+    }
+    handleTouchMove(ev) {
+        ev.preventDefault();
+        const changedTouches = ev.changedTouches;
+        for (let i=0; i < changedTouches.length; ++i) {
+            this.move(changedTouches[i].identifier, changedTouches[i].clientX, changedTouches[i].clientY)
+        }
+    }
+    setSelectionDoneHandlers() {
+        this.canvas.removeEventListener("touchstart", this.newTouch);
+        this.canvas.addEventListener("touchstart", this.ignoreEvent);
+        this.canvas.removeEventListener("touchend", this.touchEnd);
+        this.canvas.addEventListener("touchend", this.finishTouchEnd);
+    }
+    setStartingHandlers() {
+        this.canvas.addEventListener("touchstart", this.newTouch);
+        this.canvas.addEventListener("touchend", this.touchEnd);
+        this.canvas.addEventListener("touchmove", this.handleTouchMove.bind(this));
     }
 }
 
