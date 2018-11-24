@@ -88,9 +88,9 @@
         </div>
         <div id="footerContainer">
             <div id="footerGrid" class="transformBackIn">
-                <img src="./img/vibration-unchecked.svg">
-                <img src="./img/help.svg">
-                <img src="./img/fullscreen-unchecked.svg">
+                <img id="toggle-vibration" src="./img/vibration-unchecked.svg">
+                <img id="toggle-help" src="./img/help.svg">
+                <img id="toggle-fullscreen" src="./img/fullscreen-unchecked.svg">
             </div>
         </div>
         <script>
@@ -120,6 +120,15 @@ const showOrdinate = () => {
     radioSelectNumber.style.display = "none";
     radioSelectNumber.style.visibility = "hidden";
 };
+
+// showing the help
+document.getElementById("toggle-help").addEventListener("click", e => {
+    document.getElementById("helpContainerWrapper").style.display = "block";
+});
+
+helpContainer.addEventListener("click", e => {
+    document.getElementById("helpContainerWrapper").style.display = "none";
+});
 
 const getRadioValue = id => Number(document.querySelector(`input[name="${id}"]:checked`).value);
 const menuContainer = document.getElementById("menuContainer");
