@@ -6,10 +6,14 @@ class Elektu {
         this.ctx = canvas.getContext("2d");
         this.timerTrigger = -1;
         this.displayTimeout = 1500;
+        this.triggerTimeout = 2500;
         this.finishTouchEnd = this.handleFinishTouchEnd.bind(this);
         this.touchEnd = this.handleTouchEnd.bind(this);
         this.newTouch = this.handleNewTouch.bind(this);
         this.feature = 'select';
+        this.selectedNumber = 1;
+
+        this.setStartingHandlers();
     }
     add(x, y, id) {
         let colour = this.feature == 'teams' ? this.colours.getNoTeamColour():this.colours.getRandomColour();
@@ -23,6 +27,9 @@ class Elektu {
     }
     touchesLength() {
         return this.touches.length;
+    }
+    setSelectedNumber(number) {
+        this.selectedNumber = number;
     }
     setFeature(feature) {
         this.feature = feature;
@@ -191,6 +198,40 @@ class Elektu {
         }
     }
 
+    resetTimerTrigger() {
+        const feature = this.getFeature();
+        clearTimeout(this.timerTrigger);
+        if (
+            (feature == 'select' && this.touchesLength() > this.selectedNumber) ||
+            (feature == 'teams' && this.touchesLength() >= this.selectedNumber) ||
+            feature == 'ordinate'
+        ) {
+            this.timerTrigger = setTimeout(this.triggerSelection.bind(this), this.triggerTimeout);
+        }
+    }
+
+    triggerSelection() {
+        clearTimeout(this.timerTrigger);
+        switch (this.getFeature()) {
+            case 'select' :
+                this.selectPlayers(this.selectedNumber);
+                break;
+            case 'teams' :
+                this.selectTeams(this.selectedNumber);
+                break;
+            case 'ordinate' :
+                this.selectNumbers();
+                break;
+            default:
+                throw new Error("Unrecognised feature type.");
+        }
+
+        // if (vibrate) {
+        //     window.navigator.vibrate([50, 10, 50]);
+        // }
+
+        this.setSelectionDoneHandlers();
+}
 
     ignoreEvent(ev) {
         ev.preventDefault();
@@ -202,7 +243,7 @@ class Elektu {
         for (let i=0; i < changedTouches.length; ++i) {
             this.add(changedTouches[i].clientX, changedTouches[i].clientY, changedTouches[i].identifier);
         }
-        resetTimerTrigger();
+        this.resetTimerTrigger();
     }
     handleTouchMove(ev) {
         ev.preventDefault();

@@ -115,6 +115,7 @@ const showGroup = () => {
     radioSelectNumber.style.visibility = "";
     if (document.getElementById("number-1").checked) {
         document.getElementById("number-2").checked = true;
+        elektu.setSelectedNumber(2);
     }
 };
 
@@ -132,49 +133,10 @@ helpContainer.addEventListener("click", e => {
     document.getElementById("helpContainerWrapper").style.display = "none";
 });
 
-const getRadioValue = id => Number(document.querySelector(`input[name="${id}"]:checked`).value);
 const menuContainer = document.getElementById("menuContainer");
 const footerContainer = document.getElementById("footerContainer");
 const canvas = document.getElementById("canvas");
-const elektu = new Elektu(canvas);
-
-const triggerTimeout = 2500;
-
-const resetTimerTrigger = () => {
-    const feature = elektu.getFeature();
-    clearTimeout(elektu.timerTrigger);
-    if (
-        (feature == 'select' && elektu.touchesLength() > getRadioValue("number")) ||
-        (feature == 'teams' && elektu.touchesLength() >= getRadioValue("number")) ||
-        feature == 'ordinate'
-    ) {
-        elektu.timerTrigger = setTimeout(triggerSelection, triggerTimeout);
-    }
-};
-
-const triggerSelection = () => {
-    clearTimeout(elektu.timerTrigger);
-    const numbersSelected = getRadioValue("number");
-    switch (elektu.getFeature()) {
-        case 'select' :
-            elektu.selectPlayers(numbersSelected);
-            break;
-        case 'teams' :
-            elektu.selectTeams(numbersSelected);
-            break;
-        case 'ordinate' :
-            elektu.selectNumbers();
-            break;
-        default:
-            throw new Error("Unrecognised feature type.");
-    }
-
-    // if (vibrate) {
-    //     window.navigator.vibrate([50, 10, 50]);
-    // }
-
-    elektu.setSelectionDoneHandlers();
-};
+let elektu;
 
 const step = () => {
     elektu.update();
@@ -208,7 +170,11 @@ const showMenu = () => {
 const updateFeature = () => {
     elektu.setFeature(document.querySelector('input[name="selector"]:checked').value);
 }
+const updateSelectedNumber = () => {
+    elektu.setSelectedNumber(Number(document.querySelector(`input[name="number"]:checked`).value));
+}
 const start = () => {
+    elektu = new Elektu(canvas);
     // Properly initialise the radio buttons
     if (optionSelect.checked) {
         showSelect();
@@ -225,10 +191,10 @@ const start = () => {
     document.getElementById("option-ordinate").addEventListener("change", () => showOrdinate());
     document.getElementById("radio-selectGroup").addEventListener("change", () => updateFeature());
     updateFeature();
+    document.getElementById("radio-selectNumber").addEventListener("change", () => updateSelectedNumber());
+    updateSelectedNumber();
 
     window.addEventListener('resize', resizeCanvas, false);
-
-    elektu.setStartingHandlers();
 
     resizeCanvas();
     window.requestAnimationFrame(step);
