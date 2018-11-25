@@ -186,6 +186,7 @@ class Elektu {
         for (let i=0; i < changedTouches.length; ++i) {
             this.remove(changedTouches[i].identifier);
         }
+        this.resetTimerTrigger();
     }
     handleFinishTouchEnd(ev) {
         ev.preventDefault();
