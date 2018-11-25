@@ -48,7 +48,7 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 * [X] ~~*Get menu properly working*~~ [2018-11-24]
 * [ ] Implement fullscreening
 * [X] ~~*implement vibration on acceptable devices*~~ [2018-11-25]
-* [ ] Hide vibration thingie on iOS, stupid thing
+* [X] ~~*Hide vibration thingie on iOS, stupid thing*~~ [2018-11-25]
 * [ ] Have cool animations:
   * [X] ~~*rotating, when waiting*~~ [2018-11-24]
   * [ ] have another rotation when waiting for timeout

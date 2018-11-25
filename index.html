@@ -90,7 +90,7 @@
         </div>
         <div id="footerContainer">
             <div id="footerGrid" class="transformBackIn">
-                <input type='checkbox' id="toggle-vibration"/><label for="toggle-vibration"></label>
+                <input type='checkbox' id="toggle-vibration"/><label id="toggle-vibration-label" for="toggle-vibration"></label>
                 <input type='checkbox' id="toggle-help"/><label for="toggle-help"></label>
                 <input type='checkbox' id="toggle-fullscreen"/><label for="toggle-fullscreen"></label>
             </div>
@@ -200,8 +200,14 @@ const start = () => {
     updateFeature();
     document.getElementById("radio-selectNumber").addEventListener("change", () => updateSelectedNumber());
     updateSelectedNumber();
-    toggleVibration.addEventListener("change", () => updateVibration());
-    elektu.setVibrate(toggleVibration.checked);
+    if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
+        // stupid Apple devices not allowing vibration API through...
+        document.getElementById("toggle-vibration-label").style.opacity = 0;
+    }
+    else {
+        toggleVibration.addEventListener("change", () => updateVibration());
+        elektu.setVibrate(toggleVibration.checked);
+    }
 
     window.addEventListener('resize', resizeCanvas, false);
 
