@@ -353,7 +353,7 @@ class PlayerTouch {
         if (this.number != -1) {
             this.ctx.font = '50px sans-serif';
             this.ctx.textAlign = 'center';
-            this.ctx.fillText(this.number, this.x, this.y - 50);
+            this.ctx.fillText(this.number, this.x, this.y - 65);
         }
     }
     flagForDelete() {
