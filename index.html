@@ -134,6 +134,7 @@ document.getElementById("toggle-help").addEventListener("click", e => {
 
 helpContainer.addEventListener("click", e => {
     document.getElementById("helpContainerWrapper").style.display = "none";
+    document.getElementById("toggle-help").checked = false;
 });
 
 const menuContainer = document.getElementById("menuContainer");
