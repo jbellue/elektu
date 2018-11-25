@@ -38,7 +38,7 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 ## What are these icons at the bottom
 
 * ![vibration](img/vibration-unchecked.svg) Toggle vibration on and off
-* ![help](img/help.svg) Show a help message (click anywhere to remove)
+* ![help](img/help-unchecked.svg) Show a help message (click anywhere to remove)
 * ![fullscreen](img/fullscreen-unchecked.svg) Toggle fullscreen
 
 ## TODO

@@ -70,10 +70,10 @@ input[type=checkbox] + label {
     background: url(./img/vibration-checked.svg) no-repeat center;
 }
 #toggle-help + label{
-    background: url(./img/help.svg) no-repeat center;
+    background: url(./img/help-unchecked.svg) no-repeat center;
 }
 #toggle-help:checked + label{
-    background: url(./img/help.svg) no-repeat center;
+    background: url(./img/help-checked.svg) no-repeat center;
 }
 #toggle-fullscreen + label{
     background: url(./img/fullscreen-unchecked.svg) no-repeat center;
