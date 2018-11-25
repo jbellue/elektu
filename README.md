@@ -7,10 +7,10 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 
 ## If the app's so good, why a clone?
 
+* I wanted the possibility to give a random number to each person
 * I was bored
 * No need to install anything, that's better, probably?
 * 0% tracking (I'm not implying chwazi does anything naughty. But here I know nothing evil goes on)
-* I wanted the possibility to give a random number to each person
 * why not?
 
 ---
@@ -51,6 +51,7 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 * [X] ~~*Hide vibration thingie on iOS, stupid thing*~~ [2018-11-25]
 * [ ] Have cool animations:
   * [X] ~~*rotating, when waiting*~~ [2018-11-24]
+  * [ ] grow and shrink stuff when waiting
   * [ ] have another rotation when waiting for timeout
   * [X] ~~*cool selection when there's only one to select*~~ [2018-11-25]
-* [ ] probably a lot more to get to feature parity...
+* [X] ~~*probably a lot more to get to feature parity...*~~ [2018-11-25]
