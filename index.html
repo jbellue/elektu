@@ -97,12 +97,18 @@
             </div>
         </div>
         <script>
+let elektu;
+
+const menuContainer = document.getElementById("menuContainer");
+const footerContainer = document.getElementById("footerContainer");
+const canvas = document.getElementById("canvas");
 const helpContainer = document.getElementById("helpContainerWrapper");
 const labelNumber1 = document.getElementById("label-number1");
 const radioSelectNumber = document.getElementById("radio-selectNumber");
 const optionSelect = document.getElementById("option-select");
 const toggleVibration = document.getElementById("toggle-vibration");
 const toggleFullscreen = document.getElementById("toggle-fullscreen");
+const toggleHelp = document.getElementById("toggle-help");
 
 const showSelect = () => {
     labelNumber1.style.display = "";
@@ -127,20 +133,14 @@ const showOrdinate = () => {
     radioSelectNumber.style.visibility = "hidden";
 };
 
-// showing the help
-document.getElementById("toggle-help").addEventListener("click", e => {
-    document.getElementById("helpContainerWrapper").style.display = "block";
+toggleHelp.addEventListener("click", e => {
+    helpContainer.style.display = "block";
 });
 
 helpContainer.addEventListener("click", e => {
-    document.getElementById("helpContainerWrapper").style.display = "none";
-    document.getElementById("toggle-help").checked = false;
+    helpContainer.style.display = "none";
+    toggleHelp.checked = false;
 });
-
-const menuContainer = document.getElementById("menuContainer");
-const footerContainer = document.getElementById("footerContainer");
-const canvas = document.getElementById("canvas");
-let elektu;
 
 const step = () => {
     elektu.update();
@@ -193,11 +193,13 @@ const updateFullscreenIcon = () => {
 }
 const start = () => {
     elektu = new Elektu(canvas);
+
+    let optionGroup = document.getElementById("option-group");
     // Properly initialise the radio buttons
     if (optionSelect.checked) {
         showSelect();
     }
-    else if (document.getElementById("option-group").checked) {
+    else if (optionGroup.checked) {
         showGroup();
     }
     else { //option-ordinate
@@ -205,11 +207,11 @@ const start = () => {
     }
     // set the events on the radio buttons
     optionSelect.addEventListener("change", () => showSelect());
-    document.getElementById("option-group").addEventListener("change", showGroup);
+    optionGroup.addEventListener("change", showGroup);
     document.getElementById("option-ordinate").addEventListener("change", showOrdinate);
     document.getElementById("radio-selectGroup").addEventListener("change", updateFeature);
     updateFeature();
-    document.getElementById("radio-selectNumber").addEventListener("change", updateSelectedNumber);
+    radioSelectNumber.addEventListener("change", updateSelectedNumber);
     updateSelectedNumber();
     if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
         // stupid Apple devices not allowing vibration API through...
