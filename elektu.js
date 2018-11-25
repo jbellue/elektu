@@ -27,7 +27,13 @@ class Elektu {
         }
     }
     touchesLength() {
-        return this.touches.length;
+        let touchCount = 0;
+        for (let i=0; i < this.touches.length; ++i) {
+            if (!this.touches[i].isBeingDeleted) {
+                ++touchCount;
+            }
+        }
+        return touchCount;
     }
     setVibrate(vibrate) {
         this.vibrate = vibrate;
