@@ -54,6 +54,34 @@ input[type=radio]:checked + label {
     background: #7FDBFF;
 }
 
+input[type=checkbox] {
+    display:none;
+}
+input[type=checkbox] + label {
+    height: 24px;
+    width: 24px;
+    display:inline-block;
+    padding: 0 0 0 0px;
+}
+#toggle-vibration + label{
+    background: url(./img/vibration-unchecked.svg) no-repeat center;
+}
+#toggle-vibration:checked + label{
+    background: url(./img/vibration-checked.svg) no-repeat center;
+}
+#toggle-help + label{
+    background: url(./img/help.svg) no-repeat center;
+}
+#toggle-help:checked + label{
+    background: url(./img/help.svg) no-repeat center;
+}
+#toggle-fullscreen + label{
+    background: url(./img/fullscreen-unchecked.svg) no-repeat center;
+}
+#toggle-fullscreen:checked + label{
+    background: url(./img/fullscreen-checked.svg) no-repeat center;
+}
+
 #radio-selectNumber label {
     padding: 4px 10px;
 }
@@ -146,7 +174,7 @@ dd {
     top: 50%;
     position: relative;
     transform: translateY(-50%);
-
+    
     background: #39363a;
     color: #9a929e;
     padding: 10px;

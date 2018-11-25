@@ -12,6 +12,7 @@ class Elektu {
         this.newTouch = this.handleNewTouch.bind(this);
         this.feature = 'select';
         this.selectedNumber = 1;
+        this.vibrate = false;
 
         this.setStartingHandlers();
     }
@@ -27,6 +28,9 @@ class Elektu {
     }
     touchesLength() {
         return this.touches.length;
+    }
+    setVibrate(vibrate) {
+        this.vibrate = vibrate;
     }
     setSelectedNumber(number) {
         this.selectedNumber = number;
@@ -226,9 +230,9 @@ class Elektu {
                 throw new Error("Unrecognised feature type.");
         }
 
-        // if (vibrate) {
-        //     window.navigator.vibrate([50, 10, 50]);
-        // }
+        if (this.vibrate) {
+            window.navigator.vibrate([50, 10, 50]);
+        }
 
         this.setSelectionDoneHandlers();
     }

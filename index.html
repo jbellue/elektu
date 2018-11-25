@@ -90,9 +90,9 @@
         </div>
         <div id="footerContainer">
             <div id="footerGrid" class="transformBackIn">
-                <img id="toggle-vibration" src="./img/vibration-unchecked.svg">
-                <img id="toggle-help" src="./img/help.svg">
-                <img id="toggle-fullscreen" src="./img/fullscreen-unchecked.svg">
+                <input type='checkbox' id="toggle-vibration"/><label for="toggle-vibration"></label>
+                <input type='checkbox' id="toggle-help"/><label for="toggle-help"></label>
+                <input type='checkbox' id="toggle-fullscreen"/><label for="toggle-fullscreen"></label>
             </div>
         </div>
         <script>
@@ -100,6 +100,7 @@ const helpContainer = document.getElementById("helpContainerWrapper");
 const labelNumber1 = document.getElementById("label-number1");
 const radioSelectNumber = document.getElementById("radio-selectNumber");
 const optionSelect = document.getElementById("option-select");
+const toggleVibration = document.getElementById("toggle-vibration");
 
 const showSelect = () => {
     labelNumber1.style.display = "";
@@ -173,6 +174,12 @@ const updateFeature = () => {
 const updateSelectedNumber = () => {
     elektu.setSelectedNumber(Number(document.querySelector(`input[name="number"]:checked`).value));
 }
+const updateVibration = () => {
+    if(toggleVibration.checked) {
+        window.navigator.vibrate(50);
+    }
+    elektu.setVibrate(toggleVibration.checked);
+}
 const start = () => {
     elektu = new Elektu(canvas);
     // Properly initialise the radio buttons
@@ -193,6 +200,8 @@ const start = () => {
     updateFeature();
     document.getElementById("radio-selectNumber").addEventListener("change", () => updateSelectedNumber());
     updateSelectedNumber();
+    toggleVibration.addEventListener("change", () => updateVibration());
+    elektu.setVibrate(toggleVibration.checked);
 
     window.addEventListener('resize', resizeCanvas, false);
 
