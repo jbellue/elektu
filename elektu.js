@@ -1,5 +1,10 @@
 class Elektu {
     constructor(canvas) {
+        const setStartingHandlers = () => {
+            this.canvas.addEventListener("touchstart", this.newTouch);
+            this.canvas.addEventListener("touchend", this.touchEnd);
+            this.canvas.addEventListener("touchmove", this.handleTouchMove.bind(this));
+        };
         this.colours = new Colours();
         this.touches = [];
         this.canvas = canvas;
@@ -14,7 +19,7 @@ class Elektu {
         this.selectedNumber = 1;
         this.vibrate = false;
 
-        this.setStartingHandlers();
+        setStartingHandlers();
     }
     add(x, y, id) {
         let colour = this.feature == 'teams' ? this.colours.getNoTeamColour():this.colours.getRandomColour();
@@ -106,108 +111,6 @@ class Elektu {
         }
         return null;
     }
-    shuffleArray (array) {
-        let currentIndex = array.length;
-    
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-            // Pick a remaining element...
-            let randomIndex = Math.floor(Math.random() * currentIndex--);
-    
-            // And swap it with the current element.
-            let temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-        return array;
-    }
-    selectPlayers(numberToSelect) {
-        const playerList = [...this.touches].map(t => t.id);
-        const shuffledList = this.shuffleArray(playerList);
-
-        for (let i=0; i < shuffledList.length; ++i) {
-            if (i < numberToSelect) {
-                const selectedTouch = this.getTouch(shuffledList[i]);
-                if (selectedTouch) {
-                    selectedTouch.isSelected = true;
-                    if(numberToSelect == 1) {
-                        selectedTouch.isOnlySelected = true;
-                    }
-                    console.log(`selecting ${selectedTouch.id}`);
-                }
-            }
-            else {
-                this.remove(shuffledList[i]);
-            }
-        }
-    }
-    selectTeams(numberOfTeams) {
-        const splitIntoTeams = (randomisedTouches, numberOfTeams) => {
-            const touchCount = randomisedTouches.length;
-            const teamArray = [];
-            let i = 0;
-            if (touchCount % numberOfTeams === 0) {
-                const size = Math.floor(touchCount / numberOfTeams);
-                while (i < touchCount) {
-                    teamArray.push(randomisedTouches.slice(i, i += size));
-                }
-            }
-            else {
-                while (i < touchCount) {
-                    const size = Math.ceil((touchCount - i) / numberOfTeams--);
-                    teamArray.push(randomisedTouches.slice(i, i += size));
-                }
-            }
-            return teamArray;
-        };
-        const playerList = [...this.touches].map(t => t.id);
-        if (numberOfTeams > playerList.length) {
-            throw new RangeError("selectTeams: more elements taken than available");
-        }
-        const splitTeams = splitIntoTeams(this.shuffleArray(playerList), numberOfTeams);
-        for (let i=0; i < splitTeams.length; ++i) {
-            const teamColour = this.colours.getRandomColour();
-            for (let j=0; j < splitTeams[i].length; ++j) {
-                const e = this.getTouch(splitTeams[i][j]);
-                if (e) {
-                    e.colour = teamColour;
-                }
-            }
-        }
-    }
-    selectNumbers() {
-        const playerList = [...this.touches].map(t => t.id);
-        const randomisedTouches = this.shuffleArray(playerList);
-        for (let i = 0; i < randomisedTouches.length; ++i) {
-            const touch = this.getTouch(randomisedTouches[i]);
-            if (touch) {
-                touch.number = i + 1;
-            }
-        }
-    }
-
-    handleTouchEnd(ev) {
-        ev.preventDefault();
-        const changedTouches = ev.changedTouches;
-        for (let i=0; i < changedTouches.length; ++i) {
-            this.remove(changedTouches[i].identifier);
-        }
-        this.resetTimerTrigger();
-    }
-    handleFinishTouchEnd(ev) {
-        ev.preventDefault();
-        const changedTouches = ev.changedTouches;
-        for (let i=0; i < changedTouches.length; ++i) {
-            let touch = this.getTouch(changedTouches[i].identifier);
-            if (touch) {
-                touch.isLocked = true;
-            }
-        }
-        
-        if (this.areAllTouchesLocked()) {
-            setTimeout(this.reset.bind(this), this.displayTimeout);
-        }
-    }
 
     resetTimerTrigger() {
         const feature = this.getFeature();
@@ -222,16 +125,103 @@ class Elektu {
     }
 
     triggerSelection() {
+        const setSelectionDoneHandlers = () => {
+            this.canvas.removeEventListener("touchstart", this.newTouch);
+            this.canvas.addEventListener("touchstart", this.ignoreEvent);
+            this.canvas.removeEventListener("touchend", this.touchEnd);
+            this.canvas.addEventListener("touchend", this.finishTouchEnd);
+        };
+        const shuffleArray = array => {
+            let currentIndex = array.length;
+        
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+                // Pick a remaining element...
+                let randomIndex = Math.floor(Math.random() * currentIndex--);
+        
+                // And swap it with the current element.
+                let temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+            return array;
+        };
+        const shuffleTouchList = () => {
+            const playerList = [...this.touches].map(t => t.id);
+            return shuffleArray(playerList);
+        };
+        const selectPlayers = numberToSelect => {
+            const shuffledList = shuffleTouchList();
+    
+            for (let i=0; i < shuffledList.length; ++i) {
+                if (i < numberToSelect) {
+                    const selectedTouch = this.getTouch(shuffledList[i]);
+                    if (selectedTouch) {
+                        selectedTouch.isSelected = true;
+                        if(numberToSelect == 1) {
+                            selectedTouch.isOnlySelected = true;
+                        }
+                        console.log(`selecting ${selectedTouch.id}`);
+                    }
+                }
+                else {
+                    this.remove(shuffledList[i]);
+                }
+            }
+        };
+        const selectTeams = numberOfTeams => {
+            const splitIntoTeams = (randomisedTouches, numberOfTeams) => {
+                const touchCount = randomisedTouches.length;
+                const teamArray = [];
+                let i = 0;
+                if (touchCount % numberOfTeams === 0) {
+                    const size = Math.floor(touchCount / numberOfTeams);
+                    while (i < touchCount) {
+                        teamArray.push(randomisedTouches.slice(i, i += size));
+                    }
+                }
+                else {
+                    while (i < touchCount) {
+                        const size = Math.ceil((touchCount - i) / numberOfTeams--);
+                        teamArray.push(randomisedTouches.slice(i, i += size));
+                    }
+                }
+                return teamArray;
+            };
+            const playerList = [...this.touches].map(t => t.id);
+            if (numberOfTeams > playerList.length) {
+                throw new RangeError("selectTeams: more elements taken than available");
+            }
+            const splitTeams = splitIntoTeams(shuffleArray(playerList), numberOfTeams);
+            for (let i=0; i < splitTeams.length; ++i) {
+                const teamColour = this.colours.getRandomColour();
+                for (let j=0; j < splitTeams[i].length; ++j) {
+                    const e = this.getTouch(splitTeams[i][j]);
+                    if (e) {
+                        e.colour = teamColour;
+                    }
+                }
+            }
+        };
+        const selectNumbers = () => {
+            const randomisedTouches = shuffleTouchList();
+            for (let i = 0; i < randomisedTouches.length; ++i) {
+                const touch = this.getTouch(randomisedTouches[i]);
+                if (touch) {
+                    touch.number = i + 1;
+                }
+            }
+        };
         clearTimeout(this.timerTrigger);
         switch (this.getFeature()) {
             case 'select' :
-                this.selectPlayers(this.selectedNumber);
+                selectPlayers(this.selectedNumber);
                 break;
             case 'teams' :
-                this.selectTeams(this.selectedNumber);
+                selectTeams(this.selectedNumber);
                 break;
             case 'ordinate' :
-                this.selectNumbers();
+                selectNumbers();
                 break;
             default:
                 throw new Error("Unrecognised feature type.");
@@ -241,7 +231,7 @@ class Elektu {
             window.navigator.vibrate([50, 10, 50]);
         }
 
-        this.setSelectionDoneHandlers();
+        setSelectionDoneHandlers();
     }
 
     ignoreEvent(ev) {
@@ -263,16 +253,27 @@ class Elektu {
             this.move(changedTouches[i].identifier, changedTouches[i].clientX, changedTouches[i].clientY);
         }
     }
-    setSelectionDoneHandlers() {
-        this.canvas.removeEventListener("touchstart", this.newTouch);
-        this.canvas.addEventListener("touchstart", this.ignoreEvent);
-        this.canvas.removeEventListener("touchend", this.touchEnd);
-        this.canvas.addEventListener("touchend", this.finishTouchEnd);
+    handleTouchEnd(ev) {
+        ev.preventDefault();
+        const changedTouches = ev.changedTouches;
+        for (let i=0; i < changedTouches.length; ++i) {
+            this.remove(changedTouches[i].identifier);
+        }
+        this.resetTimerTrigger();
     }
-    setStartingHandlers() {
-        this.canvas.addEventListener("touchstart", this.newTouch);
-        this.canvas.addEventListener("touchend", this.touchEnd);
-        this.canvas.addEventListener("touchmove", this.handleTouchMove.bind(this));
+    handleFinishTouchEnd(ev) {
+        ev.preventDefault();
+        const changedTouches = ev.changedTouches;
+        for (let i=0; i < changedTouches.length; ++i) {
+            let touch = this.getTouch(changedTouches[i].identifier);
+            if (touch) {
+                touch.isLocked = true;
+            }
+        }
+        
+        if (this.areAllTouchesLocked()) {
+            setTimeout(this.reset.bind(this), this.displayTimeout);
+        }
     }
 }
 
