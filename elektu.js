@@ -68,6 +68,8 @@ class Elektu {
         this.touches = [];
         this.colours.reset();
 
+        this.ctx.globalCompositeOperation = 'source-over';
+
         clearTimeout(this.timerTrigger);
         clearTimeout(this.resetAllTimeout);
 
@@ -117,6 +119,10 @@ class Elektu {
             if (i < numberToSelect) {
                 const selectedTouch = this.getTouch(shuffledList[i]);
                 if (selectedTouch) {
+                    selectedTouch.isSelected = true;
+                    if(numberToSelect == 1) {
+                        selectedTouch.isOnlySelected = true;
+                    }
                     console.log(`selecting ${selectedTouch.id}`);
                 }
             }
@@ -274,6 +280,9 @@ class PlayerTouch {
         this.number = -1;
         this.startAngle = 0;
         this.endAngle = 0;
+        this.isSelected = false;
+        this.isOnlySelected = false;
+        this.outerCircleRadius = 1020;
     }
     moveTo(x, y) {
         if (this.isLocked) return;
@@ -294,16 +303,30 @@ class PlayerTouch {
                 this.isObsolete = true;
             }
         }
-        else {
-            if (this.endAngle - this.startAngle <= 2*Math.PI) {
-                this.startAngle += 0.08;
-                this.endAngle += 0.24;
+        else if (this.endAngle - this.startAngle <= 2*Math.PI) {
+            this.startAngle += 0.08;
+            this.endAngle += 0.24;
+        }
+        else if (this.isOnlySelected) {
+            if (this.outerCircleRadius > this.radius + 60) {
+                this.outerCircleRadius -= 50;
             }
         }
     }
     draw() {
         this.ctx.fillStyle = this.colour;
         this.ctx.strokeStyle = this.colour;
+        if (this.isOnlySelected) {
+            this.ctx.rect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
+            this.ctx.fill();
+
+            this.ctx.globalCompositeOperation = 'xor';
+
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.outerCircleRadius, 0, 2 * Math.PI);
+            this.ctx.fill();
+            this.ctx.closePath();
+        }
         this.ctx.beginPath();
 
         this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -317,7 +340,6 @@ class PlayerTouch {
         this.ctx.closePath();
 
         if (this.number != -1) {
-
             this.ctx.font = '50px sans-serif';
             this.ctx.textAlign = 'center';
             this.ctx.fillText(this.number, this.x, this.y - 50);

@@ -52,5 +52,5 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 * [ ] Have cool animations:
   * [X] ~~*rotating, when waiting*~~ [2018-11-24]
   * [ ] have another rotation when waiting for timeout
-  * [ ] cool selection when there's only one to select
+  * [X] ~~*cool selection when there's only one to select*~~ [2018-11-25]
 * [ ] probably a lot more to get to feature parity...
