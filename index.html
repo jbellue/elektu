@@ -2,8 +2,8 @@
     <head>
         <meta charset="utf-8">
         <title>Elektu!</title>
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Material+Icons|Ubuntu" rel="stylesheet">
         <link rel="prefetch" href="./img/fullscreen-checked.svg" />
         <link rel="prefetch" href="./img/fullscreen-unchecked.svg" />
         <link rel="prefetch" href="./img/group-checked.svg" />
@@ -235,6 +235,7 @@ const start = () => {
     resizeCanvas();
     window.requestAnimationFrame(step);
 }
+
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);
 } else {
