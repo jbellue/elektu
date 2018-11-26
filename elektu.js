@@ -292,10 +292,12 @@ class PlayerTouch {
         this.isLocked = false;
         this.state = "creation";
         this.number = -1;
+        this.grow = 1;
         this.startAngle = (Math.random() * 2) * Math.PI;
-        this.endAngle = this.startAngle + 2 * Math.PI / 3;
+        this.endAngle = this.startAngle;
         this.isSelected = false;
         this.outerCircleRadius = 1020;
+        this.step = 0;
     }
     moveTo(x, y) {
         if (this.isLocked) return;
@@ -305,9 +307,11 @@ class PlayerTouch {
     update() {
         switch (this.state) {
             case "creation":
-                this.radius += 5;
                 if (this.radius >= 40) {
                     this.state = "normal";
+                }
+                else {
+                    this.radius += 5;
                 }
                 break;
             case "deletion":
@@ -325,15 +329,26 @@ class PlayerTouch {
             case "selected":
             break;
             default:
+                this.step++;
+                if (this.step >= 4) {
+                    this.step = 0;
+                    if (this.radius <= 37) {
+                        this.grow = 0.5;
+                    }
+                    else if (this.radius >= 42) {
+                        this.grow = -0.5;
+                    }
+                    this.radius += this.grow;
+                }
             break;
         }
-        if (this.state == "onlySelected" || this.state == "selected") {
+        if ((this.endAngle - this.startAngle >= 2 * Math.PI) || this.state == "onlySelected" || this.state == "selected") {
             this.startAngle = 0;
             this.endAngle = 2 * Math.PI;
         }
         else {
             this.startAngle += 0.08;
-            this.endAngle += 0.08;
+            this.endAngle += 0.24;
         }
     }
     draw() {

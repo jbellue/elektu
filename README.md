@@ -51,7 +51,7 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 * [X] ~~*Hide vibration thingie on iOS, stupid thing*~~ [2018-11-25]
 * [ ] Have cool animations:
   * [X] ~~*rotating, when waiting*~~ [2018-11-24]
-  * [ ] grow and shrink stuff when waiting
+  * [X] ~~*grow and shrink stuff when waiting*~~ [2018-11-26]
   * [ ] have another rotation when waiting for timeout
   * [X] ~~*cool selection when there's only one to select*~~ [2018-11-25]
 * [X] ~~*probably a lot more to get to feature parity...*~~ [2018-11-25]
