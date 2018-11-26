@@ -22,7 +22,7 @@ class Elektu {
         setStartingHandlers();
     }
     add(x, y, id) {
-        let colour = this.feature == 'teams' ? this.colours.getNoTeamColour():this.colours.getRandomColour();
+        let colour = this.feature == 'teams' ? this.colours.getNoTeamColour() : this.colours.getRandomColour();
         this.touches.push(new PlayerTouch(this.ctx, x, y, id, colour));
     }
     remove(id) {
@@ -34,7 +34,7 @@ class Elektu {
     touchesLength() {
         let touchCount = 0;
         for (let i=0; i < this.touches.length; ++i) {
-            if (!this.touches[i].isBeingDeleted) {
+            if (this.touches[i].state != "deletion" && this.touches[i].state != "obsolete") {
                 ++touchCount;
             }
         }
@@ -65,7 +65,7 @@ class Elektu {
             this.touches[i].update();
         }
         for (let i=0; i < this.touches.length; ++i) {
-            if (this.touches[i].isObsolete) {
+            if (this.touches[i].state == "obsolete") {
                 if (this.feature != 'teams') {
                     this.colours.add(this.touches[i].colour);
                 }
@@ -159,7 +159,10 @@ class Elektu {
                     if (selectedTouch) {
                         selectedTouch.isSelected = true;
                         if(numberToSelect == 1) {
-                            selectedTouch.isOnlySelected = true;
+                            selectedTouch.state = "onlySelected";
+                        }
+                        else {
+                            selectedTouch.state = "selected";
                         }
                         console.log(`selecting ${selectedTouch.id}`);
                     }
@@ -280,15 +283,14 @@ class Elektu {
 class PlayerTouch {
     constructor(ctx, x, y, id, colour) {
         this.radius = 20;
+        this.outerCircleStrokeWidth = 10;
         this.ctx = ctx;
         this.x = x;
         this.y = y;
         this.id = id;
         this.colour = colour;
-        this.isBeingDeleted = false;
-        this.isBeingCreated = true;
-        this.isObsolete = false;
         this.isLocked = false;
+        this.state = "creation";
         this.number = -1;
         this.startAngle = (Math.random() * 2) * Math.PI;
         this.endAngle = this.startAngle + 2 * Math.PI / 3;
@@ -301,33 +303,44 @@ class PlayerTouch {
         this.y = y;        
     }
     update() {
-        if (this.isBeingCreated) {
-            this.radius += 5;
-            if (this.radius >= 40) {
-                this.isBeingCreated = false;
-            }
+        switch (this.state) {
+            case "creation":
+                this.radius += 5;
+                if (this.radius >= 40) {
+                    this.state = "normal";
+                }
+                break;
+            case "deletion":
+                this.radius -= 5;
+                if (this.radius <= 0) {
+                    this.radius = 0;
+                    this.state = "obsolete";
+                }
+                break;
+            case "onlySelected":
+                if (this.outerCircleRadius > this.radius + 60) {
+                    this.outerCircleRadius -= 50;
+                }
+                break;
+            case "selected":
+            break;
+            default:
+            break;
         }
-        else if (this.isBeingDeleted) {
-            this.radius -= 5;
-            if (this.radius <= 0) {
-                this.radius = 0;
-                this.isObsolete = true;
-            }
+        if (this.state == "onlySelected" || this.state == "selected") {
+            this.startAngle = 0;
+            this.endAngle = 2 * Math.PI;
         }
-        else if (this.endAngle - this.startAngle <= 2*Math.PI) {
+        else {
             this.startAngle += 0.08;
-            this.endAngle += 0.24;
-        }
-        else if (this.isOnlySelected) {
-            if (this.outerCircleRadius > this.radius + 60) {
-                this.outerCircleRadius -= 50;
-            }
+            this.endAngle += 0.08;
         }
     }
     draw() {
+        if (this.state == "obsolete") return;
         this.ctx.fillStyle = this.colour;
         this.ctx.strokeStyle = this.colour;
-        if (this.isOnlySelected) {
+        if (this.state == "onlySelected") {
             this.ctx.rect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
             this.ctx.fill();
 
@@ -346,7 +359,7 @@ class PlayerTouch {
 
         this.ctx.beginPath();
         this.ctx.arc(this.x, this.y, this.radius + 12, this.startAngle, this.endAngle);
-        this.ctx.lineWidth = 10;
+        this.ctx.lineWidth = this.outerCircleStrokeWidth;
         this.ctx.stroke();
         this.ctx.closePath();
 
@@ -357,7 +370,7 @@ class PlayerTouch {
         }
     }
     flagForDelete() {
-        this.isBeingDeleted = true;
+        this.state = "deletion";
         this.id = -1;
     }
 }
