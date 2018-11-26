@@ -290,10 +290,9 @@ class PlayerTouch {
         this.isObsolete = false;
         this.isLocked = false;
         this.number = -1;
-        this.startAngle = 0;
-        this.endAngle = 0;
+        this.startAngle = (Math.random() * 2) * Math.PI;
+        this.endAngle = this.startAngle + 2 * Math.PI / 3;
         this.isSelected = false;
-        this.isOnlySelected = false;
         this.outerCircleRadius = 1020;
     }
     moveTo(x, y) {
