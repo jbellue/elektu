@@ -142,8 +142,8 @@ helpContainer.addEventListener("click", e => {
     toggleHelp.checked = false;
 });
 
-const step = () => {
-    elektu.update();
+const step = (timestamp) => {
+    elektu.update(timestamp);
     elektu.draw();
     if (elektu.touchesLength() == 0) {
         showMenu();

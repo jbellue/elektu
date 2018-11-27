@@ -18,12 +18,13 @@ class Elektu {
         this.feature = 'select';
         this.selectedNumber = 1;
         this.vibrate = false;
+        this.lastUpdateTimestamp = 0;
 
         setStartingHandlers();
     }
     add(x, y, id) {
         let colour = this.feature == 'teams' ? this.colours.getNoTeamColour() : this.colours.getRandomColour();
-        this.touches.push(new PlayerTouch(this.ctx, x, y, id, colour));
+        this.touches.push(new PlayerTouch(this.ctx, x, y, id, colour, this.triggerTimeout));
     }
     remove(id) {
         let touch = this.getTouch(id);
@@ -60,9 +61,10 @@ class Elektu {
         }
         return true;  
     }
-    update() {
+    update(timestamp) {
+        this.lastUpdateTimestamp = timestamp;
         for (let i=0; i < this.touches.length; ++i) {
-            this.touches[i].update();
+            this.touches[i].update(timestamp);
         }
         for (let i=0; i < this.touches.length; ++i) {
             if (this.touches[i].state == "obsolete") {
@@ -121,6 +123,14 @@ class Elektu {
             feature == 'ordinate'
         ) {
             this.timerTrigger = setTimeout(this.triggerSelection.bind(this), this.triggerTimeout);
+            for (let i=0; i < this.touches.length; ++i) {
+                this.touches[i].startTimer(this.lastUpdateTimestamp);
+            }
+        }
+        else {
+            for (let i=0; i < this.touches.length; ++i) {
+                this.touches[i].startTimer(-1);
+            }
         }
     }
 
@@ -164,7 +174,6 @@ class Elektu {
                         else {
                             selectedTouch.state = "selected";
                         }
-                        console.log(`selecting ${selectedTouch.id}`);
                     }
                 }
                 else {
@@ -199,9 +208,10 @@ class Elektu {
             for (let i=0; i < splitTeams.length; ++i) {
                 const teamColour = this.colours.getRandomColour();
                 for (let j=0; j < splitTeams[i].length; ++j) {
-                    const e = this.getTouch(splitTeams[i][j]);
-                    if (e) {
-                        e.colour = teamColour;
+                    const touch = this.getTouch(splitTeams[i][j]);
+                    if (touch) {
+                        touch.colour = teamColour;
+                        touch.state = "selected";
                     }
                 }
             }
@@ -212,6 +222,7 @@ class Elektu {
                 const touch = this.getTouch(randomisedTouches[i]);
                 if (touch) {
                     touch.number = i + 1;
+                    touch.state = "selected";
                 }
             }
         };
@@ -281,7 +292,7 @@ class Elektu {
 }
 
 class PlayerTouch {
-    constructor(ctx, x, y, id, colour) {
+    constructor(ctx, x, y, id, colour, timeoutDuration) {
         this.radius = 20;
         this.outerCircleStrokeWidth = 10;
         this.ctx = ctx;
@@ -293,18 +304,22 @@ class PlayerTouch {
         this.state = "creation";
         this.number = -1;
         this.grow = 1;
-        this.startAngle = (Math.random() * 2) * Math.PI;
-        this.endAngle = this.startAngle;
+        this.outerCircleStartAngle = (Math.random() * 2) * Math.PI;
+        this.outerCircleEndAngle = this.outerCircleStartAngle;
         this.isSelected = false;
-        this.outerCircleRadius = 1020;
+        this.surroundingCircleRadius = 1020;
         this.step = 0;
+        this.timeoutStarted = -1;
+        this.timeoutCircleStartAngle = (Math.random() * 2) * Math.PI;
+        this.timeoutCircleEndAngle = this.timeoutCircleStartAngle;
+        this.timeoutDuration = timeoutDuration;
     }
     moveTo(x, y) {
         if (this.isLocked) return;
         this.x = x;
         this.y = y;        
     }
-    update() {
+    update(timestamp) {
         switch (this.state) {
             case "creation":
                 if (this.radius >= 40) {
@@ -320,14 +335,17 @@ class PlayerTouch {
                     this.radius = 0;
                     this.state = "obsolete";
                 }
+                this.timeoutStarted = -1;
                 break;
             case "onlySelected":
-                if (this.outerCircleRadius > this.radius + 60) {
-                    this.outerCircleRadius -= 50;
+                if (this.surroundingCircleRadius > this.radius + 60) {
+                    this.surroundingCircleRadius -= 50;
                 }
+                this.timeoutStarted = -1;
                 break;
             case "selected":
-            break;
+                this.timeoutStarted = -1;
+                break;
             default:
                 this.step++;
                 if (this.step >= 4) {
@@ -340,16 +358,24 @@ class PlayerTouch {
                     }
                     this.radius += this.grow;
                 }
+                if (this.timeoutStarted != -1 && timestamp > this.timeoutStarted) {
+                    const totalAngle = ((timestamp - this.timeoutStarted) / (this.timeoutDuration)) * Math.PI * 2;
+                    this.timeoutCircleStartAngle += 0.04;
+                    this.timeoutCircleEndAngle = this.timeoutCircleStartAngle + totalAngle;
+                }
             break;
         }
-        if ((this.endAngle - this.startAngle >= 2 * Math.PI) || this.state == "onlySelected" || this.state == "selected") {
-            this.startAngle = 0;
-            this.endAngle = 2 * Math.PI;
+        if ((this.outerCircleEndAngle - this.outerCircleStartAngle >= 2 * Math.PI) || this.state == "onlySelected" || this.state == "selected") {
+            this.outerCircleStartAngle = 0;
+            this.outerCircleEndAngle = 2 * Math.PI;
         }
         else {
-            this.startAngle += 0.08;
-            this.endAngle += 0.24;
+            this.outerCircleStartAngle += 0.08;
+            this.outerCircleEndAngle += 0.24;
         }
+    }
+    startTimer(timestamp) {
+        this.timeoutStarted = timestamp;
     }
     draw() {
         if (this.state == "obsolete") return;
@@ -362,7 +388,7 @@ class PlayerTouch {
             this.ctx.globalCompositeOperation = 'xor';
 
             this.ctx.beginPath();
-            this.ctx.arc(this.x, this.y, this.outerCircleRadius, 0, 2 * Math.PI);
+            this.ctx.arc(this.x, this.y, this.surroundingCircleRadius, 0, 2 * Math.PI);
             this.ctx.fill();
             this.ctx.closePath();
         }
@@ -373,7 +399,7 @@ class PlayerTouch {
         this.ctx.closePath();
 
         this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, this.radius + 12, this.startAngle, this.endAngle);
+        this.ctx.arc(this.x, this.y, this.radius + 12, this.outerCircleStartAngle, this.outerCircleEndAngle);
         this.ctx.lineWidth = this.outerCircleStrokeWidth;
         this.ctx.stroke();
         this.ctx.closePath();
@@ -382,6 +408,15 @@ class PlayerTouch {
             this.ctx.font = '50px sans-serif';
             this.ctx.textAlign = 'center';
             this.ctx.fillText(this.number, this.x, this.y - 65);
+        }
+        if (this.timeoutStarted != -1) {
+            this.ctx.fillStyle = '#c9bccf';
+            this.ctx.strokeStyle = '#c9bccf';
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.radius + 4, this.timeoutCircleStartAngle, this.timeoutCircleEndAngle);
+            this.ctx.lineWidth = 9;
+            this.ctx.stroke();
+            this.ctx.closePath();
         }
     }
     flagForDelete() {
