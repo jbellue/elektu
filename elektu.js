@@ -313,6 +313,7 @@ class PlayerTouch {
         this.timeoutCircleStartAngle = (Math.random() * 2) * Math.PI;
         this.timeoutCircleEndAngle = this.timeoutCircleStartAngle;
         this.timeoutDuration = timeoutDuration;
+        this.timeoutColor = colour + "7F";
     }
     moveTo(x, y) {
         if (this.isLocked) return;
@@ -410,8 +411,8 @@ class PlayerTouch {
             this.ctx.fillText(this.number, this.x, this.y - 65);
         }
         if (this.timeoutStarted != -1) {
-            this.ctx.fillStyle = '#c9bccf';
-            this.ctx.strokeStyle = '#c9bccf';
+            this.ctx.fillStyle = this.timeoutColor;
+            this.ctx.strokeStyle = this.timeoutColor;
             this.ctx.beginPath();
             this.ctx.arc(this.x, this.y, this.radius + 4, this.timeoutCircleStartAngle, this.timeoutCircleEndAngle);
             this.ctx.lineWidth = 9;
