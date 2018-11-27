@@ -55,3 +55,4 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
   * [ ] have another rotation when waiting for timeout
   * [X] ~~*cool selection when there's only one to select*~~ [2018-11-25]
 * [X] ~~*probably a lot more to get to feature parity...*~~ [2018-11-25]
+* [ ] Add the favicon back, without screwing it up like last time
