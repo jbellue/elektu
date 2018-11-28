@@ -43,6 +43,7 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 
 ## TODO
 
+* [ ] Get nicer colours
 * [X] ~~*Have a fixed colour for team selection*~~ [2018-11-24]
 * [X] ~~*Get menu icons*~~ [2018-11-24]
 * [X] ~~*Get menu properly working*~~ [2018-11-24]
@@ -55,4 +56,4 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
   * [X] ~~*have another rotation when waiting for timeout*~~ [2018-11-27]
   * [X] ~~*cool selection when there's only one to select*~~ [2018-11-25]
 * [X] ~~*probably a lot more to get to feature parity...*~~ [2018-11-25]
-* [ ] Add the favicon back, without screwing it up like last time
+* [X] ~~*Add the favicon back, without screwing it up like last time*~~ [2018-11-28]
