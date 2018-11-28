@@ -1,7 +1,7 @@
 
 # ***Elektu!***
 
-[A small page to help select people from a group](https://jbellue.github.io/chose/)
+[A small page to help select people from a group](https://jbellue.github.io/elektu/)
 
 Open source, no-app-needed clone of [the excellent app Chwazi](https://play.google.com/store/apps/details?id=com.tendadigital.chwaziApp&hl=en)
 
@@ -12,6 +12,10 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 * No need to install anything, that's better, probably?
 * 0% tracking (I'm not implying chwazi does anything naughty. But here I know nothing evil goes on)
 * why not?
+
+## The name
+
+*Elektu* means "choose" in [esperanto](https://en.wikipedia.org/wiki/Esperanto). Note, I don't speak esperanto, so maybe the name's dead wrong. But I still like it.
 
 ---
 
