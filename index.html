@@ -197,6 +197,8 @@ const updateFullscreenIcon = () => {
     toggleFullscreen.checked = screenfull.isFullscreen;
 }
 const start = () => {
+    window.addEventListener('resize', resizeCanvas, false);
+    resizeCanvas();
     elektu = new Elektu(canvas);
 
     let optionGroup = document.getElementById("option-group");
@@ -235,9 +237,6 @@ const start = () => {
         // failed to load, hide the button
         document.getElementById("toggle-fullscreen-label").style.opacity = 0;
     }
-    window.addEventListener('resize', resizeCanvas, false);
-
-    resizeCanvas();
     window.requestAnimationFrame(step);
 };
 
