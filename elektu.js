@@ -10,6 +10,9 @@ class Elektu {
         this.touches = [];
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
+        this.ctx.font = '50px sans-serif';
+        this.ctx.textAlign = 'center';
+
         this.timerTrigger = -1;
         this.displayTimeout = 1500;
         this.triggerTimeout = 2500;
@@ -399,7 +402,6 @@ class PlayerTouch {
             ctx.closePath();
         }
         ctx.beginPath();
-
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
@@ -411,8 +413,6 @@ class PlayerTouch {
         ctx.closePath();
 
         if (this.number != -1) {
-            ctx.font = '50px sans-serif';
-            ctx.textAlign = 'center';
             ctx.fillText(this.number, this.x, this.y - 65);
         }
         if (this.timeoutStarted != -1) {
