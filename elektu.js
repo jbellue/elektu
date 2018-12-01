@@ -24,7 +24,7 @@ class Elektu {
     }
     add(x, y, id) {
         let colour = this.feature == 'teams' ? this.colours.getNoTeamColour() : this.colours.getRandomColour();
-        this.touches.push(new PlayerTouch(this.ctx, x, y, id, colour, this.triggerTimeout));
+        this.touches.push(new PlayerTouch(x, y, id, colour, this.triggerTimeout));
     }
     remove(id) {
         let touch = this.getTouch(id);
@@ -102,7 +102,7 @@ class Elektu {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         const touchesLength = this.touches.length;
         for (let i=0; i < touchesLength; ++i) {
-            this.touches[i].draw();
+            this.touches[i].draw(this.ctx);
         }
     }
     getTouch(identifier) {
@@ -292,10 +292,9 @@ class Elektu {
 }
 
 class PlayerTouch {
-    constructor(ctx, x, y, id, colour, timeoutDuration) {
+    constructor(x, y, id, colour, timeoutDuration) {
         this.radius = 20;
         this.outerCircleStrokeWidth = 10;
-        this.ctx = ctx;
         this.x = x;
         this.y = y;
         this.id = id;
@@ -378,46 +377,46 @@ class PlayerTouch {
     startTimer(timestamp) {
         this.timeoutStarted = timestamp;
     }
-    draw() {
+    draw(ctx) {
         if (this.state == "obsolete") return;
-        this.ctx.fillStyle = this.colour;
-        this.ctx.strokeStyle = this.colour;
+        ctx.fillStyle = this.colour;
+        ctx.strokeStyle = this.colour;
         if (this.state == "onlySelected") {
-            this.ctx.rect(0, 0, this.ctx.canvas.clientWidth, this.ctx.canvas.clientHeight);
-            this.ctx.fill();
+            ctx.rect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+            ctx.fill();
 
-            this.ctx.globalCompositeOperation = 'xor';
+            ctx.globalCompositeOperation = 'xor';
 
-            this.ctx.beginPath();
-            this.ctx.arc(this.x, this.y, this.surroundingCircleRadius, 0, 2 * Math.PI);
-            this.ctx.fill();
-            this.ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.surroundingCircleRadius, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
         }
-        this.ctx.beginPath();
+        ctx.beginPath();
 
-        this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        this.ctx.fill();
-        this.ctx.closePath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
 
-        this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, this.radius + 12, this.outerCircleStartAngle, this.outerCircleEndAngle);
-        this.ctx.lineWidth = this.outerCircleStrokeWidth;
-        this.ctx.stroke();
-        this.ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius + 12, this.outerCircleStartAngle, this.outerCircleEndAngle);
+        ctx.lineWidth = this.outerCircleStrokeWidth;
+        ctx.stroke();
+        ctx.closePath();
 
         if (this.number != -1) {
-            this.ctx.font = '50px sans-serif';
-            this.ctx.textAlign = 'center';
-            this.ctx.fillText(this.number, this.x, this.y - 65);
+            ctx.font = '50px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(this.number, this.x, this.y - 65);
         }
         if (this.timeoutStarted != -1) {
-            this.ctx.fillStyle = this.timeoutColor;
-            this.ctx.strokeStyle = this.timeoutColor;
-            this.ctx.beginPath();
-            this.ctx.arc(this.x, this.y, this.radius + 4, this.timeoutCircleStartAngle, this.timeoutCircleEndAngle);
-            this.ctx.lineWidth = 9;
-            this.ctx.stroke();
-            this.ctx.closePath();
+            ctx.fillStyle = this.timeoutColor;
+            ctx.strokeStyle = this.timeoutColor;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius + 4, this.timeoutCircleStartAngle, this.timeoutCircleEndAngle);
+            ctx.lineWidth = 9;
+            ctx.stroke();
+            ctx.closePath();
         }
     }
     flagForDelete() {
