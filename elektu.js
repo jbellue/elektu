@@ -416,7 +416,6 @@ class PlayerTouch {
             ctx.fillText(this.number, this.x, this.y - 65);
         }
         if (this.timeoutStarted != -1) {
-            ctx.fillStyle = this.timeoutColor;
             ctx.strokeStyle = this.timeoutColor;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius + 4, this.timeoutCircleStartAngle, this.timeoutCircleEndAngle);
