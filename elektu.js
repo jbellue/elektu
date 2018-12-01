@@ -4,6 +4,7 @@ class Elektu {
             this.canvas.addEventListener("touchstart", this.newTouch);
             this.canvas.addEventListener("touchend", this.touchEnd);
             this.canvas.addEventListener("touchmove", this.handleTouchMove.bind(this));
+            this.canvas.addEventListener("touchcancel", this.touchEnd);
         };
         this.colours = new Colours();
         this.touches = [];
@@ -94,9 +95,12 @@ class Elektu {
         this.canvas.removeEventListener("touchmove", this.ignoreEvent);
         this.canvas.removeEventListener("touchend", this.ignoreEvent);
         this.canvas.removeEventListener("touchend", this.finishTouchEnd);
+        this.canvas.removeEventListener("touchcancel", this.ignoreEvent);
+        this.canvas.removeEventListener("touchcancel", this.finishTouchEnd);
 
         this.canvas.addEventListener("touchstart", this.newTouch);
         this.canvas.addEventListener("touchend", this.touchEnd);
+        this.canvas.addEventListener("touchcancel", this.touchEnd);
     }
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -140,6 +144,8 @@ class Elektu {
             this.canvas.addEventListener("touchstart", this.ignoreEvent);
             this.canvas.removeEventListener("touchend", this.touchEnd);
             this.canvas.addEventListener("touchend", this.finishTouchEnd);
+            this.canvas.removeEventListener("touchcancel", this.touchEnd);
+            this.canvas.addEventListener("touchcancel", this.finishTouchEnd);
         };
         const shuffleArray = array => {
             let currentIndex = array.length;
