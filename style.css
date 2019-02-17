@@ -179,6 +179,11 @@ dd {
     color: #9a929e;
     padding: 10px;
 }
+
+#githubCenter {
+    display: flex;
+    justify-content: center;
+}
 #toggle-help {
     grid-column: 2;
 }
