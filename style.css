@@ -169,6 +169,30 @@ dd {
     position: fixed;
     z-index: 9999;
 }
+#helpContainer>ul>li{
+    padding:0.15em 0 0.5em 2.5em;
+    margin-bottom:0.2em;
+    list-style:none;
+    background-repeat:no-repeat;
+}
+#helpContainer>ul>li[data-type="select"]{
+    background-image:url(img/select-unchecked.svg);
+}
+#helpContainer>ul>li[data-type="group"]{
+    background-image:url(img/group-unchecked.svg);
+}
+#helpContainer>ul>li[data-type="ordinate"]{
+    background-image:url(img/ordinate-unchecked.svg);
+}
+#helpContainer>ul>li[data-type="vibrate"]{
+    background-image:url(img/vibration-unchecked.svg);
+}
+#helpContainer>ul>li[data-type="help"]{
+    background-image:url(img/help-unchecked.svg);
+}
+#helpContainer>ul>li[data-type="fullscreen"]{
+    background-image:url(img/fullscreen-unchecked.svg);
+}
 
 #helpContainer {
     top: 50%;
@@ -178,6 +202,8 @@ dd {
     background: #39363a;
     color: #9a929e;
     padding: 10px;
+    display: grid;
+    justify-content: center;
 }
 
 #githubCenter {
