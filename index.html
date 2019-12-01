@@ -180,6 +180,11 @@ const updateFullscreenIcon = () => {
     toggleFullscreen.checked = screenfull.isFullscreen;
 }
 const start = () => {
+    // register service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('serviceWorker.js');
+    }
+
     window.addEventListener('resize', resizeCanvas, false);
     resizeCanvas();
     elektu = new Elektu(canvas);
