@@ -167,7 +167,7 @@ class Elektu {
         };
         const shuffleTouchList = () => {
             const playerList = [...this.touches].map(t => t.id);
-            return shuffleArray(playerList);
+            return playerList;
         };
         const selectPlayers = numberToSelect => {
             const shuffledList = shuffleTouchList();
