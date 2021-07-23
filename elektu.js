@@ -39,7 +39,7 @@ class Elektu {
     touchesLength() {
         let touchCount = 0;
         for (let i=0; i < this.touches.length; ++i) {
-            if (this.touches[i].state != "deletion" && this.touches[i].state != "obsolete") {
+            if (this.touches[i].state !== "deletion" && this.touches[i].state !== "obsolete") {
                 ++touchCount;
             }
         }
@@ -71,7 +71,7 @@ class Elektu {
             this.touches[i].update(timestamp);
         }
         for (let i=0; i < this.touches.length; ++i) {
-            if (this.touches[i].state == "obsolete") {
+            if (this.touches[i].state === "obsolete") {
                 if (this.feature !== "teams") {
                     this.colours.add(this.touches[i].colour);
                 }
@@ -114,7 +114,7 @@ class Elektu {
     }
     getTouch(identifier) {
         for (let i=0; i < this.touches.length; ++i) {
-            if (identifier == this.touches[i].id) {
+            if (identifier === this.touches[i].id) {
                 return this.touches[i];
             }
         }
@@ -177,7 +177,7 @@ class Elektu {
                     const selectedTouch = this.getTouch(shuffledList[i]);
                     if (selectedTouch) {
                         selectedTouch.isSelected = true;
-                        if(numberToSelect == 1) {
+                        if(numberToSelect === 1) {
                             selectedTouch.state = "onlySelected";
                         }
                         else {
@@ -326,7 +326,7 @@ class PlayerTouch {
     moveTo(x, y) {
         if (this.isLocked) return;
         this.x = x;
-        this.y = y;        
+        this.y = y;
     }
     update(timestamp) {
         switch (this.state) {
@@ -367,7 +367,7 @@ class PlayerTouch {
                     }
                     this.radius += this.grow;
                 }
-                if (this.timeoutStarted != -1 && timestamp > this.timeoutStarted) {
+                if (this.timeoutStarted !== -1 && timestamp > this.timeoutStarted) {
                     const totalAngle = ((timestamp - this.timeoutStarted) / (this.timeoutDuration)) * Math.PI * 2;
                     this.timeoutCircleStartAngle += 0.04;
                     this.timeoutCircleEndAngle = this.timeoutCircleStartAngle + totalAngle;
@@ -396,7 +396,7 @@ class PlayerTouch {
             ctx.rect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
             ctx.fill();
 
-            ctx.globalCompositeOperation = 'xor';
+            ctx.globalCompositeOperation = "xor";
 
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.surroundingCircleRadius, 0, 2 * Math.PI);
@@ -414,10 +414,10 @@ class PlayerTouch {
         ctx.stroke();
         ctx.closePath();
 
-        if (this.number != -1) {
+        if (this.number !== -1) {
             ctx.fillText(this.number, this.x, this.y - 65);
         }
-        if (this.timeoutStarted != -1) {
+        if (this.timeoutStarted !== -1) {
             ctx.strokeStyle = this.timeoutColor;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius + 4, this.timeoutCircleStartAngle, this.timeoutCircleEndAngle);
@@ -437,10 +437,10 @@ class Colours {
         this.reset();
     }
     reset() {
-        this.colour = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'];
+        this.colour = ["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"];
     }
     getNoTeamColour() {
-        return '#C0C0C0'; // you go Glenn
+        return "#C0C0C0"; // you go Glenn
     }
     getRandomColour() {
         return this.colour.splice(Math.floor(Math.random() * this.colour.length), 1)[0];
