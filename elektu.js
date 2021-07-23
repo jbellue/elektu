@@ -125,9 +125,9 @@ class Elektu {
         const feature = this.getFeature();
         clearTimeout(this.timerTrigger);
         if (
-            (feature == 'select' && this.touchesLength() > this.selectedNumber) ||
-            (feature == 'teams' && this.touchesLength() >= this.selectedNumber) ||
-            feature == 'ordinate'
+            (feature === 'select' && this.touchesLength() > this.selectedNumber) ||
+            (feature === 'teams' && this.touchesLength() >= this.selectedNumber) ||
+            feature === 'ordinate'
         ) {
             this.timerTrigger = setTimeout(this.triggerSelection.bind(this), this.triggerTimeout);
             for (let i=0; i < this.touches.length; ++i) {
@@ -293,7 +293,7 @@ class Elektu {
                 touch.isLocked = true;
             }
         }
-        
+
         if (this.areAllTouchesLocked()) {
             setTimeout(this.reset.bind(this), this.displayTimeout);
         }
@@ -374,7 +374,7 @@ class PlayerTouch {
                 }
             break;
         }
-        if ((this.outerCircleEndAngle - this.outerCircleStartAngle >= 2 * Math.PI) || this.state == "onlySelected" || this.state == "selected") {
+        if ((this.outerCircleEndAngle - this.outerCircleStartAngle >= 2 * Math.PI) || this.state === "onlySelected" || this.state === "selected") {
             this.outerCircleStartAngle = 0;
             this.outerCircleEndAngle = 2 * Math.PI;
         }
@@ -387,10 +387,12 @@ class PlayerTouch {
         this.timeoutStarted = timestamp;
     }
     draw(ctx) {
-        if (this.state == "obsolete") return;
+        if (this.state === "obsolete") {
+            return;
+        }
         ctx.fillStyle = this.colour;
         ctx.strokeStyle = this.colour;
-        if (this.state == "onlySelected") {
+        if (this.state === "onlySelected") {
             ctx.rect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
             ctx.fill();
 
