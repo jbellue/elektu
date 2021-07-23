@@ -19,7 +19,7 @@ class Elektu {
         this.finishTouchEnd = this.handleFinishTouchEnd.bind(this);
         this.touchEnd = this.handleTouchEnd.bind(this);
         this.newTouch = this.handleNewTouch.bind(this);
-        this.feature = 'select';
+        this.feature = "select";
         this.selectedNumber = 1;
         this.vibrate = false;
         this.lastUpdateTimestamp = 0;
@@ -27,7 +27,7 @@ class Elektu {
         setStartingHandlers();
     }
     add(x, y, id) {
-        let colour = this.feature == 'teams' ? this.colours.getNoTeamColour() : this.colours.getRandomColour();
+        let colour = this.feature === "teams" ? this.colours.getNoTeamColour() : this.colours.getRandomColour();
         this.touches.push(new PlayerTouch(x, y, id, colour, this.triggerTimeout));
     }
     remove(id) {
@@ -72,7 +72,7 @@ class Elektu {
         }
         for (let i=0; i < this.touches.length; ++i) {
             if (this.touches[i].state == "obsolete") {
-                if (this.feature != 'teams') {
+                if (this.feature !== "teams") {
                     this.colours.add(this.touches[i].colour);
                 }
                 this.touches.splice(i, 1);
@@ -89,7 +89,7 @@ class Elektu {
         this.touches = [];
         this.colours.reset();
 
-        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.globalCompositeOperation = "source-over";
 
         clearTimeout(this.timerTrigger);
         clearTimeout(this.resetAllTimeout);
@@ -152,12 +152,12 @@ class Elektu {
         };
         const shuffleArray = array => {
             let currentIndex = array.length;
-        
+
             // While there remain elements to shuffle...
             while (0 !== currentIndex) {
                 // Pick a remaining element...
                 let randomIndex = Math.floor(Math.random() * currentIndex--);
-        
+
                 // And swap it with the current element.
                 let temporaryValue = array[currentIndex];
                 array[currentIndex] = array[randomIndex];
@@ -171,7 +171,7 @@ class Elektu {
         };
         const selectPlayers = numberToSelect => {
             const shuffledList = shuffleTouchList();
-    
+
             for (let i=0; i < shuffledList.length; ++i) {
                 if (i < numberToSelect) {
                     const selectedTouch = this.getTouch(shuffledList[i]);
