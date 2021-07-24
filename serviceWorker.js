@@ -1,7 +1,7 @@
 const filesToCache = [
   "/elektu/index.html",
-  "/elektu/style.css",
-  "/elektu/elektu.js",
+  "/elektu/style.min.css",
+  "/elektu/elektu.min.js",
   "/elektu/img/fullscreen-checked.svg",
   "/elektu/img/fullscreen-unchecked.svg",
   "/elektu/img/group-checked.svg",
