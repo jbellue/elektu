@@ -1,6 +1,8 @@
 
 # ***Elektu!***
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a347df6ff17042e498bff84943777216)](https://app.codacy.com/gh/jbellue/elektu?utm_source=github.com&utm_medium=referral&utm_content=jbellue/elektu&utm_campaign=Badge_Grade_Settings)
+
 [A small page to help select people from a group](https://jbellue.github.io/elektu/)
 
 Open source, no-app-needed clone of [the excellent app Chwazi](https://play.google.com/store/apps/details?id=com.tendadigital.chwaziApp&hl=en)
