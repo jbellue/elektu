@@ -1,21 +1,21 @@
-const cacheName = "elektu-pwa-v0.9"
+const cacheName = "elektu-pwa-v0.9.1"
 const filesToCache = [
-  "/index.html",
-  "/style.min.css",
-  "/elektu.min.js",
-  "/img/fullscreen-checked.svg",
-  "/img/fullscreen-unchecked.svg",
-  "/img/group-checked.svg",
-  "/img/group-unchecked.svg",
-  "/img/help-checked.svg",
-  "/img/help-unchecked.svg",
-  "/img/ordinate-checked.svg",
-  "/img/ordinate-unchecked.svg",
-  "/img/select-checked.svg",
-  "/img/select-unchecked.svg",
-  "/img/vibration-checked.svg",
-  "/img/vibration-unchecked.svg",
-  "/img/GitHub-Mark-Light-32px.png"
+  "elektu/index.html",
+  "elektu/style.min.css",
+  "elektu/elektu.min.js",
+  "elektu/img/fullscreen-checked.svg",
+  "elektu/img/fullscreen-unchecked.svg",
+  "elektu/img/group-checked.svg",
+  "elektu/img/group-unchecked.svg",
+  "elektu/img/help-checked.svg",
+  "elektu/img/help-unchecked.svg",
+  "elektu/img/ordinate-checked.svg",
+  "elektu/img/ordinate-unchecked.svg",
+  "elektu/img/select-checked.svg",
+  "elektu/img/select-unchecked.svg",
+  "elektu/img/vibration-checked.svg",
+  "elektu/img/vibration-unchecked.svg",
+  "elektu/img/GitHub-Mark-Light-32px.png"
 ];
 
 /* Start the service worker and cache all of the app's content */
