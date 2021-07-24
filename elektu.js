@@ -191,8 +191,8 @@ class Elektu {
     }
     touchesLength() {
         let touchCount = 0;
-        for (let i=0; i < this.touches.length; ++i) {
-            if (this.touches[i].state !== "deletion" && this.touches[i].state !== "obsolete") {
+        for (const touch of this.touches) {
+            if (touch.state !== "deletion" && touch.state !== "obsolete") {
                 ++touchCount;
             }
         }
@@ -211,8 +211,8 @@ class Elektu {
         return this.feature;
     }
     areAllTouchesLocked() {
-        for (let i=0; i < this.touches.length; ++i) {
-            if (!this.touches[i].isLocked) {
+        for (const touch of this.touches) {
+            if (!touch.isLocked) {
                 return false;
             }
         }
@@ -220,17 +220,17 @@ class Elektu {
     }
     update(timestamp) {
         this.lastUpdateTimestamp = timestamp;
-        for (let i=0; i < this.touches.length; ++i) {
-            this.touches[i].update(timestamp);
+        for (const touch of this.touches) {
+            touch.update(timestamp);
         }
-        for (let i=0; i < this.touches.length; ++i) {
-            if (this.touches[i].state === "obsolete") {
+        this.touches.forEach((touch, i) => {
+            if (touch.state === "obsolete") {
                 if (this.feature !== "teams") {
-                    this.colours.add(this.touches[i].colour);
+                    this.colours.add(touch.colour);
                 }
                 this.touches.splice(i, 1);
             }
-        }
+        });
     }
     move(id, x, y) {
         let thisTouch = this.getTouch(id);
@@ -260,15 +260,14 @@ class Elektu {
     }
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        const touchesLength = this.touches.length;
-        for (let i=0; i < touchesLength; ++i) {
-            this.touches[i].draw(this.ctx);
+        for (const touch of this.touches) {
+            touch.draw(this.ctx);
         }
     }
     getTouch(identifier) {
-        for (let i=0; i < this.touches.length; ++i) {
-            if (identifier === this.touches[i].id) {
-                return this.touches[i];
+        for (const touch of this.touches) {
+            if (identifier === touch.id) {
+                return touch;
             }
         }
         return null;
@@ -319,15 +318,15 @@ class Elektu {
             return array;
         };
         const shuffleTouchList = () => {
-            const playerList = [...this.touches].map(t => t.id);
+            const playerList = [...this.touches].map((t) => t.id);
             return shuffleArray(playerList);
         };
         const selectPlayers = (numberToSelect) => {
             const shuffledList = shuffleTouchList();
 
-            for (let i=0; i < shuffledList.length; ++i) {
+            shuffledList.forEach((player, i) => {
                 if (i < numberToSelect) {
-                    const selectedTouch = this.getTouch(shuffledList[i]);
+                    const selectedTouch = this.getTouch(player);
                     if (selectedTouch) {
                         selectedTouch.isSelected = true;
                         if(numberToSelect === 1) {
@@ -339,9 +338,9 @@ class Elektu {
                     }
                 }
                 else {
-                    this.remove(shuffledList[i]);
+                    this.remove(player);
                 }
-            }
+            });
         };
         const selectTeams = (numberOfTeams) => {
             const splitIntoTeams = (randomisedTouches, numberOfTeams) => {
@@ -367,10 +366,10 @@ class Elektu {
                 throw new RangeError("selectTeams: more elements taken than available");
             }
             const splitTeams = splitIntoTeams(shuffleArray(playerList), numberOfTeams);
-            for (let i=0; i < splitTeams.length; ++i) {
+            for (const team of splitTeams) {
                 const teamColour = this.colours.getRandomColour();
-                for (let j=0; j < splitTeams[i].length; ++j) {
-                    const touch = this.getTouch(splitTeams[i][j]);
+                for (const teamMember of team) {
+                    const touch = this.getTouch(teamMember);
                     if (touch) {
                         touch.colour = teamColour;
                         touch.state = "selected";
@@ -380,13 +379,13 @@ class Elektu {
         };
         const selectNumbers = () => {
             const randomisedTouches = shuffleTouchList();
-            for (let i = 0; i < randomisedTouches.length; ++i) {
-                const touch = this.getTouch(randomisedTouches[i]);
+            randomisedTouches.forEach((randomTouch, index) => {
+                const touch = this.getTouch(randomTouch);
                 if (touch) {
-                    touch.number = i + 1;
+                    touch.number = index + 1;
                     touch.state = "selected";
                 }
-            }
+            });
         };
         clearTimeout(this.timerTrigger);
         switch (this.getFeature()) {
@@ -416,32 +415,28 @@ class Elektu {
 
     handleNewTouch(ev) {
         ev.preventDefault();
-        const changedTouches = ev.changedTouches;
-        for (let i=0; i < changedTouches.length; ++i) {
-            this.add(changedTouches[i].clientX, changedTouches[i].clientY, changedTouches[i].identifier);
+        for(const changedTouch of ev.changedTouches) {
+            this.add(changedTouch.clientX, changedTouch.clientY, changedTouch.identifier);
         }
         this.resetTimerTrigger();
     }
     handleTouchMove(ev) {
         ev.preventDefault();
-        const changedTouches = ev.changedTouches;
-        for (let i=0; i < changedTouches.length; ++i) {
-            this.move(changedTouches[i].identifier, changedTouches[i].clientX, changedTouches[i].clientY);
+        for(const changedTouch of ev.changedTouches) {
+            this.move(changedTouch.identifier, changedTouch.clientX, changedTouch.clientY);
         }
     }
     handleTouchEnd(ev) {
         ev.preventDefault();
-        const changedTouches = ev.changedTouches;
-        for (let i=0; i < changedTouches.length; ++i) {
-            this.remove(changedTouches[i].identifier);
+        for(const changedTouch of ev.changedTouches) {
+            this.remove(changedTouch.identifier);
         }
         this.resetTimerTrigger();
     }
     handleFinishTouchEnd(ev) {
         ev.preventDefault();
-        const changedTouches = ev.changedTouches;
-        for (let i=0; i < changedTouches.length; ++i) {
-            let touch = this.getTouch(changedTouches[i].identifier);
+        for(const changedTouch of ev.changedTouches) {
+            let touch = this.getTouch(changedTouch.identifier);
             if (touch) {
                 touch.isLocked = true;
             }
