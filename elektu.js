@@ -133,6 +133,8 @@ class PlayerTouch {
         ctx.closePath();
 
         if (this.number !== -1) {
+            // Fix weird bug where the font size gets set to size 10 on fullscreen
+            ctx.font = "50px sans-serif";
             ctx.fillText(this.number, this.x, this.y - 65);
         }
         if (this.timeoutStarted !== -1) {
