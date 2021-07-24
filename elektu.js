@@ -303,15 +303,16 @@ class Elektu {
             this.canvas.addEventListener("touchcancel", this.finishTouchEnd);
         };
         const shuffleArray = (array) => {
-            let currentIndex = array.length;
+            let currentIndex = array.length, randomIndex, temporaryValue;
 
             // While there remain elements to shuffle...
             while (0 !== currentIndex) {
                 // Pick a remaining element...
-                let randomIndex = Math.floor(Math.random() * currentIndex--);
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
 
                 // And swap it with the current element.
-                let temporaryValue = array[currentIndex];
+                temporaryValue = array[currentIndex];
                 array[currentIndex] = array[randomIndex];
                 array[randomIndex] = temporaryValue;
             }
