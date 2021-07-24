@@ -46,6 +46,16 @@ class PlayerTouch {
         this.x = x;
         this.y = y;
     }
+    computeOuterCircle() {
+        if ((this.outerCircleEndAngle - this.outerCircleStartAngle >= 2 * Math.PI) || this.state === "onlySelected" || this.state === "selected") {
+            this.outerCircleStartAngle = 0;
+            this.outerCircleEndAngle = 2 * Math.PI;
+        }
+        else {
+            this.outerCircleStartAngle += 0.08;
+            this.outerCircleEndAngle += 0.24;
+        }
+    }
     update(timestamp) {
         switch (this.state) {
             case "creation":
@@ -92,17 +102,22 @@ class PlayerTouch {
                 }
             break;
         }
-        if ((this.outerCircleEndAngle - this.outerCircleStartAngle >= 2 * Math.PI) || this.state === "onlySelected" || this.state === "selected") {
-            this.outerCircleStartAngle = 0;
-            this.outerCircleEndAngle = 2 * Math.PI;
-        }
-        else {
-            this.outerCircleStartAngle += 0.08;
-            this.outerCircleEndAngle += 0.24;
-        }
+        this.computeOuterCircle();
     }
     startTimer(timestamp) {
         this.timeoutStarted = timestamp;
+    }
+    drawTouch(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius + 12, this.outerCircleStartAngle, this.outerCircleEndAngle);
+        ctx.lineWidth = this.outerCircleStrokeWidth;
+        ctx.stroke();
+        ctx.closePath();
     }
     draw(ctx) {
         if (this.state === "obsolete") {
@@ -121,16 +136,7 @@ class PlayerTouch {
             ctx.fill();
             ctx.closePath();
         }
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius + 12, this.outerCircleStartAngle, this.outerCircleEndAngle);
-        ctx.lineWidth = this.outerCircleStrokeWidth;
-        ctx.stroke();
-        ctx.closePath();
+        this.drawTouch(ctx);
 
         if (this.number !== -1) {
             // Fix weird bug where the font size gets set to size 10 on fullscreen
