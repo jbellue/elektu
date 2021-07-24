@@ -21,8 +21,8 @@
         <link rel="prefetch" href="./img/select-unchecked.svg" />
         <link rel="prefetch" href="./img/vibration-checked.svg" />
         <link rel="prefetch" href="./img/vibration-unchecked.svg" />
-        <script src="elektu.js"></script>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="elektu.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.3.3/screenfull.min.js"></script>
         <script data-goatcounter="https://elektu.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
     </head>
@@ -183,7 +183,7 @@ const updateFullscreenIcon = () => {
 const start = () => {
     // register service worker
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('serviceWorker.js');
+        navigator.serviceWorker.register('serviceWorker.min.js');
     }
 
     window.addEventListener('resize', resizeCanvas, false);
