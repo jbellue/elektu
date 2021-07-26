@@ -12,7 +12,7 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 * I wanted the possibility to give a random number to each person
 * I was bored
 * No need to install anything, that's better, probably?
-* 0% tracking (I'm not implying chwazi does anything naughty. But here I know nothing evil goes on)
+* 0% tracking (I'm not implying chwazi does anything naughty. But here I know nothing evil goes on). The only thing there is a user counter available at [goatcounter](https://elektu.goatcounter.com/).
 * why not?
 
 ## The name
