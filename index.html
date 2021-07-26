@@ -91,6 +91,7 @@ let elektu;
 const menuContainer = document.getElementById("menuContainer");
 const footerContainer = document.getElementById("footerContainer");
 const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 const helpContainer = document.getElementById("helpContainerWrapper");
 const labelNumber1 = document.getElementById("label-number1");
 const radioSelectNumber = document.getElementById("radio-selectNumber");
@@ -143,9 +144,16 @@ const step = (timestamp) => {
     window.requestAnimationFrame(step);
 };
 
+const setCanvasFont = () => {
+    ctx.font = "50px sans-serif";
+    ctx.textAlign = "center";
+};
+
 const resizeCanvas = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+
+    setCanvasFont();
 };
 
 const hideMenu = () => {

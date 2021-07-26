@@ -139,8 +139,6 @@ class PlayerTouch {
         this.drawTouch(ctx);
 
         if (this.number !== -1) {
-            // Fix weird bug where the font size gets set to size 10 on fullscreen
-            ctx.font = "50px sans-serif";
             ctx.fillText(this.number, this.x, this.y - 65);
         }
         if (this.timeoutStarted !== -1) {
@@ -169,8 +167,6 @@ class Elektu {
         this.touches = [];
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
-        this.ctx.font = "50px sans-serif";
-        this.ctx.textAlign = "center";
 
         this.timerTrigger = -1;
         this.displayTimeout = 1500;
@@ -222,7 +218,7 @@ class Elektu {
                 return false;
             }
         }
-        return true;  
+        return true;
     }
     update(timestamp) {
         this.lastUpdateTimestamp = timestamp;
