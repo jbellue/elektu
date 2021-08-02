@@ -276,21 +276,24 @@ class Elektu {
     }
 
     resetTimerTrigger() {
-        const feature = this.getFeature();
+        const shouldTimerStart = () => {
+            const feature = this.getFeature();
+            const touchCount = this.touchesLength();
+            return ((feature === "select" && touchCount >  this.selectedNumber) ||
+                    (feature === "teams"  && touchCount >= this.selectedNumber) ||
+                    (feature === "ordinate"));
+        };
+
         clearTimeout(this.timerTrigger);
-        if (
-            (feature === "select" && this.touchesLength() > this.selectedNumber) ||
-            (feature === "teams" && this.touchesLength() >= this.selectedNumber) ||
-            feature === "ordinate"
-        ) {
+        if (shouldTimerStart()) {
             this.timerTrigger = setTimeout(this.triggerSelection.bind(this), this.triggerTimeout);
-            for (let i=0; i < this.touches.length; ++i) {
-                this.touches[i].startTimer(this.lastUpdateTimestamp);
+            for(const touch of this.touches) {
+                touch.startTimer(this.lastUpdateTimestamp);
             }
         }
         else {
-            for (let i=0; i < this.touches.length; ++i) {
-                this.touches[i].startTimer(-1);
+            for(const touch of this.touches) {
+                touch.startTimer(-1);
             }
         }
     }
