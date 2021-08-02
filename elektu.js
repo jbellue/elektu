@@ -25,7 +25,7 @@ class PlayerTouch {
         this.id = id;
         this.colour = colour;
         this.isLocked = false;
-        this.state = "creation";
+        this.state = this.touchState.creation;
         this.number = -1;
         this.grow = 1;
         this.outerCircleStartAngle = (Math.random() * 2) * Math.PI;
@@ -39,6 +39,13 @@ class PlayerTouch {
         this.timeoutDuration = timeoutDuration;
         this.timeoutColor = colour + "7F";
     }
+    touchState = {
+        creation: 0,
+        selected: 1,
+        onlySelected: 2,
+        normal: 3,
+        obsolete: 4
+    };
     moveTo(x, y) {
         if (this.isLocked) {
             return;
@@ -47,7 +54,7 @@ class PlayerTouch {
         this.y = y;
     }
     computeOuterCircle() {
-        if ((this.outerCircleEndAngle - this.outerCircleStartAngle >= 2 * Math.PI) || this.state === "onlySelected" || this.state === "selected") {
+        if ((this.outerCircleEndAngle - this.outerCircleStartAngle >= 2 * Math.PI) || this.state === this.touchState.onlySelected || this.state === this.touchState.selected) {
             this.outerCircleStartAngle = 0;
             this.outerCircleEndAngle = 2 * Math.PI;
         }
@@ -58,29 +65,29 @@ class PlayerTouch {
     }
     update(timestamp) {
         switch (this.state) {
-            case "creation":
+            case this.touchState.creation:
                 if (this.radius >= 40) {
-                    this.state = "normal";
+                    this.state = this.touchState.normal;
                 }
                 else {
                     this.radius += 5;
                 }
                 break;
-            case "deletion":
+            case this.touchState.deletion:
                 this.radius -= 5;
                 if (this.radius <= 0) {
                     this.radius = 0;
-                    this.state = "obsolete";
+                    this.state = this.touchState.obsolete;
                 }
                 this.timeoutStarted = -1;
                 break;
-            case "onlySelected":
+            case this.touchState.onlySelected:
                 if (this.surroundingCircleRadius > this.radius + 60) {
                     this.surroundingCircleRadius -= 50;
                 }
                 this.timeoutStarted = -1;
                 break;
-            case "selected":
+            case this.touchState.selected:
                 this.timeoutStarted = -1;
                 break;
             default:
@@ -120,12 +127,12 @@ class PlayerTouch {
         ctx.closePath();
     }
     draw(ctx) {
-        if (this.state === "obsolete") {
+        if (this.state === this.touchState.obsolete) {
             return;
         }
         ctx.fillStyle = this.colour;
         ctx.strokeStyle = this.colour;
-        if (this.state === "onlySelected") {
+        if (this.state === this.touchState.onlySelected) {
             ctx.rect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
             ctx.fill();
 
@@ -151,7 +158,7 @@ class PlayerTouch {
         }
     }
     flagForDelete() {
-        this.state = "deletion";
+        this.state = this.touchState.deletion;
         this.id = -1;
     }
 }
@@ -194,7 +201,7 @@ class Elektu {
     touchesLength() {
         let touchCount = 0;
         for (const touch of this.touches) {
-            if (touch.state !== "deletion" && touch.state !== "obsolete") {
+            if (touch.state !== touch.touchState.deletion && touch.state !== touch.touchState.obsolete) {
                 ++touchCount;
             }
         }
@@ -226,7 +233,7 @@ class Elektu {
             touch.update(timestamp);
         }
         this.touches.forEach((touch, i) => {
-            if (touch.state === "obsolete") {
+            if (touch.state === touch.touchState.obsolete) {
                 if (this.feature !== "teams") {
                     this.colours.add(touch.colour);
                 }
@@ -336,10 +343,10 @@ class Elektu {
                     if (selectedTouch) {
                         selectedTouch.isSelected = true;
                         if(numberToSelect === 1) {
-                            selectedTouch.state = "onlySelected";
+                            selectedTouch.state = selectedTouch.touchState.onlySelected;
                         }
                         else {
-                            selectedTouch.state = "selected";
+                            selectedTouch.state = selectedTouch.touchState.selected;
                         }
                     }
                 }
@@ -378,7 +385,7 @@ class Elektu {
                     const touch = this.getTouch(teamMember);
                     if (touch) {
                         touch.colour = teamColour;
-                        touch.state = "selected";
+                        touch.state = touch.touchState.selected;
                     }
                 }
             }
@@ -389,7 +396,7 @@ class Elektu {
                 const touch = this.getTouch(randomTouch);
                 if (touch) {
                     touch.number = index + 1;
-                    touch.state = "selected";
+                    touch.state = touch.touchState.selected;
                 }
             });
         };
