@@ -181,15 +181,20 @@ class Elektu {
         this.finishTouchEnd = this.handleFinishTouchEnd.bind(this);
         this.touchEnd = this.handleTouchEnd.bind(this);
         this.newTouch = this.handleNewTouch.bind(this);
-        this.feature = "select";
         this.selectedNumber = 1;
         this.vibrate = false;
         this.lastUpdateTimestamp = 0;
+        this.featureType = {
+            select: "select",
+            teams: "teams",
+            ordinate: "ordinate"
+        }
 
+        this.feature = this.featureType.select;
         setStartingHandlers();
     }
     add(x, y, id) {
-        let colour = this.feature === "teams" ? this.colours.getNoTeamColour() : this.colours.getRandomColour();
+        let colour = this.feature === this.featureType.teams ? this.colours.getNoTeamColour() : this.colours.getRandomColour();
         this.touches.push(new PlayerTouch(x, y, id, colour, this.triggerTimeout));
     }
     remove(id) {
@@ -234,7 +239,7 @@ class Elektu {
         }
         this.touches.forEach((touch, i) => {
             if (touch.state === touch.touchState.obsolete) {
-                if (this.feature !== "teams") {
+                if (this.feature !== this.featureType.teams) {
                     this.colours.add(touch.colour);
                 }
                 this.touches.splice(i, 1);
@@ -286,9 +291,9 @@ class Elektu {
         const shouldTimerStart = () => {
             const feature = this.getFeature();
             const touchCount = this.touchesLength();
-            return ((feature === "select" && touchCount >  this.selectedNumber) ||
-                    (feature === "teams"  && touchCount >= this.selectedNumber) ||
-                    (feature === "ordinate"));
+            return ((feature === this.featureType.select && touchCount >  this.selectedNumber) ||
+                    (feature === this.featureType.teams  && touchCount >= this.selectedNumber) ||
+                    (feature === this.featureType.ordinate));
         };
 
         clearTimeout(this.timerTrigger);
@@ -402,13 +407,13 @@ class Elektu {
         };
         clearTimeout(this.timerTrigger);
         switch (this.getFeature()) {
-            case "select" :
+            case this.featureType.select :
                 selectPlayers(this.selectedNumber);
                 break;
-            case "teams" :
+            case this.featureType.teams :
                 selectTeams(this.selectedNumber);
                 break;
-            case "ordinate" :
+            case this.featureType.ordinate :
                 selectNumbers();
                 break;
             default:
