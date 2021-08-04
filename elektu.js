@@ -188,7 +188,7 @@ class Elektu {
             select: "select",
             teams: "teams",
             ordinate: "ordinate"
-        }
+        };
 
         this.feature = this.featureType.select;
         setStartingHandlers();
