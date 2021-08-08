@@ -169,7 +169,7 @@ const showMenu = () => {
     footerContainer.classList.add("transformBackIn");
 };
 const updateFeature = () => {
-    elektu.setFeature(document.querySelector('input[name="selector"]:checked').value);
+    elektu.feature.set(document.querySelector('input[name="selector"]:checked').value);
 }
 const updateSelectedNumber = () => {
     elektu.setSelectedNumber(Number(document.querySelector(`input[name="number"]:checked`).value));

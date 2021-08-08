@@ -162,6 +162,43 @@ class PlayerTouch {
         this.id = -1;
     }
 }
+
+class Feature {
+    constructor() {
+        this.featureType = {
+            select: 0,
+            teams: 1,
+            ordinate: 2
+        };
+        this.type = this.featureType.select;
+    }
+
+    set(feature) {
+        switch(feature) {
+            case "select":
+                this.type = this.featureType.select;
+                break;
+            case "teams":
+                this.type = this.featureType.teams;
+                break;
+            case "ordinate":
+                this.type = this.featureType.ordinate;
+                break;
+        }
+    }
+
+    shouldTimerStart(numberOfTouches, selectedNumber) {
+        switch(this.type) {
+            case this.featureType.select:
+                return numberOfTouches > selectedNumber;
+            case this.featureType.teams:
+                return numberOfTouches >= selectedNumber;
+            case this.featureType.ordinate:
+                return numberOfTouches > 1;
+        }
+    }
+}
+
 class Elektu {
     constructor(canvas) {
         const setStartingHandlers = () => {
@@ -184,17 +221,11 @@ class Elektu {
         this.selectedNumber = 1;
         this.vibrate = false;
         this.lastUpdateTimestamp = 0;
-        this.featureType = {
-            select: "select",
-            teams: "teams",
-            ordinate: "ordinate"
-        };
-
-        this.feature = this.featureType.select;
+        this.feature = new Feature();
         setStartingHandlers();
     }
     add(x, y, id) {
-        let colour = this.feature === this.featureType.teams ? this.colours.getNoTeamColour() : this.colours.getRandomColour();
+        let colour = this.feature.type === this.feature.featureType.teams ? this.colours.getNoTeamColour() : this.colours.getRandomColour();
         this.touches.push(new PlayerTouch(x, y, id, colour, this.triggerTimeout));
     }
     remove(id) {
@@ -218,12 +249,6 @@ class Elektu {
     setSelectedNumber(number) {
         this.selectedNumber = number;
     }
-    setFeature(feature) {
-        this.feature = feature;
-    }
-    getFeature() {
-        return this.feature;
-    }
     areAllTouchesLocked() {
         for (const touch of this.touches) {
             if (!touch.isLocked) {
@@ -239,7 +264,7 @@ class Elektu {
         }
         this.touches.forEach((touch, i) => {
             if (touch.state === touch.touchState.obsolete) {
-                if (this.feature !== this.featureType.teams) {
+                if (this.feature.type !== this.feature.featureType.teams) {
                     this.colours.add(touch.colour);
                 }
                 this.touches.splice(i, 1);
@@ -288,16 +313,8 @@ class Elektu {
     }
 
     resetTimerTrigger() {
-        const shouldTimerStart = () => {
-            const feature = this.getFeature();
-            const touchCount = this.touchesLength();
-            return ((feature === this.featureType.select && touchCount >  this.selectedNumber) ||
-                    (feature === this.featureType.teams  && touchCount >= this.selectedNumber) ||
-                    (feature === this.featureType.ordinate));
-        };
-
         clearTimeout(this.timerTrigger);
-        if (shouldTimerStart()) {
+        if (this.feature.shouldTimerStart(this.touchesLength(), this.selectedNumber)) {
             this.timerTrigger = setTimeout(this.triggerSelection.bind(this), this.triggerTimeout);
             for(const touch of this.touches) {
                 touch.startTimer(this.lastUpdateTimestamp);
@@ -406,14 +423,14 @@ class Elektu {
             });
         };
         clearTimeout(this.timerTrigger);
-        switch (this.getFeature()) {
-            case this.featureType.select :
+        switch (this.feature.type) {
+            case this.feature.featureType.select :
                 selectPlayers(this.selectedNumber);
                 break;
-            case this.featureType.teams :
+            case this.feature.featureType.teams :
                 selectTeams(this.selectedNumber);
                 break;
-            case this.featureType.ordinate :
+            case this.feature.featureType.ordinate :
                 selectNumbers();
                 break;
             default:
