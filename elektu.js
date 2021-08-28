@@ -465,7 +465,10 @@ class Elektu {
     handleFinishTouchEnd(ev) {
         ev.preventDefault();
         for(const changedTouch of ev.changedTouches) {
-            this.getTouch(changedTouch.identifier)?.isLocked = true;
+            let touch = this.getTouch(changedTouch.identifier);
+            if (touch) {
+                touch.isLocked = true;
+            }
         }
 
         if (this.areAllTouchesLocked()) {
