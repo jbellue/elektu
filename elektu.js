@@ -229,10 +229,7 @@ class Elektu {
         this.touches.push(new PlayerTouch(x, y, id, colour, this.triggerTimeout));
     }
     remove(id) {
-        let touch = this.getTouch(id);
-        if (touch) {
-            touch.flagForDelete();
-        }
+        this.getTouch(id)?.flagForDelete();
     }
     touchesLength() {
         let touchCount = 0;
@@ -272,10 +269,7 @@ class Elektu {
         });
     }
     move(id, x, y) {
-        let thisTouch = this.getTouch(id);
-        if (thisTouch) {
-            thisTouch.moveTo(x, y);
-        }
+        this.getTouch(id)?.moveTo(x, y);
     }
     reset() {
         this.touches = [];
@@ -471,10 +465,7 @@ class Elektu {
     handleFinishTouchEnd(ev) {
         ev.preventDefault();
         for(const changedTouch of ev.changedTouches) {
-            let touch = this.getTouch(changedTouch.identifier);
-            if (touch) {
-                touch.isLocked = true;
-            }
+            this.getTouch(changedTouch.identifier)?.isLocked = true;
         }
 
         if (this.areAllTouchesLocked()) {
