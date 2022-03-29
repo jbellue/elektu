@@ -26,14 +26,14 @@ Open source, no-app-needed clone of [the excellent app Chwazi](https://play.goog
 * ![select](img/select-unchecked.svg) ***Select between 1 and 5 people***
 
    You obviously need more people touching the screen than the number in the menu!
-    1. Chose the number of people to be selected in the top right menu
+    1. Choose the number of people to be selected in the top right menu
     2. Have everyone touch the screen.
     3. The number of people selected in the menu will be selected from the group.
 
 * ![group](img/group-unchecked.svg) ***Split people between teams***
 
    You need at least the amount of people touching the screen that you want teams...
-    1. Chose the number of teams you want
+    1. Choose the number of teams you want
     2. Have everyone touch the screen
     3. People touching the monitor will be split between teams
 
