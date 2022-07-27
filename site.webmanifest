@@ -1,6 +1,9 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Elektu",
+    "short_name": "Elektu",
+    "description": "A small page to help select people from a group",
+    "lang": "en-US",
+    "start_url": "https://jbellue.github.io/elektu/",
     "icons": [
         {
             "src": "./android-chrome-192x192.png",
