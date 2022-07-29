@@ -1,4 +1,4 @@
-const cacheName = "elektu-pwa-v0.9.5a";
+const cacheName = "elektu-pwa-v0.9.5b";
 const filesToCache = [
     "/elektu/index.html",
     "/elektu/style.min.css",

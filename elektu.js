@@ -36,6 +36,7 @@ class PlayerTouch {
         this.timeoutStarted = -1;
         this.timeoutCircleStartAngle = (Math.random() * 2) * Math.PI;
         this.timeoutCircleEndAngle = this.timeoutCircleStartAngle;
+        this.ordinateNumberAngle = (Math.random() * 2) * Math.PI;
         this.timeoutDuration = timeoutDuration;
         this.timeoutColor = colour + "7F";
     }
@@ -146,7 +147,12 @@ class PlayerTouch {
         this.drawTouch(ctx);
 
         if (this.number !== -1) {
-            ctx.fillText(this.number, this.x, this.y - 65);
+            this.ordinateNumberAngle += 0.02
+
+            this.drawOrdinateNumber(0.00);
+            this.drawOrdinateNumber(2.09);
+            this.drawOrdinateNumber(4.09);
+
         }
         if (this.timeoutStarted !== -1) {
             ctx.strokeStyle = this.timeoutColor;
@@ -156,6 +162,14 @@ class PlayerTouch {
             ctx.stroke();
             ctx.closePath();
         }
+    }
+    drawOrdinateNumber(angle) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.ordinateNumberAngle + angle);
+        ctx.textAlign = "center";
+        ctx.fillText(this.number, 0, -65);
+        ctx.restore();
     }
     flagForDelete() {
         this.state = this.touchState.deletion;
